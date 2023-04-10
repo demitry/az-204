@@ -533,6 +533,9 @@ Remove
 ```
 
 Add (this is bad config with missing ;;;)
+
+<del>
+
 ```
 	location / {
 		proxy_pass		http://localhost:5000;
@@ -541,6 +544,21 @@ Add (this is bad config with missing ;;;)
 		proxy_set_header	Connection keep-alive
 		proxy_set_header	Host $host
 		proxy_cache_bypass	$http_upgrade
+	}
+
+```
+</del>
+
+Proper config:
+
+```
+	location / {
+		proxy_pass		http://localhost:5000;
+		proxy_http_version	1.1;
+		proxy_set_header	Upgrade $http_upgrade;
+		proxy_set_header	Connection keep-alive;
+		proxy_set_header	Host $host;
+		proxy_cache_bypass	$http_upgrade;
 	}
 
 ```
