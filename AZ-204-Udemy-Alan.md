@@ -140,10 +140,274 @@ Download and install Web Deploy v3.6 -> "Complete" install
 
 ### 19. Lab - Building a Linux VM
 
+<https://www.putty.org/>
+
+<https://winscp.net/eng/download.php>
+
+Ubuntu Server 20.04 LTS (prebuilt machine)
+
+linuxvm
+
+Select inbound ports
+
+* HTTP (80)
+
+* SSH (22)
+
+* HTTP (443)
+
+Select HTTP and SSH
+
+Virtual network/subnet appvm-vnet/default
+
+Existing Virtual network is not populated in dropdown?
+Make sure that you create new VM in the same region where your VNET is located.
+
+Changed region - it appears.
+
+You have set SSH port(s) open to the internet.  This is only recommended for testing.  If you want to change this setting, go back to Basics tab.  
+
 ### 20. Deploying our .NET App on the Linux VM
+
+Putty -> Public IP address, SSH (22)
+
+Accept and log in
+
+On linux - copy app
+
+VS -> Publish -> New -> Folder (on local machine)
+
+bin\Release\net6.0\publish\
+
+SuccessPublish profile 'F:\...\git\Learn\webapp\webapp\Properties\PublishProfiles\FolderProfile.pubxml' created.
+
+Publish, open folder
+
+copy publish dir (webapp\webapp\bin\Release\net6) to server
+
+WinScp, login and copy
+
+Install hosting bundle
+
+<https://dotnet.microsoft.com/en-us/download/dotnet/6.0>
+
+Package manager instructions, Ubuntu, 22.04
+
+<https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#supported-distributions>
+
+```bash
+# Get Ubuntu version
+declare repo_version=$(if command -v lsb_release &> /dev/null; then lsb_release -r -s; else grep -oP '(?<=^VERSION_ID=).+' /etc/os-release | tr -d '"'; fi)
+
+# Download Microsoft signing key and repository
+wget https://packages.microsoft.com/config/ubuntu/$repo_version/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+
+# Install Microsoft signing key and repository
+sudo dpkg -i packages-microsoft-prod.deb
+
+# Clean up
+rm packages-microsoft-prod.deb
+
+# Update packages
+sudo apt update
+```
+
+<details>
+  <summary>Log</summary>
+
+```bash
+demitry@linuxvm:~/publish$ declare repo_version=$(if command -v lsb_release &> /dev/null; then lsb_release -r -s; else grep -oP '(?<=^VERSION_ID=).+' /e                                                                                     tc/os-release | tr -d '"'; fi)
+demitry@linuxvm:~/publish$ wget https://packages.microsoft.com/config/ubuntu/$repo_version/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+--2023-04-10 13:08:31--  https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+Resolving packages.microsoft.com (packages.microsoft.com)... 40.114.136.21
+Connecting to packages.microsoft.com (packages.microsoft.com)|40.114.136.21|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3690 (3.6K) [application/octet-stream]
+Saving to: ‘packages-microsoft-prod.deb’
+
+packages-microsoft-prod.deb           100%[=========================================================================>]   3.60K  --.-KB/s    in 0s
+
+2023-04-10 13:08:31 (628 MB/s) - ‘packages-microsoft-prod.deb’ saved [3690/3690]
+
+demitry@linuxvm:~/publish$ sudo dpkg -i packages-microsoft-prod.deb
+Selecting previously unselected package packages-microsoft-prod.
+(Reading database ... 58689 files and directories currently installed.)
+Preparing to unpack packages-microsoft-prod.deb ...
+Unpacking packages-microsoft-prod (1.0-ubuntu20.04.1) ...
+Setting up packages-microsoft-prod (1.0-ubuntu20.04.1) ...
+demitry@linuxvm:~/publish$ rm packages-microsoft-prod.deb
+demitry@linuxvm:~/publish$ sudo apt update
+Hit:1 http://azure.archive.ubuntu.com/ubuntu focal InRelease
+Get:2 http://azure.archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:5 https://packages.microsoft.com/ubuntu/20.04/prod focal InRelease [3611 B]
+Get:6 https://packages.microsoft.com/ubuntu/20.04/prod focal/main arm64 Packages [38.9 kB]
+Get:7 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 Packages [192 kB]
+Get:8 https://packages.microsoft.com/ubuntu/20.04/prod focal/main all Packages [2460 B]
+Get:9 https://packages.microsoft.com/ubuntu/20.04/prod focal/main armhf Packages [13.5 kB]
+Fetched 587 kB in 1s (955 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+10 packages can be upgraded. Run 'apt list --upgradable' to see them.
+```
+
+</details>
+
+```bash
+sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
+```
+
+</details>
+
+<details>
+  <summary>Log</summary>
+
+  ```bash
+demitry@linuxvm:~/publish$ sudo apt-get remove dotnet-sdk-6.0
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Package 'dotnet-sdk-6.0' is not installed, so not removed
+0 upgraded, 0 newly installed, 0 to remove and 10 not upgraded.
+demitry@linuxvm:~/publish$ sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
+Hit:1 http://azure.archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://azure.archive.ubuntu.com/ubuntu focal-updates InRelease
+Get:3 http://azure.archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Hit:5 https://packages.microsoft.com/ubuntu/20.04/prod focal InRelease
+Fetched 222 kB in 1s (383 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  aspnetcore-runtime-6.0 aspnetcore-targeting-pack-6.0 dotnet-apphost-pack-6.0 dotnet-host dotnet-hostfxr-6.0 dotnet-runtime-6.0 dotnet-runtime-deps-6.0 dotnet-targeting-pack-6.0 netstandard-targeting-pack-2.1
+The following NEW packages will be installed:
+  aspnetcore-runtime-6.0 aspnetcore-targeting-pack-6.0 dotnet-apphost-pack-6.0 dotnet-host dotnet-hostfxr-6.0 dotnet-runtime-6.0 dotnet-runtime-deps-6.0 dotnet-sdk-6.0 dotnet-targeting-pack-6.0 netstandard-targeting-pack-2.1
+0 upgraded, 10 newly installed, 0 to remove and 10 not upgraded.
+Need to get 125 MB of archives.
+After this operation, 508 MB of additional disk space will be used.
+Get:1 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-host amd64 7.0.4-1 [57.2 kB]
+Get:2 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-hostfxr-6.0 amd64 6.0.15-1 [142 kB]
+Get:3 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-runtime-deps-6.0 amd64 6.0.15-1 [2796 B]
+Get:4 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-runtime-6.0 amd64 6.0.15-1 [23.1 MB]
+Get:5 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 aspnetcore-runtime-6.0 amd64 6.0.15-1 [6612 kB]
+Get:6 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-targeting-pack-6.0 amd64 6.0.15-1 [2131 kB]
+Get:7 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 aspnetcore-targeting-pack-6.0 amd64 6.0.15-1 [1314 kB]
+Get:8 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-apphost-pack-6.0 amd64 6.0.15-1 [3511 kB]
+Get:9 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 netstandard-targeting-pack-2.1 amd64 2.1.0-1 [1476 kB]
+Get:10 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 dotnet-sdk-6.0 amd64 6.0.407-1 [86.7 MB]
+Fetched 125 MB in 1s (180 MB/s)
+Selecting previously unselected package dotnet-host.
+(Reading database ... 58697 files and directories currently installed.)
+Preparing to unpack .../0-dotnet-host_7.0.4-1_amd64.deb ...
+Unpacking dotnet-host (7.0.4-1) ...
+Selecting previously unselected package dotnet-hostfxr-6.0.
+Preparing to unpack .../1-dotnet-hostfxr-6.0_6.0.15-1_amd64.deb ...
+Unpacking dotnet-hostfxr-6.0 (6.0.15-1) ...
+Selecting previously unselected package dotnet-runtime-deps-6.0.
+Preparing to unpack .../2-dotnet-runtime-deps-6.0_6.0.15-1_amd64.deb ...
+Unpacking dotnet-runtime-deps-6.0 (6.0.15-1) ...
+Selecting previously unselected package dotnet-runtime-6.0.
+Preparing to unpack .../3-dotnet-runtime-6.0_6.0.15-1_amd64.deb ...
+Unpacking dotnet-runtime-6.0 (6.0.15-1) ...
+Selecting previously unselected package aspnetcore-runtime-6.0.
+Preparing to unpack .../4-aspnetcore-runtime-6.0_6.0.15-1_amd64.deb ...
+Unpacking aspnetcore-runtime-6.0 (6.0.15-1) ...
+Selecting previously unselected package dotnet-targeting-pack-6.0.
+Preparing to unpack .../5-dotnet-targeting-pack-6.0_6.0.15-1_amd64.deb ...
+Unpacking dotnet-targeting-pack-6.0 (6.0.15-1) ...
+Selecting previously unselected package aspnetcore-targeting-pack-6.0.
+Preparing to unpack .../6-aspnetcore-targeting-pack-6.0_6.0.15-1_amd64.deb ...
+Unpacking aspnetcore-targeting-pack-6.0 (6.0.15-1) ...
+Selecting previously unselected package dotnet-apphost-pack-6.0.
+Preparing to unpack .../7-dotnet-apphost-pack-6.0_6.0.15-1_amd64.deb ...
+Unpacking dotnet-apphost-pack-6.0 (6.0.15-1) ...
+Selecting previously unselected package netstandard-targeting-pack-2.1.
+Preparing to unpack .../8-netstandard-targeting-pack-2.1_2.1.0-1_amd64.deb ...
+Unpacking netstandard-targeting-pack-2.1 (2.1.0-1) ...
+Selecting previously unselected package dotnet-sdk-6.0.
+Preparing to unpack .../9-dotnet-sdk-6.0_6.0.407-1_amd64.deb ...
+Unpacking dotnet-sdk-6.0 (6.0.407-1) ...
+Setting up dotnet-host (7.0.4-1) ...
+Setting up dotnet-apphost-pack-6.0 (6.0.15-1) ...
+Setting up netstandard-targeting-pack-2.1 (2.1.0-1) ...
+Setting up dotnet-targeting-pack-6.0 (6.0.15-1) ...
+Setting up dotnet-runtime-deps-6.0 (6.0.15-1) ...
+Setting up aspnetcore-targeting-pack-6.0 (6.0.15-1) ...
+Setting up dotnet-hostfxr-6.0 (6.0.15-1) ...
+Setting up dotnet-runtime-6.0 (6.0.15-1) ...
+Setting up aspnetcore-runtime-6.0 (6.0.15-1) ...
+Setting up dotnet-sdk-6.0 (6.0.407-1) ...
+This software may collect information about you and your use of the software, and send that to Microsoft.
+Please visit http://aka.ms/dotnet-cli-eula for more information.
+Welcome to .NET!
+---------------------
+Learn more about .NET: https://aka.ms/dotnet-docs
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli-docs
+
+Telemetry
+---------
+The .NET tools collect usage data in order to help us improve your experience. It is collected by Microsoft and shared with the community. You can opt-out of telemetry by setting the DOTNET_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+
+Read more about .NET CLI Tools telemetry: https://aka.ms/dotnet-cli-telemetry
+
+Configuring...
+--------------
+A command is running to populate your local package cache to improve restore speed and enable offline access. This command takes up to one minute to complete and only runs once.
+Processing triggers for man-db (2.9.1-1) ...
+demitry@linuxvm:~/publish$
+
+  ```
+
+</details>
+
+demitry@linuxvm:~/publish$ dotnet --version
+
+6.0.407
+
+Run our app:
+
+```
+dotnet webapp.dll
+```
+
+<details>
+  <summary>Log</summary>
+
+```bash
+dotnet webapp.dll
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {66b193eb-f09f-47a9-a90c-cbaa5b5d7929} may be persisted to storage in unencrypted form.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/demitry/publish/
+```
+</details>
+
+Duplicate session
+
+```bash
+curl http://localhost:5000
+```
+
+and get your html page
+
 
 ### 21. Using NGINX on the Linux VM
 
 ### 22. Keeping a check on the cost of your resources
 
 ### 23. Quick Note
+
+Home -> Cost Management -> Cos analysis -> Custom: Cost Analysis -> Configuration
+
+SDK for development purposes, Runtime for runtime.
+
