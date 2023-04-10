@@ -4,9 +4,19 @@
 
 ### 13. Building a simple project locally
 
-VS -> Run as administrator, (why?) .NET Core Sample App
+### 14. What goes into the deployment of a virtual machine
+
+1) Any resource - part of Azure Subscription. Subscription is used for billing purposes.
+
+2) Resource - part of resource group. resource group is used for logical grouping of resources.
+
+3) VM requires OS disk, optionally, extra disk.
+
+4) VM - part of virtual network, has public IP address
 
 ### 15. Lab - Building a Windows virtual machine
+
+VS -> Run as administrator, (why?) .NET Core Sample App
 
 Create resource -> VM
 
@@ -79,7 +89,6 @@ Enter password for VM
 Publish Succeeded.
 
 Web App was published successfully <http://appvm100.westeurope.cloudapp.azure.com/>
-
 
 #### Step 1: Assign a DNS name to the VM
 
