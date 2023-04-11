@@ -203,6 +203,21 @@ Connecting...
 
 ```
 
+Interesting, The trace listener AzureBlobTraceListener is disabled,
+
+Is it auto-disabled after 5 min?
+
+```
+2023-04-11T16:39:14  No new trace in the past 1 min(s).
+2023-04-11T16:40:14  No new trace in the past 2 min(s).
+2023-04-11T16:41:14  No new trace in the past 3 min(s).
+2023-04-11T16:42:14  No new trace in the past 4 min(s).
+2023-04-11T16:43:14  No new trace in the past 5 min(s).
+2023-04-11T16:44:09System.ApplicationException: The trace listener AzureBlobTraceListener is disabled. ---> System.InvalidOperationException: The SAS URL for the cloud storage account is not specified. Use the environment variable 'DIAGNOSTICS_AZUREBLOBCONTAINERSASURL' to define it.at Microsoft.WindowsAzure.WebSites.Diagnostics.AzureBlobTraceListener.RefreshConfig()--- End of inner exception stack trace ---
+2023-04-11T16:45:14  No new trace in the past 1 min(s).
+2023-04-11T16:46:14  No new trace in the past 2 min(s).
+```
+
 </details>
 
 ## 37. Azure Web Apps - Autoscaling
