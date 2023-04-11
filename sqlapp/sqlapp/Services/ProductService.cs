@@ -3,32 +3,25 @@ using System.Data.SqlClient;
 
 namespace sqlapp.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private static string dbSource = "sqlserver1000.database.windows.net";
+        private readonly IConfiguration _configuration;
 
-        private static string dbUserName = "sqladmin";
-
-        private static string dbPassword = "";
-
-        private static string dbName = "appdb";
+        public ProductService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         private SqlConnection GetConnection()
         {
-            var sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
-            sqlConnectionStringBuilder.DataSource = dbSource;
-            sqlConnectionStringBuilder.UserID = dbUserName;
-            sqlConnectionStringBuilder.Password = dbPassword;
-            sqlConnectionStringBuilder.InitialCatalog = dbName;
-
-            return new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
+            return new SqlConnection(_configuration.GetConnectionString("SQLConnection"));
         }
 
         public List<Product> GetProducts()
         {
             List<Product> products = new List<Product>();
             string sqlQuery = "SELECT ProductId, ProductName, Quantity FROM Products";
-            
+
             using (var connection = GetConnection())
             {
                 connection.Open();

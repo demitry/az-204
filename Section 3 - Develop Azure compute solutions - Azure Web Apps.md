@@ -112,10 +112,52 @@ SELECT ProductId, ProductName, Quantity FROM Products
 
 ## 33. Publishing from GitHub
 
+Create Web App -> Deployment -> Deployment settings - Enable
+
+GitHub Actions (Could be set up later)
+
+Web App -> Deployment Center -> Source -> Select Source Code,
+
+Select Organization, Repository, Branch, Build Runtime (.NET 6)
+
+ Deployment Center -> Logs -> Success
+
+ On each github commit DeploymentCenter will initiate re-deploy.
+
+Settings -> Configurations -> General Settings -> .NET 6
+
+(it doesn't understand)
+
+VS -> Git -> Create repository
+
 ## 34. Using the Azure Web App connection string
+
+Configuration -> Connection Strings -> Add/Edit connection string
+
+Name: SQLConnection
+
+Value : 
+
+```
+Server=tcp:sqlserver1000.database.windows.net,1433;Initial Catalog=appdb;Persist Security Info=False;User ID=sqladmin;Password=MySuperPuperPassword;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+```
+
+Type: Sql Azure
+At runtime, connection strings are available as environment variables. Learn more
 
 ## 35. Using the Azure Web App connection string - Resources
 
+You can use the following as a reference for the connecting string
+
+```json
+{
+  "ConnectionStrings": {
+    "SQLConnection": "Server=tcp:appserver6000.database.windows.net,1433;Initial Catalog=appdb;Persist Security Info=False;User ID=sqlusr;Password=Azure@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  } 
+}
+```
+
+ProductService -> Extract interface
 ## 36. Azure App Service Logging
 
 ## 37. Azure Web Apps - Autoscaling
@@ -143,3 +185,11 @@ SELECT ProductId, ProductName, Quantity FROM Products
 ## 48. Note on Controller actions
 
 Quiz 2: Short Quiz
+
+
+
+
+Wow
+
+Deploy Mode: Self-Contained and Framework-Dependent 
+
