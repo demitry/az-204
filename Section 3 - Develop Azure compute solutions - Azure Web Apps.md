@@ -92,9 +92,9 @@ use appdb;
 
 CREATE TABLE Products
 (
-	ProductId int,
-	ProductName varchar(1000),
-	Quantity int
+ ProductId int,
+ ProductName varchar(1000),
+ Quantity int
 )
 
 INSERT INTO Products(ProductId, ProductName, Quantity) VALUES (1, 'Mobile', 100)
@@ -102,9 +102,9 @@ INSERT INTO Products(ProductId, ProductName, Quantity) VALUES (2, 'Laptop', 200)
 INSERT INTO Products(ProductId, ProductName, Quantity) VALUES (3, 'Tabs', 300)
 
 SELECT * FROM Products
+
+SELECT ProductId, ProductName, Quantity FROM Products 
 ```
-
-
 
 ## 31. Building an Application that connects to the SQL database
 
