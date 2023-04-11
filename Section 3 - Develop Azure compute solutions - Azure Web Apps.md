@@ -222,7 +222,127 @@ Is it auto-disabled after 5 min?
 
 ## 37. Azure Web Apps - Autoscaling
 
+```
+auto scaling feature, part of your Web apps.
+It's actually part of the app's plan.
+a number of users are actually going ahead and accessing your Web application.
+-> the load on the application is increasing on that underlying compute infrastructure.
+bottleneck?
+
+```
+
+* BASIC service plan = scale up to 3 VMs manualy!!!
+
+* STANDARD service plan or higher = scaling automation, based on load (cpu etc.)
+
 ## 38. Lab - Auto scaling a web app
+
+See Metrics: App Service plan
+
+* CPU Percentage
+* Memory Percentage
+* Data In/DataOut 
+
+Scale automatically based on metrics
+
+webapp4400 | Scale up (App Service plan)
+
+Update service plan Change from B1 to S1 ( can auto-scale up to 10 instances)
+
+=>
+
+webapp4400 | Scale out (App Service plan)
+
+* Manual scale - Maintain a fixed instance count
+ 
+* Custom autoscale - Scale on any schedule, based on any metrics
+
+Scale mode
+
+* Scale based on a metric
+* Scale to a specific instance count
+
+### Scale based on a metric
+    *  Add a rule 
+    * ->  Scale is based on metric trigger rules but no rule(s) is defined; click Add a rule to create a rule. For example: 'Add a rule that increases instance count by 1 when CPU Percentage is above 70%'. If no rules is defined, the resource will be set to default instance count.
+
+Cool down (minutes)
+
+The amount of time to wait after a scale operation before scaling again. For example, if cooldown is 10 minutes and a scale operation just occurred, Autoscale will not attempt to scale again until after 10 minutes. This is to allow the metrics to stabilize first.
+
+Instance limits: Min 1, Max 3, Default 1
+
+Issue (Save rule error) - MissingSubscriptionRegistration
+
+```json
+There was an error saving setting for resource 'ASP-appgrp-a27b'. Detail message '{"error":{"code":"MissingSubscriptionRegistration","message":"The subscription is not registered to use namespace 'microsoft.insights'. See https://aka.ms/rps-not-found for how to register subscriptions.","details":[{"code":"MissingSubscriptionRegistration","target":"microsoft.insights","message":"The subscription is not registered to use namespace 'microsoft.insights'. See https://aka.ms/rps-not-found for how to register subscriptions."}]}}', Please try again in a few moments.
+```
+
+Solution
+
+This article describes resource provider registration errors that occur when you use a resource provider that you haven't already used in your Azure subscription. The errors are displayed when you deploy resources with a Bicep file or Azure Resource Manager template (ARM template). If Azure doesn't automatically register a resource provider, you can do a manual registration.
+
+### Troubleshoot common Azure deployment errors
+
+<https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors#noregisteredproviderfound>
+
+### Resolve errors for resource provider registration
+
+<https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-register-resource-provider?tabs=azure-cli#code-try-3>
+
+### My Solution: register microsoft.insights
+doskey /history
+```
+az provider list --output table
+az login
+az provider list --output table
+az provider list --query "[?namespace=='microsoft.insights']" --output table
+az provider register --namespace microsoft.insights
+az provider show -n microsoft.insights
+az provider list --query "[?namespace=='microsoft.insights']" --output table
+```
+
+### Help 
+
+
+Use az provider list to display the registration status for your subscription's resource providers. The examples use the --output table parameter to filter the output for readability. You can omit the parameter to see all properties.
+
+The following command lists all the subscription's resource providers and whether they're Registered or NotRegistered.
+
+```bash
+az provider list --output table
+```
+
+You can filter the output by registration state. Replace the query value with Registered or NotRegistered.
+
+```bash
+az provider list --query "[?registrationState=='Registered']" --output table
+```
+
+Get the registration status for a specific resource provider:
+
+```bash
+az provider list --query "[?namespace=='Microsoft.Compute']" --output table
+```
+
+To register a resource provider, use the az provider register command, and specify the namespace to register.
+
+```bash
+az provider register --namespace Microsoft.Cdn
+```
+
+To get a resource type's supported locations, use az provider show:
+
+```bash
+az provider show --namespace Microsoft.Web --query "resourceTypes[?resourceType=='sites'].locations"
+```
+
+Get a resource type's supported API versions:
+
+```bash
+az provider show --namespace Microsoft.Web --query "resourceTypes[?resourceType=='sites'].apiVersions"
+```
+
 
 ## 39. Azure Web Apps - Custom domains
 
