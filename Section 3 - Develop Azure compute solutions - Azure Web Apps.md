@@ -112,6 +112,8 @@ SELECT ProductId, ProductName, Quantity FROM Products
 
 ## 33. Publishing from GitHub
 
+VS -> Git -> Create repository
+
 Create Web App -> Deployment -> Deployment settings - Enable
 
 GitHub Actions (Could be set up later)
@@ -127,8 +129,6 @@ Select Organization, Repository, Branch, Build Runtime (.NET 6)
 Settings -> Configurations -> General Settings -> .NET 6
 
 (it doesn't understand)
-
-VS -> Git -> Create repository
 
 ## 34. Using the Azure Web App connection string
 
@@ -158,7 +158,52 @@ You can use the following as a reference for the connecting string
 ```
 
 ProductService -> Extract interface
+
+Remove hardcoded Connection string, get it from IConfiguration (saved in Azure)
+
 ## 36. Azure App Service Logging
+
+Monitoring -> App Service Logs
+
+```
+Application logging (Filesystem)
+Application logging (Blob)
+Storage Containers
+Retention Period (Days)
+Web server logging
+Off
+Storage: File System
+Quota (MB): 35
+Retention Period (Days)
+Detailed error messages
+Failed request tracing
+Download logs
+FTP/deployment username: No FTP/deployment user set
+FTP: ftp://waws-prod-db3-273.ftp.azurewebsites.windows.net/site/wwwroot
+FTPS: ftps://waws-prod-db3-273.ftp.azurewebsites.windows.net/site/wwwroot
+
+```
+
+Monitoring -> Log Stream
+
+* Application Logs
+
+* Web Server Logs
+
+<details>
+<summary>Raw Log (actual raw HTTP requests)</summary>
+
+```
+Connecting...
+2023-04-11T16:34:35  Welcome, you are now connected to log-streaming service. The default timeout is 2 hours. Change the timeout with the App Setting SCM_LOGSTREAM_TIMEOUT (in seconds).
+2023-04-11T16:35:35  No new trace in the past 1 min(s).
+#Software: Microsoft Internet Information Services 8.0#Fields: date time s-sitename cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Cookie) cs(Referer) cs-host sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+2023-04-11 16:35:13 WEBAPP4400 GET / X-ARR-LOG-ID=d34fffa1-e963-4000-a215-935f465482f2 443 - ___IP___ Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/112.0.0.0+Safari/537.36 ARRAffinity=e922f965bb5fb02c95e6fbd6d05e06119d940387edc2373906c12f13efd97606;+ARRAffinitySameSite=e922f965bb5fb02c95e6fbd6d05e06119d940387edc2373906c12f13efd97606 - webapp4400.azurewebsites.net 200 0 0 1782 1609 5955
+2023-04-11 16:35:13 ~1WEBAPP4400 GET /api/logstream/ X-ARR-LOG-ID=381b0b83-83fb-4882-b84f-6f49cfbd016b 443 - ___IP___ Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/112.0.0.0+Safari/537.36 - - webapp4400.scm.azurewebsites.net 200 0 64 672 1514 66408
+
+```
+
+</details>
 
 ## 37. Azure Web Apps - Autoscaling
 
