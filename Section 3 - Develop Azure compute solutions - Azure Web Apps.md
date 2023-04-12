@@ -350,7 +350,53 @@ az provider show --namespace Microsoft.Web --query "resourceTypes[?resourceType=
 
 ## 41. Deployment Slots
 
+Instead of creating new web app for Version 2 - Create deployment Slot
+
+Swap between versions
+
+Plan - Standard or higher
+
 ## 42. Lab - Deployment Slots
+
+Deployment Slots -> Add -> Name - "staging"
+
+It has its own ulr:
+
+```
+* webapp4400-staging.azurewebsites.net (default Microsoft page)
+
+* https://webapp4400.azurewebsites.net (our normal web app)
+
+```
+
+VS: Publish but to the app-grp -> webapp4400 -> Deployment Slots -> staging
+
+issue (Error page)
+
+'''
+Error.
+An error occurred while processing your request.
+Request ID: 00-aa56d8409bd8c8e1f9a2baf1be997e2f-ee4fc92aae023e3e-00
+
+Development Mode
+Swapping to the Development environment displays detailed information about the error that occurred.
+
+The Development environment shouldn't be enabled for deployed applications. It can result in displaying sensitive information from exceptions to end users. For local debugging, enable the Development environment by setting the ASPNETCORE_ENVIRONMENT environment variable to Development and restarting the app.
+'''
+
+Solution:
+
+Deployment slot has its own Web App config
+
+```
+Update webapp4400-staging Configuration: Update SQLConnection string
+```
+
+Deployment slots -> Swap
+
+Successfully completed swap between slot 'staging' and slot 'production'
+
+These deployments were swapped.
 
 ## 43. Deployment slots with databases
 
