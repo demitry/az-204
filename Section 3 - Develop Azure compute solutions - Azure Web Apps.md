@@ -488,16 +488,66 @@ Delete connection string in webapp4400 | Configuration, Save, Continue
 
 Refresh <https://webapp4400.azurewebsites.net> = Error Page
 
+Deploy and work with azureappconfig10 
+
 ## 47. Lab - Azure App Configuration - Feature Flags
+
+azureappconfig10 | Feature manager -> Create -> betaFeature -> Apply
+
+(it is not Enabled)
+
+```csharp
+    builder.AddAzureAppConfiguration(options =>
+    {
+        options.Connect(connectionString)
+            .UseFeatureFlags();
+    });
+```
+
+Nuget: Microsoft.FeatureManagement.AspNetCore
+
+```csharp
+using Microsoft.FeatureManagement;
+//...
+builder.Services.AddFeatureManagement();
+```
+
+In our case it requires app restart =)
 
 ## 48. Note on Controller actions
 
+### Tutorial: Use feature flags in an ASP.NET Core app
+
+<https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core?tabs=core5x>
+
+### Controller actions
+
+With MVC controllers, you can use the FeatureGate attribute to control whether a whole controller class or a specific action is enabled. The following HomeController controller requires FeatureA to be on before any action the controller class contains can be executed:
+
+```csharp
+using Microsoft.FeatureManagement.Mvc;
+
+[FeatureGate(MyFeatureFlags.FeatureA)]
+public class HomeController : Controller
+{
+    ...
+}
+```
+
+The following Index action requires FeatureA to be on before it can run:
+
+```csharp
+using Microsoft.FeatureManagement.Mvc;
+
+[FeatureGate(MyFeatureFlags.FeatureA)]
+public IActionResult Index()
+{
+    return View();
+}
+```
+
 Quiz 2: Short Quiz
-
-
-
 
 Wow
 
-Deploy Mode: Self-Contained and Framework-Dependent 
-
+Deploy Mode: Self-Contained and Framework-Dependent
