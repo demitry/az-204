@@ -424,7 +424,69 @@ Setting (connection strings = data) will be stay
 
 ## 45. Azure App Configuration
 
+Azure App Config Service
+
+Feature Flags Enabled/Disabled
+
 ## 46. Lab - Azure App Configuration - Configuration Settings
+
+App Configuration - Create
+
+azureappconfig10
+
+webapp4400.azurewebsites.net
+
+Define cn str in app config service (azureappconfig10)
+
+azureappconfig10 | Configuration explorer
+
+Create Key-Value
+
+SQLConnection
+
+Server=tcp:sqlserver1000.database.windows.net,1433;Initial Catalog=appdb;Persist Security Info=False;User ID=sqladmin;Password=_____;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+Apply
+
+VS Nuget: Microsoft.Extensions.Configuration.AzureAppConfiguration
+
+azureappconfig10 | Access keys
+
+Values -> Shows Values
+
+Access Keys
+  * Promary Keys
+  * Secondary Keys
+
+cn str on primary key
+
+VS:
+
+Program.cs
+
+```csharp
+var connectionString = "Endpoint=https://azureappconfig10.azconfig.io;Id=eOCf-l8-s0:zcfnu2hkbH53qRgfubvL;Secret=ZrII4Fg/ULn0LqJTMWAcvWb+yidDbvwLFPZ2rTDL+N8=";
+
+builder.Host.ConfigureAppConfiguration(builder =>
+{
+    builder.AddAzureAppConfiguration(connectionString);
+});
+```
+
+```git
+        private SqlConnection GetConnection()
+        {
+-            return new SqlConnection(_configuration.GetConnectionString("SQLConnection"));
++            return new SqlConnection(_configuration["SQLConnection"]);
+        }
+```
+Endpoint=https://azureappconfig10.azconfig.io;Id=eOCf-l8-s0:zcfnu2hkbH53qRgfubvL;Secret=ZrII4Fg/ULn0LqJTMWAcvWb+yidDbvwLFPZ2rTDL+N8=
+
+It lets connect to Azure app config;
+
+Delete connection string in webapp4400 | Configuration, Save, Continue
+
+Refresh <https://webapp4400.azurewebsites.net> = Error Page
 
 ## 47. Lab - Azure App Configuration - Feature Flags
 
