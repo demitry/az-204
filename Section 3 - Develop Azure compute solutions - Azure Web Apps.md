@@ -400,7 +400,27 @@ These deployments were swapped.
 
 ## 43. Deployment slots with databases
 
+stagingserver10
+
+sqladmin
+
+Public endpoint
+
+Allow Azure services and resources to access this server
+
+Add current client IP address
+
 ## 44. Lab - Deployment slots with databases
+
+<https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots>
+
+staging (webapp4400/staging) | Configuration
+
+NB!
+Check [x] Deployment slot setting for the connection string
+Setting (connection strings = data) will be stay
+
+**Deployment slot setting** for CnStr = **swap apps, NOT DBs!**
 
 ## 45. Azure App Configuration
 
