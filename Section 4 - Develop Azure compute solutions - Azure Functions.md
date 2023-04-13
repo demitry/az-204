@@ -243,6 +243,7 @@ Trigger from anywhere:
 
 <https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==&name=John%20Doe>
 
+## 54. Lab - Azure Functions - Azure SQL database - GET Products
 
 GetProduct function in VS
 
@@ -265,16 +266,101 @@ For detailed output, run func with --verbose flag.
 
 ```
 http://localhost:7071/api/GetProduct
-
+```
+```
 [{"id":1,"productName":"Mobile","quantity":100},{"id":2,"productName":"Laptop","quantity":200},{"id":3,"productName":"Tabs","quantity":300}]
 ```
 
-
-## 54. Lab - Azure Functions - Azure SQL database - GET Products
-
 ## 55. Publishing the Function to Azure
 
+publish
+
+You can now see that our prior demo function got **deleted** and now it has been **replaced** by our new function.
+
+app is currently in read only mode because you are running from a package.
+But we have chosen the setting from Visual Studio.
+a package and it is being uploaded onto the function app.
+
+GetProduct | Code + Test
+
+No actual code (as we done in demo) - just function.json
+
+
+Test Run
+
+```json
+[
+  {
+    "id": 1,
+    "productName": "Mobile",
+    "quantity": 100
+  },
+  {
+    "id": 2,
+    "productName": "Laptop",
+    "quantity": 200
+  },
+  {
+    "id": 3,
+    "productName": "Tabs",
+    "quantity": 300
+  }
+]
+```
+
+Get function Url
+
+https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcbOMF3b5WJiH_tI_6tvkPi0JEco5AzFuB-NQ9Q==
+
+```json
+[{"id":1,"productName":"Mobile","quantity":100},{"id":2,"productName":"Laptop","quantity":200},{"id":3,"productName":"Tabs","quantity":300}]
+```
+
 ## 56. Lab - Azure Functions - Azure SQL database - GET Product by id
+http://localhost:7071/api/GetProduct?id=1
+
+```csharp
+        [FunctionName("GetProduct")]
+        public static async Task<IActionResult> RunGetProduct(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+        {
+            int productId = int.Parse(req.Query["id"]);
+            string sqlQueryTemplate = "SELECT ProductId, ProductName, Quantity FROM Products WHERE ProductId = {0}";
+            string sqlQuery = string.Format(sqlQueryTemplate, productId);
+            
+            Product product = new Product();
+            try
+            {
+                using (var connection = GetConnection())
+                {
+                    connection.Open();
+
+                    using (var command = new SqlCommand(sqlQuery, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+
+                            reader.Read();
+                            product.Id = reader.GetInt32(0);
+                            product.ProductName = reader.GetString(1);
+                            product.Quantity = reader.GetInt32(2);
+                        }
+                    }
+                    connection.Close();
+                    return new OkObjectResult(product);
+                }
+            }
+            catch (System.Exception)
+            {
+                var response = "No records found";
+                return new OkObjectResult(response);
+            }
+        }
+```
+
+https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcbOMF3b5WJiH_tI_6tvkPi0JEco5AzFuB-NQ9Q==<span style="color:red">&Id=1</span>
+
+{"id":1,"productName":"Mobile","quantity":100}
 
 ## 57. Lab - Azure Functions - Azure SQL database - POST Adding a method
 
