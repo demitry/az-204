@@ -243,6 +243,33 @@ Trigger from anywhere:
 
 <https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==&name=John%20Doe>
 
+
+GetProduct function in VS
+
+Azure Functions Core Tools
+Core Tools Version:       4.0.5095 Commit hash: N/A  (64-bit)
+Function Runtime Version: 4.16.5.20396
+
+```bash
+[2023-04-13T15:06:06.162Z] Found F:\2023\git\AzureFunctionApp\AzureFunctionApp\AzureFunctionApp.csproj. Using for user secrets file configuration.
+
+Functions:
+
+        GetProduct: [GET] http://localhost:7071/api/GetProduct
+
+For detailed output, run func with --verbose flag.
+[2023-04-13T15:06:17.690Z] Host lock lease acquired by instance ID '000000000000000000000000D9201DEE'.
+[2023-04-13T15:08:11.317Z] Executing 'GetProduct' (Reason='This function was programmatically called via the host APIs.', Id=f15d3ad4-41d6-4c68-bd35-0312a3533016)
+[2023-04-13T15:08:12.240Z] Executed 'GetProduct' (Succeeded, Id=f15d3ad4-41d6-4c68-bd35-0312a3533016, Duration=967ms)
+```
+
+```
+http://localhost:7071/api/GetProduct
+
+[{"id":1,"productName":"Mobile","quantity":100},{"id":2,"productName":"Laptop","quantity":200},{"id":3,"productName":"Tabs","quantity":300}]
+```
+
+
 ## 54. Lab - Azure Functions - Azure SQL database - GET Products
 
 ## 55. Publishing the Function to Azure
