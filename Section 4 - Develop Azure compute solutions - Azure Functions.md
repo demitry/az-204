@@ -75,7 +75,173 @@ Deploy your code to Azure
 Click the Deploy to Function App… () icon in the Azure: Functions panel.
 
 When prompted to select a function app, choose appfunction1100.
+
 ```
+
+```
+Your app is currently in read only mode because you are running from a package file. To make any changes update the content in your zip file and WEBSITE_RUN_FROM_PACKAGE app setting.
+ 
+```
+
+```
+Yes! When you deploy the function app to azure functions for the first time, it will show that message.
+
+There are 2 steps to get rid out of that message:
+
+Step 1: Modify your azure function code locally and publish it again to same function app. Refresh your function application in the azure portal and run your application now in the code+Test menu.
+
+Step 2: Go to Azure Portal > Your Function App > Configuration (in the left index pane) > click on the WEBSITE_RUN_FROM_PACKAGE in the Application Setting and make its value to 0 and click Ok and Save. Restart your function app and go to code+test menu to run your application.
+```
+
+Restart appfunction1100
+demoHttpTrigger
+demostorageaccount1001
+
+
+functionapp1100 | Functions
+
+Create function
+
+Development environment: Develop in a portal
+
+----------
+
+### Templates:
+
+**HTTP trigger**
+
+A function that will be run whenever it receives an HTTP request, responding based on data in the body or query string
+
+**Timer trigger**
+
+A function that will be run on a specified schedule
+
+**Azure Queue Storage trigger**
+
+A function that will be run whenever a message is added to a specified Azure Storage queue
+
+**Azure Service Bus Queue trigger**
+
+A function that will be run whenever a message is added to a specified Service Bus queue
+
+**Azure Service Bus Topic trigger**
+
+A function that will be run whenever a message is added to the specified Service Bus topic
+
+**Azure Blob Storage trigger**
+
+A function that will be run whenever a blob is added to a specified container
+
+**Azure Event Hub trigger**
+
+A function that will be run whenever an event hub receives a new event
+
+**Azure Cosmos DB trigger**
+
+A function that will be run whenever documents change in a document collection
+
+**IoT Hub (Event Hub)**
+
+A function that will be run whenever an IoT Hub receives a new event from IoT Hub (Event Hub)
+
+**SendGrid**
+
+A function that sends a confirmation e-mail when a new item is added to a particular queue
+
+**Azure Event Grid trigger**
+
+A function that will be run whenever an event grid receives a new event
+
+**Durable Functions Entity HTTP starter**
+
+A function that will trigger whenever it receives an HTTP request to execute an orchestrator function.
+
+**Durable Functions HTTP starter**
+
+A function that will trigger whenever it receives an HTTP request to execute an orchestrator function.
+
+**Durable Functions activity**
+
+A function that will be run whenever an Activity is called by an orchestrator function.
+
+**Durable Functions entity (class)**
+
+A C# entity that stores state and represented by a class.
+
+**Durable Functions entity (function)**
+
+A C# entity that stores state and represented by a function.
+
+**Durable Functions orchestrator**
+
+An orchestrator function that invokes activity functions in a sequence.
+
+**Kafka output**
+
+A function that will send messages to a specified Kafka topic
+
+**Kafka trigger**
+
+A function that will be run whenever a message is added to a specified Kafka topic
+
+**RabbitMQ trigger**
+
+A function that will be run whenever a message is added to a specified RabbitMQ queue
+
+**SignalR negotiate HTTP trigger**
+
+An HTTP triggered function that SignalR clients will call to begin connection negotiation
+
+----------  
+DemoHttpTrigger
+----------  
+
+run.csx - C# script, it has Run() function
+
+```csharp
+#r "Newtonsoft.Json" // Include external libraries
+
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+
+public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
+{
+    log.LogInformation("C# HTTP trigger function processed a request.");
+
+// for GET method
+    string name = req.Query["name"]; 
+
+// for POST method
+    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    dynamic data = JsonConvert.DeserializeObject(requestBody);
+    name = name ?? data?.name;
+
+    string responseMessage = string.IsNullOrEmpty(name)
+        ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+
+// OkObjectResult Map to 200 status code
+            return new OkObjectResult(responseMessage);
+}
+```
+
+Get function URL
+
+https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==
+
+?code - code for Azure function
+
+https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==&name=JohnDoe
+
+Add **&name=John%20Doe**
+
+and
+
+Trigger from anywhere:
+
+<https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==&name=John%20Doe>
 
 ## 54. Lab - Azure Functions - Azure SQL database - GET Products
 
