@@ -364,9 +364,73 @@ https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcb
 
 ## 57. Lab - Azure Functions - Azure SQL database - POST Adding a method
 
+```csharp
+    public static class AddProduct
+    {
+        [FunctionName("AddProduct")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            Product product = JsonConvert.DeserializeObject<Product>(requestBody);
+
+            SqlConnection sqlConnection = ConnectionHelper.GetConnection();
+            sqlConnection.Open();
+
+            string statement = "INSERT INTO Products(ProductId, ProductName, Quantity) VALUES (@id, @name, @quantity)";
+
+            using (SqlCommand sqlCommand = new SqlCommand(statement, sqlConnection))
+            {
+                sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = product.Id;
+                sqlCommand.Parameters.Add("@name", SqlDbType.VarChar).Value = product.ProductName;
+                sqlCommand.Parameters.Add("@quantity", SqlDbType.Int).Value = product.Quantity;
+                
+                sqlCommand.CommandType = CommandType.Text;
+
+                sqlCommand.ExecuteNonQuery();
+            }
+
+            return new OkObjectResult("Product has been added");
+        }
+    }
+```
+
+```json
+{
+    "ProductId" : 4,
+    "ProductName" : "Desktop",
+    "Quantity" : 3
+}
+```
+
+Product has been added
+
 ## 58. Using the POSTMAN Tool
 
 ## 59. Using Connection Strings
+
+```csharp
+        public static SqlConnection GetConnection()
+        {
+            string connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_SqlConnectionString");
+            return new SqlConnection(connectionString);
+        }
+```
+
+<https://learn.microsoft.com/en-us/azure/app-service/configure-common?tabs=portal#configure-connection-strings>
+
+Env var prefixed:
+
+* SQLServer: SQLCONNSTR_
+
+* MySQL: MYSQLCONNSTR_
+
+* SQLAzure: SQLAZURECONNSTR_
+
+* Custom: CUSTOMCONNSTR_
+
+* PostgreSQL: POSTGRESQLCONNSTR_
 
 ## 60. Calling an Azure Function from a web app
 
