@@ -398,7 +398,7 @@ https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcb
 
 ```json
 {
-    "ProductId" : 4,
+    "Id" : 4,
     "ProductName" : "Desktop",
     "Quantity" : 3
 }
@@ -433,6 +433,42 @@ Env var prefixed:
 * PostgreSQL: POSTGRESQLCONNSTR_
 
 ## 60. Calling an Azure Function from a web app
+
+in sql app:
+
+```csharp
+    public async Task<List<Product>> GetProducts()
+    {
+        string functionUrl = "https://functionapp1100.azurewebsites.net/api/GetProducts?code=JF8zoZOxbN4m6QbaIudlJQpYBnqW7rkRFget-PHBlhW6AzFuUaOYdA==";
+
+        using (HttpClient httpClient = new HttpClient())
+        {
+            HttpResponseMessage responseMessage = await httpClient.GetAsync(functionUrl);
+
+            string content = await responseMessage.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<Product>>(content);
+        }
+    }
+```
+
+```csharp
+    public void OnGet()
+    {
+        IsBeta = _productService.IsBetaFeatureEnabled().Result;
+
+        //Products = _productService.GetProducts();
+        Products = _productService.GetProducts().GetAwaiter().GetResult();
+    }
+```
+
+in Azure functions:
+
+```csharp
+    // return new OkObjectResult(products);
+    // Handshake
+    return new OkObjectResult(JsonConvert.SerializeObject(products));
+```
 
 ## 61. There is more we need to cover
 
