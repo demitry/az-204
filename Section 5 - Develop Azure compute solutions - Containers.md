@@ -362,6 +362,125 @@ nginx is running in container in VM
 
 ## 68. Let's containerize a .NET application
 
+Build Image: on Windows machine - docker toolset is required, additional services
+
+Lets do it on linux:
+
+VS -> Publish to folder
+
+Publish, Settings Target location -> copy
+
+copy \sqlapp\bin\release\net6.0\publish\ to our server
+
+How to build our image? - Dockerfile
+
+app needs runtime
+
+Dockerfile
+
+```docker
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /app
+COPY . .
+EXPOSE 80
+ENTRYPOINT [ "dotnet", "sqlapp.dll" ]
+```
+
+copy it to publish folder
+
+```
+cd publish
+
+sudo docker build -t sqlapp .
+```
+```command
+linuxuser@linuxvm:~$ cd publish/
+linuxuser@linuxvm:~/publish$ sudo docker build -t sqlapp .
+[+] Building 4.9s (8/8) FINISHED
+ => [internal] load .dockerignore                                                                                                                                                 0.1s
+ => => transferring context: 2B                                                                                                                                                   0.0s
+ => [internal] load build definition from Dockerfile                                                                                                                              0.1s
+ => => transferring dockerfile: 151B                                                                                                                                              0.0s
+ => [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:6.0                                                                                                              0.3s
+ => [1/3] FROM mcr.microsoft.com/dotnet/aspnet:6.0@sha256:211c84ef15e0d2bc77c8d37ea1d936ecf2f4edd11ffd260b11ec9371db63dd3d                                                        3.2s
+ => => resolve mcr.microsoft.com/dotnet/aspnet:6.0@sha256:211c84ef15e0d2bc77c8d37ea1d936ecf2f4edd11ffd260b11ec9371db63dd3d                                                        0.1s
+ => => sha256:6df469f23ae176b9dea89ebf6761b862c0721143da3bbd6303b953f6ab2091f1 15.17MB / 15.17MB                                                                                  0.3s
+ => => sha256:7e979fe76393e15203b15743ea2e37a46e9172f53248116bce0d545a4c5a7e91 31.63MB / 31.63MB                                                                                  0.6s
+ => => sha256:6c9b5f8b63cb27e4b5bea60cb5c622bc78b29181d906f19c8d5efd8aaeeaef4d 154B / 154B                                                                                        0.2s
+ => => sha256:211c84ef15e0d2bc77c8d37ea1d936ecf2f4edd11ffd260b11ec9371db63dd3d 1.82kB / 1.82kB                                                                                    0.0s
+ => => sha256:2c736203ee3a2852f55f4f98407fbebe59beabf4cf4fc297c337e6382699277f 1.37kB / 1.37kB                                                                                    0.0s
+ => => sha256:d684409386e7c775aaf25265dbaaa9792813d8a89a5e18ae61a0d644761ff2d3 3.26kB / 3.26kB                                                                                    0.0s
+ => => sha256:74ba3f43cec3022bb6970ba2a7a4350adbafe10f5b519ee7ea67a513b78bb69b 9.46MB / 9.46MB                                                                                    0.4s
+ => => extracting sha256:6df469f23ae176b9dea89ebf6761b862c0721143da3bbd6303b953f6ab2091f1                                                                                         0.5s
+ => => extracting sha256:7e979fe76393e15203b15743ea2e37a46e9172f53248116bce0d545a4c5a7e91                                                                                         0.7s
+ => => extracting sha256:6c9b5f8b63cb27e4b5bea60cb5c622bc78b29181d906f19c8d5efd8aaeeaef4d                                                                                         0.0s
+ => => extracting sha256:74ba3f43cec3022bb6970ba2a7a4350adbafe10f5b519ee7ea67a513b78bb69b                                                                                         0.3s
+ => [internal] load build context                                                                                                                                                 0.4s
+ => => transferring context: 12.36MB                                                                                                                                              0.3s
+ => [2/3] WORKDIR /app                                                                                                                                                            0.1s
+ => [3/3] COPY . .                                                                                                                                                                0.1s
+ => exporting to image                                                                                                                                                            0.9s
+ => => exporting layers                                                                                                                                                           0.9s
+ => => writing image sha256:1b44ddcac9b01975b36d117a5f37c418bf4d0c3fd65dba592857837816378a9c                                                                                      0.0s
+ => => naming to docker.io/library/sqlapp                                                                                                                                         0.0s
+linuxuser@linuxvm:~/publish$
+
+```
+sudo docker images
+```
+linuxuser@linuxvm:~/publish$ sudo docker images
+REPOSITORY   TAG       IMAGE ID       CREATED              SIZE
+sqlapp       latest    1b44ddcac9b0   About a minute ago   221MB
+nginx        latest    6efc10a0510f   2 days ago           142MB
+linuxuser@linuxvm:~/publish$
+
+```
+
+```
+linuxuser@linuxvm:~/publish$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS        PORTS                               NAMES
+65ed8eab5b72   nginx     "/docker-entrypoint.…"   10 hours ago   Up 10 hours   0.0.0.0:80->80/tcp, :::80->80/tcp   appnginx
+linuxuser@linuxvm:~/publish$
+```
+now we have nginx on port 80
+
+sudo docker stop 65e
+
+```
+linuxuser@linuxvm:~/publish$ sudo docker stop 65ed8eab5b72
+65ed8eab5b72
+linuxuser@linuxvm:~/publish$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+sudo docker run --name sqlapp-1 -p 80:80 -d sqlapp
+
+```
+linuxuser@linuxvm:~/publish$ sudo docker run --name sqlapp-1 -p 80:80 -d sqlapp
+c2fb884ecd172541b44f2fa31fd1451644369f3ddf1ae7febc9a136fa46d5b17
+linuxuser@linuxvm:~/publish$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND               CREATED          STATUS          PORTS                               NAMES
+c2fb884ecd17   sqlapp    "dotnet sqlapp.dll"   22 seconds ago   Up 21 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   sqlapp-1
+linuxuser@linuxvm:~/publish$
+
+```
+
+Public IP = our sql app
+168.63.57.194
+
+??? Open question: Where is the base image
+
+mcr.microsoft.com/dotnet/aspnet:6.0
+
+is it depends on publish settings ?
+
+```
+ sudo docker images
+REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+sqlapp       latest    1b44ddcac9b0   13 minutes ago   221MB
+nginx        latest    6efc10a0510f   2 days ago       142MB
+```
+
 ## 69. If you have made a mistake
 
 ## 70. The need for a registry
