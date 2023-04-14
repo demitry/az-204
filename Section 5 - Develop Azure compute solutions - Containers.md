@@ -483,6 +483,39 @@ nginx        latest    6efc10a0510f   2 days ago       142MB
 
 ## 69. If you have made a mistake
 
+remove publish dir, copy new + Dockerfile
+
+sudo docker stop c2f
+
+sudo docker rm c2f
+
+sudo docker image rm sqlapp
+
+sudo docker build -t sqlapp .
+
+sudo docker run --name sqlapp-1 -p 80:80 -d sqlapp
+
+```command
+linuxuser@linuxvm:~$ ls
+publish
+linuxuser@linuxvm:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND               CREATED          STATUS          PORTS                               NAMES
+c2fb884ecd17   sqlapp    "dotnet sqlapp.dll"   37 minutes ago   Up 37 minutes   0.0.0.0:80->80/tcp, :::80->80/tcp   sqlapp-1
+linuxuser@linuxvm:~$ sudo docker stop c2f
+c2f
+linuxuser@linuxvm:~$ sudo docker rm c2f
+c2f
+linuxuser@linuxvm:~$ sudo docker image rm sqlapp
+Untagged: sqlapp:latest
+Deleted: sha256:1b44ddcac9b01975b36d117a5f37c418bf4d0c3fd65dba592857837816378a9c
+linuxuser@linuxvm:~$ cd publish/
+linuxuser@linuxvm:~/publish$ sudo docker build -t sqlapp .
+ => => naming to docker.io/library/sqlapp                                                                                          
+linuxuser@linuxvm:~/publish$ sudo docker run --name sqlapp-1 -p 80:80 -d sqlapp
+36741c03f741ad2001b8c0d7121162963bd76c7b79c0a5a9862f3b0bae78fdd1
+linuxuser@linuxvm:~/publish$
+```
+
 ## 70. The need for a registry
 
 ## 71. Lab - Azure Container Registry
