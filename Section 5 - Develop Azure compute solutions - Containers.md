@@ -310,6 +310,56 @@ linuxuser@linuxvm:~$
 
 ## 67. Running a simple container
 
+<https://hub.docker.com/_/nginx>
+
+linuxvm | Networking -> Add inbound security rule
+
+HTTP Port 80 -> AllowAnyHTTPInbound_Port_80
+
+```
+sudo docker run --name appnginx -p 80:80 -d nginx
+```
+
+try to find image locally, if no image - get from hub, run as appnginx -d(daemon), with mapped -p (ports) (container to vm) 80 to 80.
+
+```
+sudo docker images
+sudo docker ps
+```
+
+<details>
+  <summary>Log</summary>
+
+```command
+linuxuser@linuxvm:~$ sudo docker run --name appnginx -p 80:80 -d nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+26c5c85e47da: Pull complete
+4f3256bdf66b: Pull complete
+2019c71d5655: Pull complete
+8c767bdbc9ae: Pull complete
+78e14bb05fd3: Pull complete
+75576236abf5: Pull complete
+Digest: sha256:63b44e8ddb83d5dd8020327c1f40436e37a6fffd3ef2498a6204df23be6e7e94
+Status: Downloaded newer image for nginx:latest
+65ed8eab5b7203e7a5d11b7942a4571f3ecf71a40301a00c0f30bff59dd377db
+linuxuser@linuxvm:~$ sudo docker images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+nginx        latest    6efc10a0510f   2 days ago   142MB
+linuxuser@linuxvm:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                               NAMES
+65ed8eab5b72   nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, :::80->80/tcp   appnginx
+linuxuser@linuxvm:~$
+```
+</details>
+
+
+Public IP address = nginx page
+
+168.63.57.194
+
+nginx is running in container in VM
+
 ## 68. Let's containerize a .NET application
 
 ## 69. If you have made a mistake
