@@ -636,6 +636,108 @@ Public Ip = our site
 
 ## 74. Multi-stage builds
 
+```
+sudo docker images
+REPOSITORY                          TAG       IMAGE ID       CREATED        SIZE
+appregistry3100.azurecr.io/sqlapp   latest    cb9464ed8f75   13 hours ago   221MB
+sqlapp                              latest    cb9464ed8f75   13 hours ago   221MB
+nginx                               latest    6efc10a0510f   3 days ago     142MB
+```
+
+Size: 221MB
+
+Image = runtime and app
+
+Try to decrease size of image
+
+Multi-stage build:
+
+* copy entire project without building it and build it on the server using docker
+
+* when the build is complete - use it as a part of the image.
+
+Dockerfile in the same location, where is csproj
+
+```docker
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /source
+
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . .
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /app
+COPY --from=build /source/out .
+EXPOSE 80
+ENTRYPOINT [ "dotnet", "sqlapp.dll" ]
+```
+
+Copy source
+
+??? Open question: no need of sln file ???
+
+MSB4018: The "ResolvePackageAssets" task failed unexpectedly.
+
+Issue: error MSB4018: The "ResolvePackageAssets" task failed unexpectedly. [/source/sqlapp.csproj]
+
+Solution: Add file 
+
+.dockerignore
+
+```
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+Dockerfile*
+**/*.trx
+**/*.md
+**/*.ps1
+**/*.cmd
+**/*.sh
+```
+
+```bash
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker build -t sqlapp-new .
+...
+ => => writing image sha256:a132a7cdcbff88d18354d016a21d38c4b9afdc7f824685b51de87dd66c7398fc                                                                                                                                          0.0s
+ => => naming to docker.io/library/sqlapp-new           
+
+```
+
+Stop old run new image
+
+* sudo docker ps
+* sudo docker stop 367
+* sudo docker images
+* sudo docker run --name sqlapp-2 -p 80:80 -d sqlapp-new
+* sudo docker ps
+```
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND               CREATED        STATUS        PORTS                               NAMES
+36741c03f741   sqlapp    "dotnet sqlapp.dll"   15 hours ago   Up 15 hours   0.0.0.0:80->80/tcp, :::80->80/tcp   sqlapp-1
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker stop 367
+367
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker images
+REPOSITORY                          TAG       IMAGE ID       CREATED          SIZE
+sqlapp-new                          latest    a132a7cdcbff   11 minutes ago   221MB
+appregistry3100.azurecr.io/sqlapp   latest    cb9464ed8f75   15 hours ago     221MB
+sqlapp                              latest    cb9464ed8f75   15 hours ago     221MB
+nginx                               latest    6efc10a0510f   3 days ago       142MB
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker run --name sqlapp-2 -p 80:80 -d sqlapp-new
+c5817e68884184fb275908002a0da2367b8f2cc298aa5128971b7732554541bd
+linuxuser@linuxvm:~/source/sqlapp$ sudo docker ps
+CONTAINER ID   IMAGE        COMMAND               CREATED          STATUS          PORTS                               NAMES
+c5817e688841   sqlapp-new   "dotnet sqlapp.dll"   11 seconds ago   Up 10 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   sqlapp-2
+linuxuser@linuxvm:~/source/sqlapp$
+
+```
+
 ## 75. Azure Container Groups
 
 ## 76. Setting up our application against MySQL database
