@@ -600,6 +600,40 @@ Observe the image in the repo
 
 ## 73. Azure Container Instances
 
+1) Easy deploy
+2) No need to manage infrastructure
+3) Azure containers can also get **Public IP and DNS names**
+4) Persist data using **Azure file shares**
+
+appregistry3100 | Repositories
+
+sqlapp
+
+Create container instance (service)
+
+Container name: appinstance
+
+Image source
+* Quickstart images
+* Azure Container Registry
+* Other registry
+
+Azure Container Registry
+
+We can pick-up container from Azure Container Registry **because** we have **enabled Admin User in registry Access Keys**
+
+Networking - Expose Port 80
+
+Microsoft.ContainerInstances-20230415145017
+
+appinstance | Containers
+
+Logs
+
+Public Ip = our site
+
+20.54.23.204
+
 ## 74. Multi-stage builds
 
 ## 75. Azure Container Groups
