@@ -738,7 +738,18 @@ linuxuser@linuxvm:~/source/sqlapp$
 
 ```
 
+The size of the image is the same, we just build from the source
+
 ## 75. Azure Container Groups
+
+1-st container = application, 2-nd container = database
+
+Need deploy together = use Azure Container Groups
+
+1) Collection of containers on the same host
+2) Shared life cycle, resources, local network, storage resources
+3) Deployment via Resource Manager template or YAML file
+4) Persist data via Azure File shares
 
 ## 76. Setting up our application against MySQL database
 
