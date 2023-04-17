@@ -831,8 +831,101 @@ Workbench -> New cn, linuxvm, 168.63.57.194
 
 ## 78. Creating a custom MySQL image
 
+01.sql
+
+```sql
+CREATE TABLE Products
+(
+	ProductId int,
+	ProductName varchar(1000),
+	Quantity int
+);
+
+INSERT INTO Products(ProductId, ProductName, Quantity) VALUES (0, 'MySql', 0), (1, 'Mobile', 100), (2, 'Laptop', 200), (3, 'Tabs', 300);
+```
+
+Dockerfile
+
+```dockerfile
+FROM mysql AS base
+ENV MYSQL_ROOT_PASSWORD=AzureAzure@1!
+ENV MYSQL_DATABASE=appdb
+
+COPY 01.sql /docker-entrypoint-initdb.d/
+```
+
+remove previous mysql:
+* sudo docker stop 60da6aa067ef
+* sudo docker ps
+* sudo docker rm 60da6aa067ef
+
+sudo docker build -t mysql-custom-image .
+
+sudo docker run -d -p 3306:3306 --name appsql mysql-custom-image
+
+sudo docker exec -it appsql bash
+
+mysql -uroot -p
+
+```
+linuxuser@linuxvm:~/MySqlCustom$ sudo docker build -t mysql-custom-image .
+...
+linuxuser@linuxvm:~/MySqlCustom$ sudo docker run -d -p 3306:3306 --name appsql mysql-custom-image
+c0cf1efb53d5045d7df854f6056c36e21ff0ed71b6ea2ce36661ccaf75456794
+linuxuser@linuxvm:~/MySqlCustom$ sudo docker ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS          PORTS                                                                                            NAMES
+c0cf1efb53d5   mysql-custom-image       "docker-entrypoint.s…"   16 seconds ago   Up 15 seconds   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp                                             appsql
+...
+```
+
+```
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| appdb              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use appdb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_appdb |
++-----------------+
+| Products        |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Products;
++-----------+-------------+----------+
+| ProductId | ProductName | Quantity |
++-----------+-------------+----------+
+|         0 | MySql       |        0 |
+|         1 | Mobile      |      100 |
+|         2 | Laptop      |      200 |
+|         3 | Tabs        |      300 |
++-----------+-------------+----------+
+4 rows in set (0.00 sec)
+
+```
+
 ## 79. Check the application is connecting to MySQL container
 
+```cs
+        private MySqlConnection GetConnection()
+        {
+            return new MySqlConnection("Server=168.63.57.194; Port=3306; UserID=root; Password={PASSWORD}; Database=appdb; SslMode=Required;");
+        }
+```
 ## 80. Deploying the custom MySQL container
 
 ## 81. Let's deploy an Azure Container Group
