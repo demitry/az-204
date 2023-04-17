@@ -753,7 +753,81 @@ Need deploy together = use Azure Container Groups
 
 ## 76. Setting up our application against MySQL database
 
+mysqlserver1100 | Connect
+
+Add Client IP  to allow connectivity using any local client tools like MySQL workbench, VS Code and etc.
+
+"Server=mysqlserver1100.mysql.database.azure.com; Port=3306; UserID=sqladmin; Password= ; Database=appdb; SslMode=Required;"
+
 ## 77. Deploying a MySQL database container
+
+linuxvm | Networking
+
+Add inbound security rule
+
+Service: MySQL
+
+AllowAnyMySQLInbound_Port3306
+
+sudo docker ps
+
+sudo docker run --name=mysql-instance -p 3306:3306 --restart on-failure -d -e MYSQL_ROOT_PASSWORD={PASSWORD} mysql
+
+-e = environment variable
+
+```
+linuxuser@linuxvm:~$ sudo docker ps
+linuxuser@linuxvm:~$ sudo docker run --name=mysql-instance -p 3306:3306 --restart on-failure -d -e MYSQL_ROOT_PASSWORD={PASSWORD} mysql
+Unable to find image 'mysql:latest' locally
+latest: Pulling from library/mysql
+328ba678bf27: Pull complete
+...
+148dcef42e3b: Pull complete
+Digest: sha256:f496c25da703053a6e0717f1d52092205775304ea57535cc9fcaa6f35867800b
+Status: Downloaded newer image for mysql:latest
+60da6aa067ef264cea459706c741039321af96b2ecfc45f85011cfdc5e332049
+linuxuser@linuxvm:~$ sudo docker ps
+```
+
+Run **mysql** command:
+
+* sudo docker exec -it mysql-instance **mysql** -uroot -p
+
+* -it = interaction mode
+
+* -uroot = use root, -p = ask for password
+
+```
+sudo docker exec -it mysql-instance mysql -uroot -p
+
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.32 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
+
+```
+
+Workbench -> New cn, linuxvm, 168.63.57.194
 
 ## 78. Creating a custom MySQL image
 
@@ -772,3 +846,9 @@ Need deploy together = use Azure Container Groups
 ## 85. Lab - Deploying our application on Kubernetes
 
 ## Quiz 4: Short Quiz
+
+## Misc
+
+Azure Resource Mover
+
+"I understand that tools and scripts associated with moved resources will not work until I update them to use new resource IDs"
