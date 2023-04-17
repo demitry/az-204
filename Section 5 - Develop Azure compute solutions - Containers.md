@@ -1207,7 +1207,132 @@ Public IP = our app
 
 ## 83. Lab - Deploying an Azure Kubernetes cluster
 
+### Pod
+
+^ used to group containers
+
+* gets shared storage and network resources
+
+Pod 10.0.0.16 = Container (port 8080) + Container (port 8090) + ...
+
+### Deployment
+
+* Declarative way to describe the state of Pods and ReplicaSets
+
+* Deployment controller is used to ensure the desired state of environement is always met
+
 ## 84. Lab - Azure Kubernetes - Deployment - NGINX
+
+Create
+
+Azure Kubernetes Service (AKS)
+
+Create Kubernetes cluster
+
+kubernetes-grp
+
+Cluster configuration: Dev/Test
+
+Kube cluster name: appcluster
+
+Connect your cluster to an Azure Container Registry to enable seamless deployments from a private image registry.
+
+Integrations Tab - Container Registry: appregistry3100
+
+---
+
+<details>
+<summary>Issue qith quotas</summary>
+
+The maximum node count you can select is 0 due to the remaining quota in the selected subscription (2 cores).
+
+Additional information: I assume this may not be an AKS limitation but an Azure limitation. This is based upon core quota's that you have for a subscription in specific regions. You can request additional quota by placing a request here
+https://learn.microsoft.com/en-us/azure/azure-supportability/resource-manager-core-quotas-request
+
+az vm list-usage --location "East US" -o table
+
+```
+az vm list-usage --location "East US" -o table
+```
+
+```
+az vm list-usage --location "North Europe" -o table
+Name                                      CurrentValue    Limit
+----------------------------------------  --------------  -------
+Availability Sets                         0               2500
+Total Regional vCPUs                      2               4
+Virtual Machines                          1               25000
+```
+---
+
+cannot increase quota with basic subscitpion
+
+Check resource usage against limits
+
+<https://learn.microsoft.com/en-us/azure/networking/check-usage-against-limits>
+
+### Request a quota increase
+
+<https://learn.microsoft.com/en-us/azure/quotas/quickstart-increase-quota-portal>
+
+The maximum node count you can select is 0 due to the remaining quota in the selected subscription (2 cores).
+
+</details>
+
+---
+
+appcluster
+
+Create
+
+Add with YAML
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+```
+
+=> Deployment is created (nginx-deployment)
+
+Create a service to access nginx container
+
+appcluster | Services and ingresses -> Add with YAML
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxservice
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+```
+
+LoadBalancer = has external IP address = nginx site
 
 ## 85. Lab - Deploying our application on Kubernetes
 
