@@ -928,6 +928,36 @@ mysql> SELECT * FROM Products;
 ```
 ## 80. Deploying the custom MySQL container
 
+appregistry3100 | Access keys 
+
+Check password
+
+```
+sudo az acr login --name appregistry3100 --username appregistry3100 --password mg4...+q
+
+sudo docker tag mysql-custom-image appregistry3100.azurecr.io/mysql-custom-image
+
+sudo docker push appregistry3100.azurecr.io/mysql-custom-image
+```
+
+appregistry3100 | Repositories
+
+Create container instance
+
+mysql-instance
+
+20.105.125.202 (check VS connection)
+
+Azure Container Registry
+
+Change port 80 -> 3306
+
+mysql-instance | Containers -> Connect -> bash
+
+mysql -uroot -p
+
+show databases;
+
 ## 81. Let's deploy an Azure Container Group
 
 ## 82. What is Azure Kubernetes
