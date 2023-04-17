@@ -960,6 +960,249 @@ show databases;
 
 ## 81. Let's deploy an Azure Container Group
 
+Deploy with localhost cn
+
+```cs
+        private MySqlConnection GetConnection()
+        {
+            return new MySqlConnection("Server=localhost; Port=3306; UserID=root; Password=; Database=appdb; SslMode=Required;");
+        }
+```
+
+stop old containers and remove their images
+
+copy publish dir
+
+```
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /app
+COPY . .
+EXPOSE 80
+ENTRYPOINT [ "dotnet", "sqlapp.dll" ]
+```
+
+sudo docker build -t sqlapp .
+
+sudo docker tag sqlapp appregistry3100.azurecr.io/sqlapp
+
+delete old sqlapp from repo
+
+sudo docker push appregistry3100.azurecr.io/sqlapp
+
+
+```yml
+apiVersion: 2019-12-01
+location: northeurope
+name: SQLAppGroup
+properties:
+  containers: 
+  - name: db
+    properties:
+      image: appregistry3100.azurecr.io/mysql-custom-image:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 3306
+  - name: web
+    properties:
+      image: appregistry3100.azurecr.io/sqlapp:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 80          
+  osType: Linux
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: tcp
+      port: 80
+  imageRegistryCredentials:
+    - server: appregistry3100.azurecr.io
+      username: appregistry3100
+      password: mg4...+q
+type: Microsoft.ContainerInstance/containerGroups
+```
+
+Azure Shell
+
+Powershell
+
+You have no storage mounted
+
+Storage account dickerstoragelog5999 in docker-grp
+
+```
+az container create --resource-group docker-grp --file deployment.yml
+```
+
+<details>
+
+<summary>Log</summary>
+
+```json
+PS /home/dmytro> az container create --resource-group docker-grp --file deployment.yml
+{
+  "extendedLocation": null,
+  "id": "/subscriptions/a77b1bf0-3869-4d3f-9d30-42037952d048/resourceGroups/docker-grp/providers/Microsoft.ContainerInstance/containerGroups/SQLAppGroup",
+  "identity": null,
+  "kind": null,
+  "location": "northeurope",
+  "managedBy": null,
+  "name": "SQLAppGroup",
+  "plan": null,
+  "properties": {
+    "containers": [
+      {
+        "name": "db",
+        "properties": {
+          "environmentVariables": [],
+          "image": "appregistry3100.azurecr.io/mysql-custom-image:latest",
+          "instanceView": {
+            "currentState": {
+              "detailStatus": "",
+              "startTime": "2023-04-17T15:37:44.228Z",
+              "state": "Running"
+            },
+            "events": [
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:12Z",
+                "lastTimestamp": "2023-04-17T15:37:12Z",
+                "message": "pulling image \"appregistry3100.azurecr.io/mysql-custom-image@sha256:497068e5eaf3ce23f363cb3c84edfeb61fd061c76c2b72acca4a98b08400afdd\"",
+                "name": "Pulling",
+                "type": "Normal"
+              },
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:33Z",
+                "lastTimestamp": "2023-04-17T15:37:33Z",
+                "message": "Successfully pulled image \"appregistry3100.azurecr.io/mysql-custom-image@sha256:497068e5eaf3ce23f363cb3c84edfeb61fd061c76c2b72acca4a98b08400afdd\"",
+                "name": "Pulled",
+                "type": "Normal"
+              },
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:44Z",
+                "lastTimestamp": "2023-04-17T15:37:44Z",
+                "message": "Started container",
+                "name": "Started",
+                "type": "Normal"
+              }
+            ],
+            "restartCount": 0
+          },
+          "ports": [
+            {
+              "port": 3306
+            }
+          ],
+          "resources": {
+            "requests": {
+              "cpu": 1.0,
+              "memoryInGB": 1.5
+            }
+          }
+        }
+      },
+      {
+        "name": "web",
+        "properties": {
+          "environmentVariables": [],
+          "image": "appregistry3100.azurecr.io/sqlapp:latest",
+          "instanceView": {
+            "currentState": {
+              "detailStatus": "",
+              "startTime": "2023-04-17T15:37:43.961Z",
+              "state": "Running"
+            },
+            "events": [
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:12Z",
+                "lastTimestamp": "2023-04-17T15:37:12Z",
+                "message": "pulling image \"appregistry3100.azurecr.io/sqlapp@sha256:255a7fd621cc7f4847ffdef7dd7d3a51c1a77f423bdcf8b67d2db846c5467c69\"",
+                "name": "Pulling",
+                "type": "Normal"
+              },
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:33Z",
+                "lastTimestamp": "2023-04-17T15:37:33Z",
+                "message": "Successfully pulled image \"appregistry3100.azurecr.io/sqlapp@sha256:255a7fd621cc7f4847ffdef7dd7d3a51c1a77f423bdcf8b67d2db846c5467c69\"",
+                "name": "Pulled",
+                "type": "Normal"
+              },
+              {
+                "count": 1,
+                "firstTimestamp": "2023-04-17T15:37:43Z",
+                "lastTimestamp": "2023-04-17T15:37:43Z",
+                "message": "Started container",
+                "name": "Started",
+                "type": "Normal"
+              }
+            ],
+            "restartCount": 0
+          },
+          "ports": [
+            {
+              "port": 80
+            }
+          ],
+          "resources": {
+            "requests": {
+              "cpu": 1.0,
+              "memoryInGB": 1.5
+            }
+          }
+        }
+      }
+    ],
+    "imageRegistryCredentials": [
+      {
+        "server": "appregistry3100.azurecr.io",
+        "username": "appregistry3100"
+      }
+    ],
+    "initContainers": [],
+    "instanceView": {
+      "events": [],
+      "state": "Running"
+    },
+    "ipAddress": {
+      "ip": "40.127.216.242",
+      "ports": [
+        {
+          "port": 80,
+          "protocol": "TCP"
+        }
+      ],
+      "type": "Public"
+    },
+    "isCustomProvisioningTimeout": false,
+    "osType": "Linux",
+    "provisioningState": "Succeeded",
+    "provisioningTimeoutInSeconds": 1800,
+    "sku": "Standard"
+  },
+  "resourceGroup": "docker-grp",
+  "sku": null,
+  "tags": null,
+  "type": "Microsoft.ContainerInstance/containerGroups"
+}
+```
+
+</details>
+
+All Resources
+
+SQLAppGroup
+
+Public IP = our app
+
 ## 82. What is Azure Kubernetes
 
 ## 83. Lab - Deploying an Azure Kubernetes cluster
