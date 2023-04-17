@@ -1336,6 +1336,117 @@ LoadBalancer = has external IP address = nginx site
 
 ## 85. Lab - Deploying our application on Kubernetes
 
+appcluster | Services and ingresses
+
+delete nginxservice
+
+appcluster | Workloads
+
+delete nginx-deployment
+
+Change cn: Server=mysql, because name oof our service in yml is "mysql"
+
+```cs
+        private MySqlConnection GetConnection()
+        {
+            return new MySqlConnection("Server=mysql; Port=3306; UserID=root; Password=; Database=appdb; SslMode=Required;");
+        }
+```
+
+```
+sudo docker build -t sqlapp .
+sudo docker tag sqlapp appregistry3100.azurecr.io/sqlapp
+sudo docker push appregistry3100.azurecr.io/sqlapp
+```
+
+appregistry3100 | Repositories
+
+* mysql-custom-image
+* sqlapp
+
+sql deployment - appcluster | Workloads
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: appregistry3100.azurecr.io/mysql-custom-image:latest
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql
+```
+
+Sql Service - appcluster | Services and ingresses
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+```
+
+Application: Deployment - appcluster | Workloads
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlapp
+spec:
+  selector:
+    matchLabels:
+      app: sqlapp
+  template:
+    metadata:
+      labels:
+        app: sqlapp
+    spec:
+      containers:
+      - image: appregistry3100.azurecr.io/sqlapp:latest
+        name: sqlapp
+        ports:
+        - containerPort: 80
+          name: sqlapp
+```
+
+Application: Service - appcluster | Services and ingresses
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: appservice
+spec:
+  selector:
+    app: sqlapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+```
+appservice has public IP = our site
+
 ## Quiz 4: Short Quiz
 
 ## Misc
