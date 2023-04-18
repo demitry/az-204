@@ -135,7 +135,98 @@ Set-AzResource -ResourceGroupName $ResourceGroupName `
 
 ## 94. Lab - Azure PowerShell - Deployment Slots
 
+Issue:
+PS F:\\git\az-204> . 'F:\\git\az-204\Scripts\DeploymentSlots.ps1'
+.: File F:\NEW_JOB_2023\git\az-204\Scripts\DeploymentSlots.ps1 cannot be loaded. The file F:\NEW_JOB_2023\git\az-204\Scripts\DeploymentSlots.ps1 is not digitally signed. You cannot run this script on the 
+current system. For more information about running scripts and setting execution policy, see about_Execution_Policies at https://go.microsoft.com/fwlink/?LinkID=135170.
+
+Solution:
+
+<https://windowsreport.com/powershell-not-digitally-signed/>
+
+```powershell
+Get-ExecutionPolicy
+Set-ExecutionPolicy -ExecutionPolicy unrestricted
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Unblock-File -Path C:Script.ps1
+```
+
+### Deployment slots
+Deployment Slots in Azure are a feature that enables you to deploy multiple copies of your web application to different slots or environments. Each deployment slot is a separate instance of your web application that runs in Azure, but with its own separate URL and configuration settings.
+
+The purpose of using Deployment Slots is to facilitate a smooth and safe deployment process for your web application. You can use the deployment slots to perform tasks such as:
+
+Testing: You can deploy your new version of the web application to a staging slot for testing purposes without affecting the production environment.
+
+Rollout: You can gradually roll out the new version of your web application to a subset of users or regions by deploying it to a deployment slot first before deploying to production.
+
+Swap: You can perform a seamless deployment of your web application by swapping the deployment slot with the production slot once you are satisfied with the new version's performance.
+
+Backout: If the new version of your web application has issues, you can quickly and easily roll back to the previous version by swapping the deployment slot with the production slot.
+
+In summary, Deployment Slots in Azure allow you to deploy, test, and manage your web application in a controlled and secure way, enabling you to minimize downtime and ensure a smooth deployment process.
+
+```powershell
+
+<#
+Command Reference
+
+1. Set-AzAppServicePlan
+https://docs.microsoft.com/en-us/powershell/module/az.websites/set-azappserviceplan?view=azps-7.3.0
+
+2. New-AzWebAppSlot
+https://docs.microsoft.com/en-us/powershell/module/az.websites/new-azwebappslot?view=azps-7.3.0
+
+3. Switch-AzWebAppSlot
+https://docs.microsoft.com/en-us/powershell/module/az.websites/switch-azwebappslot?view=azps-7.3.0
+
+#>
+
+# We are using an existing Azure Web App
+
+$ResourceGroupName="powershell-grp"
+$WebAppName="companyapp19990"
+$AppServicePlanName="companyplan"
+
+# For deployment slots, the App Service Plan needs to be standard or higher
+
+Connect-AzAccount
+
+Set-AzAppServicePlan -Name $AppServicePlanName -ResourceGroupName $ResourceGroupName `
+-Tier Standard
+
+# We then create a Web App slot
+
+$SlotName="Staging"
+New-AzWebAppSlot -Name $WebAppName -ResourceGroupName $ResourceGroupName `
+-Slot $SlotName
+
+# We then deploy an application onto the Staging slot
+# Ensure to use your own GitHub URL
+
+$Properties =@{
+    repoUrl="https://github.com/demitry/azwebapp";
+    branch="master";
+    isManualIntegration="true";
+}
+
+Set-AzResource -ResourceGroupName $ResourceGroupName `
+-Properties $Properties -ResourceType Microsoft.Web/sites/slots/sourcecontrols `
+-ResourceName $WebAppName/$SlotName/web -ApiVersion 2015-08-01 -Force
+
+# The following can be used to switch slots
+
+$TargetSlot="production"
+
+Switch-AzWebAppSlot -Name $WebAppName -ResourceGroupName $ResourceGroupName `
+-SourceSlotName $SlotName -DestinationSlotName $TargetSlot
+```
+
 ## 95. Installing Azure CLI
+
+<https://learn.microsoft.com/en-us/cli/azure/install-azure-cli>
+
+az login
 
 ## 96. Lab - Azure CLI - Azure Web App - Docker Container
 
