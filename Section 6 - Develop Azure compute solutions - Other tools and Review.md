@@ -333,11 +333,84 @@ Template format, simplest structure:
 
 ## 99. ARM Templates - Setting up Visual Studio Code
 
+Ext: Azure Resource Manager (ARM) Tools
+
+type "arm" in json to gen template
+
 ## 100. ARM - Lab - Azure Storage Account - Building the template
+
+--- --- I Removed all resources and app-grp
+json
+
+{} - json object, name-value pairs
+[] - array of json based objects
 
 ## 101. ARM - Lab - Azure Storage Account - Deploying the template
 
+Template
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "storageaccount1",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "tags": {
+                "displayName": "storageaccount1"
+            },
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            }
+        }
+    ],
+    "outputs": {}
+}
+```
+
+Test Template
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "name": "[concat('storage', uniqueString(resourceGroup().id))]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "location": "North Europe",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        }
+    ]
+}
+```
+
 ## 102. ARM - Lab - Deploying a template via the Azure Portal
+
+Error: Code=AccountNameInvalid; Message=storageAccUniqueName is not a valid storage account name.
+Storage account name must be **between 3 and 24 characters** in length and **use numbers and lower-case letters only**.
+
+```powershell
+Connect-AzAccount
+
+New-AzResourceGroupDeployment -ResourceGroupName app-grp -TemplateFile StorageAccountForAppGrp.json
+```
+
+Check Status
+
+ProvisioningState       : **Succeeded**
 
 ## 103. ARM - Lab - Multiple copies of a resource
 
