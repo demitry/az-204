@@ -230,6 +230,28 @@ az login
 
 ## 96. Lab - Azure CLI - Azure Web App - Docker Container
 
+<https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest>
+
+```
+# 1. First we can create an App service plan
+
+# --is-linux = linux compute machine,
+# windows by default)
+az appservice plan create --name companyplan --resource-group app-grp --is-linux
+
+# 2. Then we create the web app
+
+az webapp create --resource-group app-grp --plan companyplan --name sqlappGenfromAz --deployment-container-image-name appregistry3100.azurecr.io/sqlapp:latest
+
+# 3. If you want to turn on container-based logging
+
+az webapp log config --name sqlappGenfromAz --resource-group app-grp --docker-container-logging filesystem
+
+# 4. Enable the log stream
+
+az webapp log tail --name sqlappGenfromAz --resource-group app-grp
+```
+
 ## 97. Lab - Azure CLI - Azure Kubernetes
 
 ## 98. What are ARM templates
