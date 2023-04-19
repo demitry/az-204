@@ -424,6 +424,36 @@ Review and Create
 
 ## 103. ARM - Lab - Multiple copies of a resource
 
+CreateMultipleCopiesOfStorageAccounts.json
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "name": "[concat(copyIndex(), 'appstore666')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "location": "North Europe",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "copy": {
+                "name": "storagecopy",
+                "count": 3
+            }
+        }
+    ]
+}
+// New-AzResourceGroupDeployment -ResourceGroupName app-grp -TemplateFile CreateMultipleCopiesOfStorageAccounts.json
+```
+
+```powershell
+New-AzResourceGroupDeployment -ResourceGroupName app-grp -TemplateFile CreateMultipleCopiesOfStorageAccounts.json
+```
+
 ## 104. ARM Templates - Azure Virtual Machines
 
 ## Quiz 5: Short Quiz
