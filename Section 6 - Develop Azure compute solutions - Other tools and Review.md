@@ -454,6 +454,21 @@ CreateMultipleCopiesOfStorageAccounts.json
 New-AzResourceGroupDeployment -ResourceGroupName app-grp -TemplateFile CreateMultipleCopiesOfStorageAccounts.json
 ```
 
+Check status:
+
+DeploymentName          : CreateMultipleCopiesOfStorageAccounts
+
+ProvisioningState       : Succeeded
+
 ## 104. ARM Templates - Azure Virtual Machines
 
+In the template there is no order => "dependsOn" - is important.
+
+Download a template for automation
+
 ## Quiz 5: Short Quiz
+
+success alert
+Good job!
+We first need to enable logging for the Azure Web App with the use of the az webapp log config command. Since we need to enable container-based logging, we need to use the --docker-container-logging filesystem option within the command. For more information on working with containers in Azure Web Apps , one can visit the below URL - https://docs.microsoft.com/en-us/azure/app-service/tutorial-custom-container?pivots=container-linux
+
