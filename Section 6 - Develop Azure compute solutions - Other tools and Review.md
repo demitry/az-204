@@ -301,6 +301,36 @@ az group delete --name kubernetes-grp
 
 ## 98. What are ARM templates
 
+Azure Resource Manager template (ARM template)
+
+Allow to define Infrastructure As Code
+
+Submit code to Azure
+
+Azure deploy resources based on this code
+
+1) Define your infrastructure as code
+2) Create an Azure Resource Manager template (ARM template)
+3) JSON contains yhe definition of infrastructure
+4) Submit ARM to Azure, Azure will deploy resources 
+
+<https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax>
+
+Template format, simplest structure:
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "",
+  "apiProfile": "",
+  "parameters": {  },
+  "variables": {  },
+  "functions": [  ],
+  "resources": [  ],
+  "outputs": {  }
+}
+```
+
 ## 99. ARM Templates - Setting up Visual Studio Code
 
 ## 100. ARM - Lab - Azure Storage Account - Building the template
