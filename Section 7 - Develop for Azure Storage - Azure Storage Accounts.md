@@ -13,7 +13,36 @@ provides storage in the cloud
 
 ## 108. Different types of storage accounts
 
+* Standard General Purpose = standard file shares, queues, and tables
+* Premium block blobs = block and append blobs. Fast access, hight transaction rates
+* Premium page blobs = page blobs. Storing virtual hard disks for Azure VMs, fast access, hight transaction rates
+* Premium file shares = access files, hight transaction rates.
+
 ## 109. Lab - Creating an Azure storage account
+
+All Resources -> Create a resource -> Storage account
+
+or
+
+Storage Accounts -> Create
+
+stacc10001
+
+Performance
+
+* **Standard**: Recommended for most scenarios (general-purpose v2 account)
+
+* **Premium**: Recommended for scenarios that require low latency.
+  * **Block blobs**: Best for high transaction rates or low storage latency
+  * **File Shares**: Best for enterprise or high-performance applications that need to scale
+  * **Page Blobs**: Best for random read and write operations
+
+Data storage:
+
+* Containers
+* File shares
+* Queues
+* Tables
 
 ## 110. Azure Blob service
 
