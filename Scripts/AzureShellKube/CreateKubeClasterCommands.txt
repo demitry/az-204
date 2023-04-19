@@ -1,0 +1,40 @@
+1. Create the resource group
+
+az group create --name kubernetes-grp --location northeurope
+
+2. Then create the cluster
+
+To see all registered resource providers for your subscription, use:
+
+Get-AzResourceProvider -ListAvailable | Where-Object RegistrationState -eq "Registered" | Select-Object ProviderNamespace, RegistrationState | Sort-Object ProviderNamespace | Find-String "OperationsManagement"
+
+Register-AzureRmResourceProvider -ProviderNamespace Microsoft.OperationsManagement
+
+az aks create --resource-group kubernetes-grp --name appcluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
+
+3. If you don't have the kubectl tool installed locally, then install the CLI
+
+az aks install-cli
+
+4. Then download the credentials so that the kubectl tool can use the kubernetes cluster
+
+az aks get-credentials --resource-group kubernetes-grp --name appcluster
+
+# Merged "appcluster" as current context in C:\Users\dmitry\.kube\config
+
+5. To get the nodes in the cluster
+
+kubectl get nodes
+
+# PS C:\Users\dmitry> kubectl get nodes
+# NAME                                STATUS   ROLES   AGE     VERSION
+# aks-nodepool1-24186844-vmss000000   Ready    agent   5m13s   v1.25.6
+
+6. We can then deploy our application via the kubectl command (upload yml first)
+
+kubectl apply -f deployment.yml
+kubectl apply -f service.yml
+
+7. We can delete the resource group
+
+az group delete --name kubernetes-grp
