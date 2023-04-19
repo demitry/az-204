@@ -397,8 +397,6 @@ Test Template
 }
 ```
 
-## 102. ARM - Lab - Deploying a template via the Azure Portal
-
 Error: Code=AccountNameInvalid; Message=storageAccUniqueName is not a valid storage account name.
 Storage account name must be **between 3 and 24 characters** in length and **use numbers and lower-case letters only**.
 
@@ -411,6 +409,18 @@ New-AzResourceGroupDeployment -ResourceGroupName app-grp -TemplateFile StorageAc
 Check Status
 
 ProvisioningState       : **Succeeded**
+
+## 102. ARM - Lab - Deploying a template via the Azure Portal
+
+All Resources
+
+Create a resource
+
+template deployment (deploy using custom templates)
+
+Build your own template in the editor
+
+Review and Create
 
 ## 103. ARM - Lab - Multiple copies of a resource
 

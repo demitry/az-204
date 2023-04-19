@@ -2,6 +2,8 @@
 
 az group list | Select-String "name"
 
+az storage account list | Select-String "name"
+
 List registered AzResourceProviders
 
 Get-AzResourceProvider -ListAvailable | Where-Object RegistrationState -eq "Registered" | Select-Object ProviderNamespace, RegistrationState | Sort-Object ProviderNamespace
