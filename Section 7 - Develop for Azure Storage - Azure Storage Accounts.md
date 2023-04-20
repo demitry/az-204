@@ -335,6 +335,12 @@ Because access policy permissions were changed.
 
 ## Note on different types of Shares Access Signatures
 
+<https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas>
+
+You can secure a shared access signature (SAS) token for access to a container, directory, or blob by using either Azure Active Directory (Azure AD) credentials or an account key.
+
+A SAS that's **secured with Azure AD credentials** is called a **user delegation SAS**.
+
 ## Lab - Azure Storage Accounts - Azure AD Authentication
 
 ## Azure Storage Accounts - Authorization techniques review
