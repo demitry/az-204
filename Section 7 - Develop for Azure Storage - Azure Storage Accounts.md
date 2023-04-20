@@ -116,7 +116,30 @@ if change ACL to Public read access for blobs only
 
 ## 113. Azure Storage Accounts - Different authorization techniques
 
+There is various ways to authorize as a user or application:
+
+* Access Keys
+* Shared Access Signatures
+* Azure Active Directory
+
 ## 114. Lab - Using Azure Storage Explorer
+
+<https://azure.microsoft.com/en-us/products/storage/storage-explorer/>
+
+Issue:
+
+No Subscription Found after Successful Sign-In
+
+https://github.com/microsoft/AzureStorageExplorer/issues/5777
+
+Solution:
+
+<https://github.com/microsoft/AzureStorageExplorer/issues/5777>
+
+MRayermannMSFT commented on May 26, 2022
+@mrw3050 do you have any other tenants listed? They would be at the same logical level as the "Microsoft account (home tenant)". If so, is it possible your subscription is in one of those tenants? **If so, please click on the checkboxes for those tenants.**
+
+Create storage simple
 
 ## 115. Lab - Using Access keys
 
