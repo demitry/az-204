@@ -288,7 +288,50 @@ because we set up just List/Read access
 
 ## Lab - Azure Storage Accounts - Stored Access Policy
 
+What is Shared access signature gets in wrong hands? Compromised?
 
+Wait for expiry date-time?
+
+Stored Access Policy could be attached to SAS
+
+stacc -> Containers -> data | Access policy
+
+2 types of policies:
+
+**Stored access policies** -> Add policy
+
+- Identifier: ReadPolicy
+- Permissions: Read, List
+- Start/Expiry Date Time
+
+Data Explorer
+
+data-> Get Shared Access Signature
+
+Access Policy: Read Policy -> Expiry Date Time, Create
+
+We have SAS:
+
+If you get SAS for blob => connect blob
+If you get SAS for account => connect account
+
+data (blob) => right click -> Get Shared access signature - select ReadPolicy
+
+Connect -> Blob Container -> Shared access signature URL SAS -> Paste
+
+Have access
+
+Remove access to the policy assigned to the SAS Shared Access Signature.
+
+data | Access policy
+
+Edit Read Policy - remove permissions
+
+=> In the data explorer try to access data container:
+
+ Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature. RequestId:2c8a2e67-701e-0003-5bb6-73edcf000000 Time:2023-04-20T18:35:06.6247556Z
+
+Because access policy permissions were changed.
 
 ## Note on different types of Shares Access Signatures
 
