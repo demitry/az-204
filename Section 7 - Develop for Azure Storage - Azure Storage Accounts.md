@@ -1,6 +1,53 @@
+<!-- TOC -->
+
+- [Section 7: Develop for Azure Storage - Azure Storage Accounts](#section-7-develop-for-azure-storage---azure-storage-accounts)
+    - [What are Azure Storage Accounts](#what-are-azure-storage-accounts)
+    - [Different types of storage accounts](#different-types-of-storage-accounts)
+    - [Lab - Creating an Azure storage account](#lab---creating-an-azure-storage-account)
+    - [Azure Blob service](#azure-blob-service)
+    - [Lab - Blob service - Uploading a blob](#lab---blob-service---uploading-a-blob)
+    - [Lab - Blob service - Accessing the blob](#lab---blob-service---accessing-the-blob)
+    - [Azure Storage Accounts - Different authorization techniques](#azure-storage-accounts---different-authorization-techniques)
+    - [Lab - Using Azure Storage Explorer](#lab---using-azure-storage-explorer)
+    - [Lab - Using Access keys](#lab---using-access-keys)
+    - [Lab - Shared Access Signatures - At the Blob level](#lab---shared-access-signatures---at-the-blob-level)
+    - [Lab - Shared Access Signatures - At the Storage Account Level](#lab---shared-access-signatures---at-the-storage-account-level)
+    - [Lab - Azure Storage Accounts - Stored Access Policy](#lab---azure-storage-accounts---stored-access-policy)
+    - [Note on different types of Shares Access Signatures](#note-on-different-types-of-shares-access-signatures)
+    - [Lab - Azure Storage Accounts - Azure AD Authentication](#lab---azure-storage-accounts---azure-ad-authentication)
+    - [Azure Storage Accounts - Authorization techniques review](#azure-storage-accounts---authorization-techniques-review)
+    - [Storage Accounts - Access Tiers](#storage-accounts---access-tiers)
+    - [Lab - Hot and the Cool Access Tier](#lab---hot-and-the-cool-access-tier)
+    - [Lab - Storage Accounts - Archive Access Tier](#lab---storage-accounts---archive-access-tier)
+    - [Lifecycle Management Policies](#lifecycle-management-policies)
+    - [Note on the rehydrate time](#note-on-the-rehydrate-time)
+    - [Blob Versioning](#blob-versioning)
+    - [Blob Snapshots](#blob-snapshots)
+    - [Soft Delete](#soft-delete)
+    - [Lab - .NET - Creating a container](#lab---net---creating-a-container)
+    - [Lab - .NET - Uploading a Blob](#lab---net---uploading-a-blob)
+    - [Lab - .NET - List Blobs](#lab---net---list-blobs)
+    - [Lab - .NET - Downloading a Blob](#lab---net---downloading-a-blob)
+    - [Lab - .NET - Blob Metadata](#lab---net---blob-metadata)
+    - [Lab - .NET - Blob lease](#lab---net---blob-lease)
+    - [Lab - AzCopy Tool](#lab---azcopy-tool)
+    - [Moving a storage account to another region](#moving-a-storage-account-to-another-region)
+    - [Assignment 1: Assignment – AzCopy Tool](#assignment-1-assignment--azcopy-tool)
+    - [Lab - Azure Blob - Change Feed](#lab---azure-blob---change-feed)
+    - [What is Azure Table Storage](#what-is-azure-table-storage)
+    - [Elements of Azure Table Storage](#elements-of-azure-table-storage)
+    - [Lab - Azure Table Storage](#lab---azure-table-storage)
+    - [Lab - .NET - Azure Table Storage - Add Entity](#lab---net---azure-table-storage---add-entity)
+    - [Lab - .NET - Azure Table Storage - Reading Entities](#lab---net---azure-table-storage---reading-entities)
+    - [Lab - .NET - Azure Table Storage - Deleting Entities](#lab---net---azure-table-storage---deleting-entities)
+    - [Assignment 2: Assignment – Azure Blob – Updating a Table Entity](#assignment-2-assignment--azure-blob--updating-a-table-entity)
+    - [Quiz 6: Short Quiz](#quiz-6-short-quiz)
+
+<!-- /TOC -->
+
 # Section 7: Develop for Azure Storage - Azure Storage Accounts
 
-## 107. What are Azure Storage Accounts
+## What are Azure Storage Accounts
 
 Azure Storage Accounts
 
@@ -11,14 +58,14 @@ provides storage in the cloud
 * **Queue** - storing Queues, used for sending and receiving messages
 * **File** - used for creating shares
 
-## 108. Different types of storage accounts
+## Different types of storage accounts
 
 * Standard General Purpose = standard file shares, queues, and tables
 * Premium block blobs = block and append blobs. Fast access, hight transaction rates
 * Premium page blobs = page blobs. Storing virtual hard disks for Azure VMs, fast access, hight transaction rates
 * Premium file shares = access files, hight transaction rates.
 
-## 109. Lab - Creating an Azure storage account
+## Lab - Creating an Azure storage account
 
 All Resources -> Create a resource -> Storage account
 
@@ -44,7 +91,7 @@ Data storage:
 * Queues
 * Tables
 
-## 110. Azure Blob service
+## Azure Blob service
 
 Blob Service - optimized for storing large amounts of unstructured data
 
@@ -58,7 +105,7 @@ Each of file is object = has unique URL, as a part of service.
 
 * page blobs
 
-## 111. Lab - Blob service - Uploading a blob
+## Lab - Blob service - Uploading a blob
 
 Container - Create - Upload
 
@@ -66,7 +113,7 @@ Upload - Advanced - Upload to folder (it will create a folder)
 
 BUT if you want to have **a folder structure in place = use Data Lake Storage Gen2 (DLS Gen2)**
 
-## 112. Lab - Blob service - Accessing the blob
+## Lab - Blob service - Accessing the blob
 
 Logged as admin - can download
 
@@ -114,7 +161,7 @@ NOT secure way to give access
 if change ACL to Public read access for blobs only
 => can access this file anonymously
 
-## 113. Azure Storage Accounts - Different authorization techniques
+## Azure Storage Accounts - Different authorization techniques
 
 There is various ways to authorize as a user or application:
 
@@ -122,7 +169,7 @@ There is various ways to authorize as a user or application:
 * Shared Access Signatures
 * Azure Active Directory
 
-## 114. Lab - Using Azure Storage Explorer
+## Lab - Using Azure Storage Explorer
 
 <https://azure.microsoft.com/en-us/products/storage/storage-explorer/>
 
@@ -161,7 +208,7 @@ $env:AZCOPY_CRED_TYPE = "";
 
 ```
 
-## 115. Lab - Using Access keys
+## Lab - Using Access keys
 
 stacc10001 | Access keys
 
@@ -174,7 +221,7 @@ User has no Azure account
 
 Connect Dialog -> Storage account or service -> Account name and key -> Connect
 
-## 116. Lab - Shared Access Signatures - At the Blob level
+## Lab - Shared Access Signatures - At the Blob level
 
 Shared Access Signatures set at the blob level
 
@@ -194,7 +241,7 @@ Generate **Blob SAS token** and **Blog SAS URL**
 
 Another object cannot be accessed
 
-## 117. Lab - Shared Access Signatures - At the Storage Account Level
+## Lab - Shared Access Signatures - At the Storage Account Level
 
 stacc10001 | Shared access signature
 
@@ -239,61 +286,63 @@ Cannot upload: Failed to start transfer: Insufficient credentials.
 
 because we set up just List/Read access
 
-## 118. Lab - Azure Storage Accounts - Stored Access Policy
+## Lab - Azure Storage Accounts - Stored Access Policy
 
-## 119. Note on different types of Shares Access Signatures
 
-## 120. Lab - Azure Storage Accounts - Azure AD Authentication
 
-## 121. Azure Storage Accounts - Authorization techniques review
+## Note on different types of Shares Access Signatures
 
-## 122. Storage Accounts - Access Tiers
+## Lab - Azure Storage Accounts - Azure AD Authentication
 
-## 123. Lab - Hot and the Cool Access Tier
+## Azure Storage Accounts - Authorization techniques review
 
-## 124. Lab - Storage Accounts - Archive Access Tier
+## Storage Accounts - Access Tiers
 
-## 125. Lifecycle Management Policies
+## Lab - Hot and the Cool Access Tier
 
-## 126. Note on the rehydrate time
+## Lab - Storage Accounts - Archive Access Tier
 
-## 127. Blob Versioning
+## Lifecycle Management Policies
 
-## 128. Blob Snapshots
+## Note on the rehydrate time
 
-## 129. Soft Delete
+## Blob Versioning
 
-## 130. Lab - .NET - Creating a container
+## Blob Snapshots
 
-## 131. Lab - .NET - Uploading a Blob
+## Soft Delete
 
-## 132. Lab - .NET - List Blobs
+## Lab - .NET - Creating a container
 
-## 133. Lab - .NET - Downloading a Blob
+## Lab - .NET - Uploading a Blob
 
-## 134. Lab - .NET - Blob Metadata
+## Lab - .NET - List Blobs
 
-## 135. Lab - .NET - Blob lease
+## Lab - .NET - Downloading a Blob
 
-## 136. Lab - AzCopy Tool
+## Lab - .NET - Blob Metadata
 
-## 137. Moving a storage account to another region
+## Lab - .NET - Blob lease
+
+## Lab - AzCopy Tool
+
+## Moving a storage account to another region
 
 ## Assignment 1: Assignment – AzCopy Tool
 
-## 138. Lab - Azure Blob - Change Feed
+## Lab - Azure Blob - Change Feed
 
-## 139. What is Azure Table Storage
+## What is Azure Table Storage
 
-## 140. Elements of Azure Table Storage
+## Elements of Azure Table Storage
 
-## 141. Lab - Azure Table Storage
+## Lab - Azure Table Storage
 
-## 142. Lab - .NET - Azure Table Storage - Add Entity
+## Lab - .NET - Azure Table Storage - Add Entity
 
-## 143. Lab - .NET - Azure Table Storage - Reading Entities
+## Lab - .NET - Azure Table Storage - Reading Entities
 
-## 144. Lab - .NET - Azure Table Storage - Deleting Entities
+## Lab - .NET - Azure Table Storage - Deleting Entities
 
 ## Assignment 2: Assignment – Azure Blob – Updating a Table Entity
 
