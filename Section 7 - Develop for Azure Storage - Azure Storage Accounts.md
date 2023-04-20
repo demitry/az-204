@@ -1,3 +1,50 @@
+<!-- TOC -->
+
+- [Section 7: Develop for Azure Storage - Azure Storage Accounts](#section-7-develop-for-azure-storage---azure-storage-accounts)
+    - [What are Azure Storage Accounts](#what-are-azure-storage-accounts)
+    - [Different types of storage accounts](#different-types-of-storage-accounts)
+    - [Lab - Creating an Azure storage account](#lab---creating-an-azure-storage-account)
+    - [Azure Blob service](#azure-blob-service)
+    - [Lab - Blob service - Uploading a blob](#lab---blob-service---uploading-a-blob)
+    - [Lab - Blob service - Accessing the blob](#lab---blob-service---accessing-the-blob)
+    - [Azure Storage Accounts - Different authorization techniques](#azure-storage-accounts---different-authorization-techniques)
+    - [Lab - Using Azure Storage Explorer](#lab---using-azure-storage-explorer)
+    - [Lab - Using Access keys](#lab---using-access-keys)
+    - [Lab - Shared Access Signatures - At the Blob level](#lab---shared-access-signatures---at-the-blob-level)
+    - [Lab - Shared Access Signatures - At the Storage Account Level](#lab---shared-access-signatures---at-the-storage-account-level)
+    - [Lab - Azure Storage Accounts - Stored Access Policy](#lab---azure-storage-accounts---stored-access-policy)
+    - [Note on different types of Shares Access Signatures](#note-on-different-types-of-shares-access-signatures)
+    - [Lab - Azure Storage Accounts - Azure AD Authentication](#lab---azure-storage-accounts---azure-ad-authentication)
+    - [Azure Storage Accounts - Authorization techniques review](#azure-storage-accounts---authorization-techniques-review)
+    - [Storage Accounts - Access Tiers](#storage-accounts---access-tiers)
+    - [Lab - Hot and the Cool Access Tier](#lab---hot-and-the-cool-access-tier)
+    - [Lab - Storage Accounts - Archive Access Tier](#lab---storage-accounts---archive-access-tier)
+    - [Lifecycle Management Policies](#lifecycle-management-policies)
+    - [Note on the rehydrate time](#note-on-the-rehydrate-time)
+    - [Blob Versioning](#blob-versioning)
+    - [Blob Snapshots](#blob-snapshots)
+    - [Soft Delete](#soft-delete)
+    - [Lab - .NET - Creating a container](#lab---net---creating-a-container)
+    - [Lab - .NET - Uploading a Blob](#lab---net---uploading-a-blob)
+    - [Lab - .NET - List Blobs](#lab---net---list-blobs)
+    - [Lab - .NET - Downloading a Blob](#lab---net---downloading-a-blob)
+    - [Lab - .NET - Blob Metadata](#lab---net---blob-metadata)
+    - [Lab - .NET - Blob lease](#lab---net---blob-lease)
+    - [Lab - AzCopy Tool](#lab---azcopy-tool)
+    - [Moving a storage account to another region](#moving-a-storage-account-to-another-region)
+    - [Assignment 1: Assignment – AzCopy Tool](#assignment-1-assignment--azcopy-tool)
+    - [Lab - Azure Blob - Change Feed](#lab---azure-blob---change-feed)
+    - [What is Azure Table Storage](#what-is-azure-table-storage)
+    - [Elements of Azure Table Storage](#elements-of-azure-table-storage)
+    - [Lab - Azure Table Storage](#lab---azure-table-storage)
+    - [Lab - .NET - Azure Table Storage - Add Entity](#lab---net---azure-table-storage---add-entity)
+    - [Lab - .NET - Azure Table Storage - Reading Entities](#lab---net---azure-table-storage---reading-entities)
+    - [Lab - .NET - Azure Table Storage - Deleting Entities](#lab---net---azure-table-storage---deleting-entities)
+    - [Assignment 2: Assignment – Azure Blob – Updating a Table Entity](#assignment-2-assignment--azure-blob--updating-a-table-entity)
+    - [Quiz 6: Short Quiz](#quiz-6-short-quiz)
+
+<!-- /TOC -->
+
 # Section 7: Develop for Azure Storage - Azure Storage Accounts
 
 ## 107. What are Azure Storage Accounts
@@ -138,7 +185,6 @@ Solution:
 
 MRayermannMSFT commented on May 26, 2022
 @mrw3050 do you have any other tenants listed? They would be at the same logical level as the "Microsoft account (home tenant)". If so, is it possible your subscription is in one of those tenants? **If so, please click on the checkboxes for those tenants.**
-
 Create storage simple
 
 Upload, Delete, you can **Copy Command**
