@@ -601,6 +601,27 @@ What if you wants to **take a snapshot of very important 1 blob in time**? => **
 
 ## Soft Delete
 
+- **Retention**: period 1-365 days
+- **Availability**: Depending on retention period, the data could be available after deletion or after overwriting 
+- **Restore**: During the retention period, can restore blobs and snapshots
+- **Change**: Change the soft delete retention period at any time
+
+stacc10001 | Data protection
+
+Enable soft delete for containers - enabled by default
+
+Soft delete enables you to recover blobs that were previously marked for deletion, including blobs that were overwritten.Learn more
+Keep deleted blobs for (in days)
+
+7 days (by default)
+
+blob -> MySqlScript -> delete, also del snapshots
+
+Button: Show deleted blobs
+
+blob "..." menu -> Undelete
+
+
 ## Lab - .NET - Creating a container
 
 ## Lab - .NET - Uploading a Blob
