@@ -1,5 +1,7 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using System.Reflection.Metadata;
 
 // cn from stacc10001 | Access key
 
@@ -57,3 +59,66 @@ await blobClient2.DownloadToAsync(filePathToDownload);
 // Directory.CreateDirectory = Creates all directories and subdirectories in the specified path unless they already exist.
 
 Console.WriteLine("Blob was downloaded");
+
+await BlobHelper.AddBlobMetadataAsync(blobClient2);
+
+Console.WriteLine($"Some metadata was added to {containerName} -> {blobName}");
+
+await BlobHelper.ReadBlobMetadataAsync(blobClient2);
+
+
+public static class BlobHelper
+{
+    public static async Task AddBlobMetadataAsync(BlobClient blob)
+    {
+        Console.WriteLine("Adding blob metadata...");
+
+        try
+        {
+            IDictionary<string, string> metadata =
+               new Dictionary<string, string>();
+
+            // Add metadata to the dictionary by calling the Add method
+            metadata.Add("docType", "textDocuments");
+
+            // Add metadata to the dictionary by using key/value syntax
+            metadata["category"] = "guidance";
+
+            metadata["Department"] = "Logistics";
+
+            // Set the blob's metadata.
+            await blob.SetMetadataAsync(metadata);
+        }
+        catch (RequestFailedException e)
+        {
+            Console.WriteLine($"HTTP error code {e.Status}: {e.ErrorCode}");
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+        }
+    }
+
+    public static async Task ReadBlobMetadataAsync(BlobClient blob)
+    {
+        try
+        {
+            // Get the blob's properties and metadata.
+            BlobProperties properties = await blob.GetPropertiesAsync();
+
+            Console.WriteLine("Blob metadata:");
+
+            // Enumerate the blob's metadata.
+            foreach (var metadataItem in properties.Metadata)
+            {
+                Console.WriteLine($"\tKey: {metadataItem.Key}");
+                Console.WriteLine($"\tValue: {metadataItem.Value}");
+            }
+        }
+        catch (RequestFailedException e)
+        {
+            Console.WriteLine($"HTTP error code {e.Status}: {e.ErrorCode}");
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+        }
+    }
+}
+
