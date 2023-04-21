@@ -484,6 +484,47 @@ rehydrate priority: Standard or High
 
 ## Lifecycle Management Policies
 
+Based on lifecycle management rules - change the access tier, or even delete the object.
+
+Define:
+
+- Rule filters - for blobTypes - blockBlob, appendBlob
+- Rule Actions - tierToCool, tierToArchive and delete
+- Ru les are supported for blob and append blobs in General Purpose V2 accounts, Premium and Blob Storage accounts
+- All regions are supported
+
+stacc10001 | Lifecycle management
+
+Add Rule ... Last modified ... more than 30 days Then move to cool access tier
+
+Code Rule:
+
+```json
+{
+  "rules": [
+    {
+      "enabled": true,
+      "name": "RuleA",
+      "type": "Lifecycle",
+      "definition": {
+        "actions": {
+          "baseBlob": {
+            "tierToCool": {
+              "daysAfterModificationGreaterThan": 30
+            }
+          }
+        },
+        "filters": {
+          "blobTypes": [
+            "blockBlob"
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+
 ## Note on the rehydrate time
 
 ## Blob Versioning
