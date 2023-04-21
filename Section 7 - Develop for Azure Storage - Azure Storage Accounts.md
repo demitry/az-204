@@ -51,6 +51,13 @@
 
 <!-- /TOC -->
 
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+</style>
+
+
 # Section 7: Develop for Azure Storage - Azure Storage Accounts
 
 ## What are Azure Storage Accounts
@@ -527,9 +534,70 @@ Code Rule:
 
 ## Note on the rehydrate time
 
+**Rehydration priority**
+
+When you rehydrate a blob, you can set the priority for the rehydration operation via the optional x-ms-rehydrate-priority header on a Set Blob Tier or Copy Blob operation. 
+
+Rehydration priority options:
+
+- **Standard priority**: The rehydration request will be processed in the order it was received and may take up to <r>**15 hours**</r> to complete for objects under **10 GB in size**.
+
+- **High priority**: The rehydration request will be prioritized over standard priority requests and may complete in <r>less than one hour</r> for objects under 10 GB in size.
+
 ## Blob Versioning
 
+- Versions: maintain previous versions of blobs
+- Restore: restore old versions
+- Version ID: new ver is set whenever blob is updated
+- Feature Enable/Disable: at any point in time
+
+stacc10001 | Data protection
+
+Check
+
+Enable versioning for blobs
+
+Use versioning to automatically maintain previous versions of your blobs. Learn more
+
+Consider your workloads, their impact on the number of versions created, and the resulting costs. Optimize costs by automatically managing the data lifecycle. Learn more
+
+Save
+
+Containers, Object - Edit - Save, Edit, Save 
+
+Versions
+
+- Download
+- Delete
+- Make Current Version
+
+```
+2023-04-21T13:11:38.2843079Z
+2023-04-21T13:10:32.9255080Z
+2023-04-21T13:08:26.7892447Z
+2023-04-21T13:07:12.3635830Z
+...
+```
+
+stacc10001 | Data protection - Disable versioning
+
+goto our container - versions are still here! (for this particular blob)
+
 ## Blob Snapshots
+
+obj - Create snapshot
+
+Delete, download, Promote a snapshot (make it current)
+
+Edit, save, Promote a snapshot.
+
+Q: What the difference between versions and snapshots?
+
+A:
+
+**Versions** will be created **for all blobs in storage accounts**. A lot of blobs -> **Impact on cost**.
+
+What if you wants to **take a snapshot of very important 1 blob in time**? => **Use Snapshots**
 
 ## Soft Delete
 
