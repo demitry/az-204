@@ -16,6 +16,9 @@
     - [Note on different types of Shares Access Signatures](#note-on-different-types-of-shares-access-signatures)
     - [Lab - Azure Storage Accounts - Azure AD Authentication](#lab---azure-storage-accounts---azure-ad-authentication)
     - [Azure Storage Accounts - Authorization techniques review](#azure-storage-accounts---authorization-techniques-review)
+        - [AD = the most secure](#ad--the-most-secure)
+        - [Cannot use AD? -> use SAS](#cannot-use-ad---use-sas)
+        - [Finally - use access keys](#finally---use-access-keys)
     - [Storage Accounts - Access Tiers](#storage-accounts---access-tiers)
     - [Lab - Hot and the Cool Access Tier](#lab---hot-and-the-cool-access-tier)
     - [Lab - Storage Accounts - Archive Access Tier](#lab---storage-accounts---archive-access-tier)
@@ -343,7 +346,7 @@ A SAS that's **secured with Azure AD credentials** is called a **user delegation
 
 ## Lab - Azure Storage Accounts - Azure AD Authentication
 
-**Probably the most sequre way to access storage account**
+**Probably the most secure way to access storage account**
 
 Azure Active Directory Authentication
 
@@ -390,9 +393,29 @@ but transfer is OK
 Transfer of 'E:\MUSIC\...\cover.jpg' to 'data/' complete: 1 item transferred (used SAS, discovery completed)
 Started at: 4/21/2023 1:56 PM, Duration: 4 seconds
 
-**Probably the most sequre way to access storage account**
+**Probably the most secure way to access storage account**
 
 ## Azure Storage Accounts - Authorization techniques review
+
+Azure AD - Probably the most secure way to access storage account
+
+BUT in some cases you cannot add user
+
+Need Audit and cannot add guest users to AD due to security policies?
+
+=> Generate SAS (Shared Access Signature)
+
+Audit people require temporary access to the data, (1 day, 2 weeks), so use SAS
+
+Normally, giving Access keys - is NOT a good approach - it is last way to do authentication
+
+Decision making:
+
+### AD = the most secure
+
+### Cannot use AD? -> use SAS
+
+### Finally - use access keys
 
 ## Storage Accounts - Access Tiers
 
