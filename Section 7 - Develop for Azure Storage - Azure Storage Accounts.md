@@ -20,6 +20,9 @@
         - [Cannot use AD? -> use SAS](#cannot-use-ad---use-sas)
         - [Finally - use access keys](#finally---use-access-keys)
     - [Storage Accounts - Access Tiers](#storage-accounts---access-tiers)
+        - [Hot tier default - accessed frequently, highest storage costs, but the lowest access costs](#hot-tier-default---accessed-frequently-highest-storage-costs-but-the-lowest-access-costs)
+        - [Cool tier - infrequently accessed. min 30 days. lower storage costs and higher access costs compared to the hot tier](#cool-tier---infrequently-accessed-min-30-days-lower-storage-costs-and-higher-access-costs-compared-to-the-hot-tier)
+        - [Archive tier - rarely accessed, flexible latency requirements. minimum 180 days](#archive-tier---rarely-accessed-flexible-latency-requirements-minimum-180-days)
     - [Lab - Hot and the Cool Access Tier](#lab---hot-and-the-cool-access-tier)
     - [Lab - Storage Accounts - Archive Access Tier](#lab---storage-accounts---archive-access-tier)
     - [Lifecycle Management Policies](#lifecycle-management-policies)
@@ -419,9 +422,65 @@ Decision making:
 
 ## Storage Accounts - Access Tiers
 
+### Hot tier (default) - accessed frequently, highest storage costs, but the lowest access costs
+
+### Cool tier - infrequently accessed. min 30 days. lower storage costs and higher access costs compared to the hot tier
+
+### Archive tier - rarely accessed, flexible latency requirements. minimum 180 days
+
+Azure Storage access tiers include:
+
+- Cool tier - infrequently accessed. min 30 days. lower storage costs and higher access costs compared to the hot tier
+- Archive tier - rarely accessed, flexible latency requirements. minimum 180 days
+- Hot tier (default) - accessed frequently, highest storage costs, but the lowest access costs
+
 ## Lab - Hot and the Cool Access Tier
 
+stacc10001 | Configuration
+
+Blob access tier (default)
+
+- Cool
+- Hot (default)
+
+this setting is for blob storage accounts
+
+stacc10001 | Containers -> data - Access tier is hot for all
+
+if you create st acc, New St Acc -> Advanced
+
+Blob storage
+Access tier
+- **Hot**: Frequently accessed data and day-to-day usage scenarios
+- **Cool**: Infrequently accessed data and backup scenarios
+
+**Archived could be set on the blob level**
+
+stacc10001 | Configuration -> Change to Cool -> Save
+
+for all items in blob the Access tier is cool
+
+storage price ↓ and access price ↑
+
 ## Lab - Storage Accounts - Archive Access Tier
+
+blob object -> Change tier -> Archive
+
+Setting the access tier to "Archive" will make your blob inaccessible until it is rehydrated back to "Hot" or "Cool", which may take several hours.
+
+Save
+
+This blob is currently archived and can't be downloaded. Rehydrate the blob by copying and pasting it in the desired storage account to download or change the blob’s tier to hot or cool.
+
+storage cost - is the min
+
+archive process could take time
+
+cannot download
+
+**rehydrate** back to "Hot" or "Cool" - Change Tier
+
+rehydrate priority: Standard or High
 
 ## Lifecycle Management Policies
 
