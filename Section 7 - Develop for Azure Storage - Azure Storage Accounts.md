@@ -343,6 +343,55 @@ A SAS that's **secured with Azure AD credentials** is called a **user delegation
 
 ## Lab - Azure Storage Accounts - Azure AD Authentication
 
+**Probably the most sequre way to access storage account**
+
+Azure Active Directory Authentication
+
+Give access to resources
+
+Azure Active Directory -> Users -> Create new user
+
+storageusr
+
+storageusr@dpoluektovgmail.onmicrosoft.com
+
+Password: create temp pass, according to AD password policy it is required to change it on the first login
+
+user storageusr@dpoluektovgmail.onmicrosoft.com = principal id
+
+Storage explorer -> <del>Add Account</del>  Sign in with Azure...
+
+Subscription -> Azure -> login
+
+Tempazure1! -> newpassword
+
+stacc10001 | Access Control (IAM) -> Add role assignment -> Role ->
+
+Storage Account Contributor
+Lets you manage storage accounts, including accessing storage account keys which provide full access to storage account data.
+
+Next
+
+Select Members -> storageusr -> Select
+
+Review and Assign
+
+**It is role-based access control**
+
+stacc10001 | Access Control (IAM) -> Role assignments - check role assignments for users
+
+Now you can see storage accounts in Storage Explorer for our storage user
+
+try upload
+Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature. RequestId:a2ecc3d3-f01e-003b-303f-74ac96000000 Time:2023-04-21T10:55:11.1262489Z
+Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature. RequestId:f392f0c6-201e-005f-273f-741c36000000 Time:2023-04-21T10:56:24.1475608Z
+
+but transfer is OK
+Transfer of 'E:\MUSIC\...\cover.jpg' to 'data/' complete: 1 item transferred (used SAS, discovery completed)
+Started at: 4/21/2023 1:56 PM, Duration: 4 seconds
+
+**Probably the most sequre way to access storage account**
+
 ## Azure Storage Accounts - Authorization techniques review
 
 ## Storage Accounts - Access Tiers
