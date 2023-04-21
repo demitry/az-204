@@ -621,14 +621,54 @@ Button: Show deleted blobs
 
 blob "..." menu -> Undelete
 
-
 ## Lab - .NET - Creating a container
+
+```csharp
+BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+await blobServiceClient.CreateBlobContainerAsync(containerName, PublicAccessType.Blob);
+```
 
 ## Lab - .NET - Uploading a Blob
 
+```csharp
+string blobName = "script.sql";
+string filePath = $"f:\\aztmp\\{blobName}";
+
+BlobContainerClient blobContainerClient = new BlobContainerClient(connectionString, containerName);
+
+BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
+
+await blobClient.UploadAsync(filePath, overwrite: true);
+
+Console.WriteLine($"Uploaded blob {blobName} to the container{containerName}");
+```
+
 ## Lab - .NET - List Blobs
 
+```csharp
+string ctName = "data";
+
+BlobContainerClient blobContainerClientForListing = new BlobContainerClient(connectionString, ctName);
+Console.WriteLine($"Blobs in {ctName} container:");
+
+await foreach (BlobItem blobItem in blobContainerClientForListing.GetBlobsAsync())
+{
+    Console.WriteLine($"Blob name: {blobItem.Name}, Size: {blobItem.Properties.ContentLength} bytes, Tier: {blobItem.Properties.AccessTier}");
+}
+
+```
+
 ## Lab - .NET - Downloading a Blob
+
+```csharp
+string directory = $"f:\\aztmp\\download-{containerName}\\";
+string filePathToDownload = $"{directory}{blobName}";
+
+BlobClient blobClient2 = new BlobClient(connectionString, containerName, blobName);
+
+Directory.CreateDirectory(directory);
+await blobClient2.DownloadToAsync(filePathToDownload);
+```
 
 ## Lab - .NET - Blob Metadata
 
