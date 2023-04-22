@@ -1,12 +1,34 @@
+<!-- TOC -->
+
+- [Section 4: Develop Azure compute solutions - Azure Functions](#section-4-develop-azure-compute-solutions---azure-functions)
+    - [What are we going to cover](#what-are-we-going-to-cover)
+    - [What are Azure Function Apps](#what-are-azure-function-apps)
+    - [Lab - Azure Function Apps](#lab---azure-function-apps)
+        - [Create Function App service](#create-function-app-service)
+    - [Inspecting a HTTP Trigger-based function](#inspecting-a-http-trigger-based-function)
+        - [Templates:](#templates)
+    - [DemoHttpTrigger](#demohttptrigger)
+    - [Lab - Azure Functions - Azure SQL database - GET Products](#lab---azure-functions---azure-sql-database---get-products)
+    - [Publishing the Function to Azure](#publishing-the-function-to-azure)
+    - [Lab - Azure Functions - Azure SQL database - GET Product by id](#lab---azure-functions---azure-sql-database---get-product-by-id)
+    - [Lab - Azure Functions - Azure SQL database - POST Adding a method](#lab---azure-functions---azure-sql-database---post-adding-a-method)
+    - [Using the POSTMAN Tool](#using-the-postman-tool)
+    - [Using Connection Strings](#using-connection-strings)
+    - [Calling an Azure Function from a web app](#calling-an-azure-function-from-a-web-app)
+    - [There is more we need to cover](#there-is-more-we-need-to-cover)
+    - [Quiz 3: Short Quiz](#quiz-3-short-quiz)
+
+<!-- /TOC -->
+
 # Section 4: Develop Azure compute solutions - Azure Functions
 
-## 50. What are we going to cover
+## What are we going to cover
 
-## 51. What are Azure Function Apps
+## What are Azure Function Apps
 
 Completely managed service, no need to maintain infrastructure
 
-## 52. Lab - Azure Function Apps
+## Lab - Azure Function Apps
 
 ### Create Function App (service)
 
@@ -29,7 +51,7 @@ Event based scaling and network isolation, ideal for workloads running continuou
 * App service plan (Not supported for selected subscription)
 Fully isolated and dedicated environment suitable for workloads that need large SKUs or need to co-locate Web Apps and Functions.
 
-## 53. Inspecting a HTTP Trigger-based function
+## Inspecting a HTTP Trigger-based function
 
 appfunction1100 | Functions
 
@@ -243,7 +265,7 @@ Trigger from anywhere:
 
 <https://functionapp1100.azurewebsites.net/api/DemoHttpTrigger?code=DdRDJD2Orofa6OGlFUl53np5I8zpweQY2DfwV7ssLiPsAzFu3nLxQA==&name=John%20Doe>
 
-## 54. Lab - Azure Functions - Azure SQL database - GET Products
+## Lab - Azure Functions - Azure SQL database - GET Products
 
 GetProduct function in VS
 
@@ -271,7 +293,7 @@ http://localhost:7071/api/GetProduct
 [{"id":1,"productName":"Mobile","quantity":100},{"id":2,"productName":"Laptop","quantity":200},{"id":3,"productName":"Tabs","quantity":300}]
 ```
 
-## 55. Publishing the Function to Azure
+## Publishing the Function to Azure
 
 publish
 
@@ -316,7 +338,7 @@ https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcb
 [{"id":1,"productName":"Mobile","quantity":100},{"id":2,"productName":"Laptop","quantity":200},{"id":3,"productName":"Tabs","quantity":300}]
 ```
 
-## 56. Lab - Azure Functions - Azure SQL database - GET Product by id
+## Lab - Azure Functions - Azure SQL database - GET Product by id
 http://localhost:7071/api/GetProduct?id=1
 
 ```csharp
@@ -362,7 +384,7 @@ https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcb
 
 {"id":1,"productName":"Mobile","quantity":100}
 
-## 57. Lab - Azure Functions - Azure SQL database - POST Adding a method
+## Lab - Azure Functions - Azure SQL database - POST Adding a method
 
 ```csharp
     public static class AddProduct
@@ -406,9 +428,9 @@ https://functionapp1100.azurewebsites.net/api/GetProduct?code=_PgkuLEAPOs6PEFpcb
 
 Product has been added
 
-## 58. Using the POSTMAN Tool
+## Using the POSTMAN Tool
 
-## 59. Using Connection Strings
+## Using Connection Strings
 
 ```csharp
         public static SqlConnection GetConnection()
@@ -432,7 +454,7 @@ Env var prefixed:
 
 * PostgreSQL: POSTGRESQLCONNSTR_
 
-## 60. Calling an Azure Function from a web app
+## Calling an Azure Function from a web app
 
 in sql app:
 
@@ -470,6 +492,6 @@ in Azure functions:
     return new OkObjectResult(JsonConvert.SerializeObject(products));
 ```
 
-## 61. There is more we need to cover
+## There is more we need to cover
 
 ## Quiz 3: Short Quiz

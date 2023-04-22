@@ -1,10 +1,32 @@
-# AZ-204: Developing Solutions for Microsoft Azure - NEW (Udemy, Alan Rodrigues)
+<!-- TOC -->
 
-## Section 2: Develop Azure compute solutions - Azure Virtual Machines
+- [Section 2: Develop Azure compute solutions - Azure Virtual Machines](#section-2-develop-azure-compute-solutions---azure-virtual-machines)
+    - [Building a simple project locally](#building-a-simple-project-locally)
+    - [What goes into the deployment of a virtual machine](#what-goes-into-the-deployment-of-a-virtual-machine)
+    - [Lab - Building a Windows virtual machine](#lab---building-a-windows-virtual-machine)
+    - [Connecting to the Virtual Machine](#connecting-to-the-virtual-machine)
+    - [Lab - Installing Internet Information Services](#lab---installing-internet-information-services)
+    - [Lab - Deploying a .NET Core app on Windows Server](#lab---deploying-a-net-core-app-on-windows-server)
+        - [Step 1: Assign a DNS name to the VM](#step-1-assign-a-dns-name-to-the-vm)
+        - [Step 2: Add a rule for the port 8172 to the Network Security Group open WebDeploy port 8172 on Azure](#step-2-add-a-rule-for-the-port-8172-to-the-network-security-group-open-webdeploy-port-8172-on-azure)
+        - [Step 3: Add the role of the Management Service on the VM](#step-3-add-the-role-of-the-management-service-on-the-vm)
+        - [Step 4: Check the configuration of the management service in IIS](#step-4-check-the-configuration-of-the-management-service-in-iis)
+        - [Step 5: Install the .NET Core Hosting Bundle. This allows .NET apps to be hosted on IIS](#step-5-install-the-net-core-hosting-bundle-this-allows-net-apps-to-be-hosted-on-iis)
+        - [Step 6: Install the Web Deploy v3.6 tool](#step-6-install-the-web-deploy-v36-tool)
+    - [Lab - Building a Linux VM](#lab---building-a-linux-vm)
+    - [Deploying our .NET App on the Linux VM](#deploying-our-net-app-on-the-linux-vm)
+    - [Using NGINX on the Linux VM](#using-nginx-on-the-linux-vm)
+    - [Keeping a check on the cost of your resources](#keeping-a-check-on-the-cost-of-your-resources)
+    - [Quick Note](#quick-note)
 
-### 13. Building a simple project locally
+<!-- /TOC -->
 
-### 14. What goes into the deployment of a virtual machine
+# Section 2: Develop Azure compute solutions - Azure Virtual Machines
+AZ-204: Developing Solutions for Microsoft Azure - NEW (Udemy, Alan Rodrigues)
+
+## Building a simple project locally
+
+## What goes into the deployment of a virtual machine
 
 1) Any resource - part of Azure Subscription. Subscription is used for billing purposes.
 
@@ -14,7 +36,7 @@
 
 4) VM - part of virtual network, has public IP address
 
-### 15. Lab - Building a Windows virtual machine
+## Lab - Building a Windows virtual machine
 
 VS -> Run as administrator, (why?) .NET Core Sample App
 
@@ -28,11 +50,11 @@ Resource group - logical grouping of resources
 
 All resources
 
-### 16. Connecting to the Virtual Machine
+## Connecting to the Virtual Machine
 
 Download RDP file and login
 
-### 17. Lab - Installing Internet Information Services
+## Lab - Installing Internet Information Services
 
 Install IIS = Host our app
 
@@ -68,7 +90,7 @@ AZ 104 Administration
 
 <http://13.81.85.54/> - OK IIS page
 
-### 18. Lab - Deploying a .NET Core app on Windows Server
+## Lab - Deploying a .NET Core app on Windows Server
 
 VS -> Tools -> Options -> Azure Account -> OK
 
@@ -90,23 +112,23 @@ Publish Succeeded.
 
 Web App was published successfully <http://appvm100.westeurope.cloudapp.azure.com/>
 
-#### Step 1: Assign a DNS name to the VM
+### Step 1: Assign a DNS name to the VM
 
 appvm -> Overview -> DNS Name: (appvm100) appvm100.westeurope.cloudapp.azure.com
 
 Save -> OK, available from browser appvm100.westeurope.cloudapp.azure.com
 
-#### Step 2: Add a rule for the port 8172 to the Network Security Group (open WebDeploy port (8172) on Azure)
+### Step 2: Add a rule for the port 8172 to the Network Security Group (open WebDeploy port (8172) on Azure)
 
 Networking -> Add inbound port rule, 8172, AllowAnyCustom_Port_8172_Inbound
 
-#### Step 3: Add the role of the Management Service on the VM
+### Step 3: Add the role of the Management Service on the VM
 
 VM -> Dashboard -> Add roles and features
 
 Web Server -> Management Tools -> Managements Service -> Next and Finish Install
 
-#### Step 4: Check the configuration of the management service in IIS
+### Step 4: Check the configuration of the management service in IIS
 
 VMs IIS -> appvm -> Managements Service -> Check "Enable remote Connections"
 
@@ -114,7 +136,7 @@ Note that port is 8172
 
 "Apply", "Start" service
 
-#### Step 5: Install the .NET Core Hosting Bundle. This allows .NET apps to be hosted on IIS
+### Step 5: Install the .NET Core Hosting Bundle. This allows .NET apps to be hosted on IIS
 
 App is built under .NET 6.0.0 - the same should be on the VM
 
@@ -136,9 +158,9 @@ Common issue - mismatch between the versions
 
 Download and install Web Deploy v3.6 -> "Complete" install
 
-#### Step 6: Install the Web Deploy v3.6 tool
+### Step 6: Install the Web Deploy v3.6 tool
 
-### 19. Lab - Building a Linux VM
+## Lab - Building a Linux VM
 
 <https://www.putty.org/>
 
@@ -167,7 +189,7 @@ Changed region - it appears.
 
 You have set SSH port(s) open to the internet.  This is only recommended for testing.  If you want to change this setting, go back to Basics tab.  
 
-### 20. Deploying our .NET App on the Linux VM
+## Deploying our .NET App on the Linux VM
 
 Putty -> Public IP address, SSH (22)
 
@@ -400,7 +422,7 @@ curl http://localhost:5000
 
 and get your html page
 
-### 21. Using NGINX on the Linux VM
+## Using NGINX on the Linux VM
 
 1) Publish to a folder (done)
 2) Copy folder to the server (done)
@@ -630,13 +652,12 @@ systemctl status nginx.service
 journalctl -xe
 ```
 
-### 22. Keeping a check on the cost of your resources
+## Keeping a check on the cost of your resources
 
 Delete whole group ar delete resources in a group?
 
-### 23. Quick Note
+## Quick Note
 
 Home -> Cost Management -> Cos analysis -> Custom: Cost Analysis -> Configuration
 
 SDK for development purposes, Runtime for runtime.
-

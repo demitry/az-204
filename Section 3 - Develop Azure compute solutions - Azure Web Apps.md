@@ -1,10 +1,47 @@
+<!-- TOC -->
+
+- [Section 3: Develop Azure compute solutions - Azure Web Apps](#section-3-develop-azure-compute-solutions---azure-web-apps)
+    - [What are we going to cover](#what-are-we-going-to-cover)
+    - [Introduction onto Azure Web Apps](#introduction-onto-azure-web-apps)
+    - [Lab - Azure Web App](#lab---azure-web-app)
+    - [Lab - Publishing from Visual Studio](#lab---publishing-from-visual-studio)
+    - [Lab - Azure SQL Database](#lab---azure-sql-database)
+    - [Populating our database with data](#populating-our-database-with-data)
+    - [Building an Application that connects to the SQL database](#building-an-application-that-connects-to-the-sql-database)
+    - [Publishing to our Azure Web App](#publishing-to-our-azure-web-app)
+    - [Publishing from GitHub](#publishing-from-github)
+    - [Using the Azure Web App connection string](#using-the-azure-web-app-connection-string)
+    - [Using the Azure Web App connection string - Resources](#using-the-azure-web-app-connection-string---resources)
+    - [Azure App Service Logging](#azure-app-service-logging)
+    - [Azure Web Apps - Autoscaling](#azure-web-apps---autoscaling)
+    - [Lab - Auto scaling a web app](#lab---auto-scaling-a-web-app)
+        - [Scale based on a metric](#scale-based-on-a-metric)
+        - [Troubleshoot common Azure deployment errors](#troubleshoot-common-azure-deployment-errors)
+        - [Resolve errors for resource provider registration](#resolve-errors-for-resource-provider-registration)
+        - [My Solution: register microsoft.insights](#my-solution-register-microsoftinsights)
+        - [Help](#help)
+    - [Azure Web Apps - Custom domains](#azure-web-apps---custom-domains)
+    - [Azure Web Apps - SSL](#azure-web-apps---ssl)
+    - [Deployment Slots](#deployment-slots)
+    - [Lab - Deployment Slots](#lab---deployment-slots)
+    - [Deployment slots with databases](#deployment-slots-with-databases)
+    - [Lab - Deployment slots with databases](#lab---deployment-slots-with-databases)
+    - [Azure App Configuration](#azure-app-configuration)
+    - [Lab - Azure App Configuration - Configuration Settings](#lab---azure-app-configuration---configuration-settings)
+    - [Lab - Azure App Configuration - Feature Flags](#lab---azure-app-configuration---feature-flags)
+    - [Note on Controller actions](#note-on-controller-actions)
+        - [Tutorial: Use feature flags in an ASP.NET Core app](#tutorial-use-feature-flags-in-an-aspnet-core-app)
+        - [Controller actions](#controller-actions)
+
+<!-- /TOC -->
+
 # Section 3: Develop Azure compute solutions - Azure Web Apps
 
-## 25. What are we going to cover
+## What are we going to cover
 
-## 26. Introduction onto Azure Web Apps
+## Introduction onto Azure Web Apps
 
-## 27. Lab - Azure Web App
+## Lab - Azure Web App
 
 Create Resource -> Web App
 
@@ -42,11 +79,11 @@ App Service Plan - dictate what features are available for the application servi
 
 Default page
 
-## 28. Lab - Publishing from Visual Studio
+## Lab - Publishing from Visual Studio
 
 Deploy, Publish but to the Web App (it is simple) 
 
-## 29. Lab - Azure SQL Database
+## Lab - Azure SQL Database
 
 appdb
 
@@ -83,7 +120,7 @@ Allow Azure services and resources to access this server: Yes
 
 Add current client IP address: Yes
 
-## 30. Populating our database with data
+## Populating our database with data
 
 SSMS - login - sqlserver1000.database.windows.net - sqladmin
 
@@ -106,11 +143,11 @@ SELECT * FROM Products
 SELECT ProductId, ProductName, Quantity FROM Products 
 ```
 
-## 31. Building an Application that connects to the SQL database
+## Building an Application that connects to the SQL database
 
-## 32. Publishing to our Azure Web App
+## Publishing to our Azure Web App
 
-## 33. Publishing from GitHub
+## Publishing from GitHub
 
 VS -> Git -> Create repository
 
@@ -130,7 +167,7 @@ Settings -> Configurations -> General Settings -> .NET 6
 
 (it doesn't understand)
 
-## 34. Using the Azure Web App connection string
+## Using the Azure Web App connection string
 
 Configuration -> Connection Strings -> Add/Edit connection string
 
@@ -145,7 +182,7 @@ Server=tcp:sqlserver1000.database.windows.net,1433;Initial Catalog=appdb;Persist
 Type: Sql Azure
 At runtime, connection strings are available as environment variables. Learn more
 
-## 35. Using the Azure Web App connection string - Resources
+## Using the Azure Web App connection string - Resources
 
 You can use the following as a reference for the connecting string
 
@@ -161,7 +198,7 @@ ProductService -> Extract interface
 
 Remove hardcoded Connection string, get it from IConfiguration (saved in Azure)
 
-## 36. Azure App Service Logging
+## Azure App Service Logging
 
 Monitoring -> App Service Logs
 
@@ -220,7 +257,7 @@ Is it auto-disabled after 5 min?
 
 </details>
 
-## 37. Azure Web Apps - Autoscaling
+## Azure Web Apps - Autoscaling
 
 ```
 auto scaling feature, part of your Web apps.
@@ -235,7 +272,7 @@ bottleneck?
 
 * STANDARD service plan or higher = scaling automation, based on load (cpu etc.)
 
-## 38. Lab - Auto scaling a web app
+## Lab - Auto scaling a web app
 
 See Metrics: App Service plan
 
@@ -302,7 +339,7 @@ az provider show -n microsoft.insights
 az provider list --query "[?namespace=='microsoft.insights']" --output table
 ```
 
-### Help 
+### Help
 
 
 Use az provider list to display the registration status for your subscription's resource providers. The examples use the --output table parameter to filter the output for readability. You can omit the parameter to see all properties.
@@ -344,11 +381,11 @@ az provider show --namespace Microsoft.Web --query "resourceTypes[?resourceType=
 ```
 
 
-## 39. Azure Web Apps - Custom domains
+## Azure Web Apps - Custom domains
 
-## 40. Azure Web Apps - SSL
+## Azure Web Apps - SSL
 
-## 41. Deployment Slots
+## Deployment Slots
 
 Instead of creating new web app for Version 2 - Create deployment Slot
 
@@ -356,7 +393,7 @@ Swap between versions
 
 Plan - Standard or higher
 
-## 42. Lab - Deployment Slots
+## Lab - Deployment Slots
 
 Deployment Slots -> Add -> Name - "staging"
 
@@ -398,7 +435,7 @@ Successfully completed swap between slot 'staging' and slot 'production'
 
 These deployments were swapped.
 
-## 43. Deployment slots with databases
+## Deployment slots with databases
 
 stagingserver10
 
@@ -410,7 +447,7 @@ Allow Azure services and resources to access this server
 
 Add current client IP address
 
-## 44. Lab - Deployment slots with databases
+## Lab - Deployment slots with databases
 
 <https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots>
 
@@ -422,13 +459,13 @@ Setting (connection strings = data) will be stay
 
 **Deployment slot setting** for CnStr = **swap apps, NOT DBs!**
 
-## 45. Azure App Configuration
+## Azure App Configuration
 
 Azure App Config Service
 
 Feature Flags Enabled/Disabled
 
-## 46. Lab - Azure App Configuration - Configuration Settings
+## Lab - Azure App Configuration - Configuration Settings
 
 App Configuration - Create
 
@@ -490,7 +527,7 @@ Refresh <https://webapp4400.azurewebsites.net> = Error Page
 
 Deploy and work with azureappconfig10 
 
-## 47. Lab - Azure App Configuration - Feature Flags
+## Lab - Azure App Configuration - Feature Flags
 
 azureappconfig10 | Feature manager -> Create -> betaFeature -> Apply
 
@@ -514,7 +551,7 @@ builder.Services.AddFeatureManagement();
 
 In our case it requires app restart =)
 
-## 48. Note on Controller actions
+## Note on Controller actions
 
 ### Tutorial: Use feature flags in an ASP.NET Core app
 

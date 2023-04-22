@@ -1,6 +1,32 @@
+<!-- TOC -->
+
+- [Section 6: Develop Azure compute solutions - Other tools and Review](#section-6-develop-azure-compute-solutions---other-tools-and-review)
+    - [Other tools to consider](#other-tools-to-consider)
+    - [What is PowerShell](#what-is-powershell)
+    - [Installing PowerShell](#installing-powershell)
+    - [Installing Azure PowerShell](#installing-azure-powershell)
+    - [Azure PowerShell - Using Visual Studio Code](#azure-powershell---using-visual-studio-code)
+    - [Lab - Azure PowerShell - Create Azure Web App](#lab---azure-powershell---create-azure-web-app)
+    - [Lab - Azure PowerShell - Configuration / Integration with GitHub](#lab---azure-powershell---configuration--integration-with-github)
+    - [Lab - Azure PowerShell - Deployment Slots](#lab---azure-powershell---deployment-slots)
+        - [Deployment slots](#deployment-slots)
+    - [Installing Azure CLI](#installing-azure-cli)
+    - [Lab - Azure CLI - Azure Web App - Docker Container](#lab---azure-cli---azure-web-app---docker-container)
+    - [Lab - Azure CLI - Azure Kubernetes](#lab---azure-cli---azure-kubernetes)
+    - [What are ARM templates](#what-are-arm-templates)
+    - [ARM Templates - Setting up Visual Studio Code](#arm-templates---setting-up-visual-studio-code)
+    - [ARM - Lab - Azure Storage Account - Building the template](#arm---lab---azure-storage-account---building-the-template)
+    - [ARM - Lab - Azure Storage Account - Deploying the template](#arm---lab---azure-storage-account---deploying-the-template)
+    - [ARM - Lab - Deploying a template via the Azure Portal](#arm---lab---deploying-a-template-via-the-azure-portal)
+    - [ARM - Lab - Multiple copies of a resource](#arm---lab---multiple-copies-of-a-resource)
+    - [ARM Templates - Azure Virtual Machines](#arm-templates---azure-virtual-machines)
+    - [Quiz 5: Short Quiz](#quiz-5-short-quiz)
+
+<!-- /TOC -->
+
 # Section 6: Develop Azure compute solutions - Other tools and Review
 
-## 87. Other tools to consider
+## Other tools to consider
 
 Dedicated course for each tool
 
@@ -8,7 +34,7 @@ Dedicated course for each tool
 * Azure CLI
 * ARM Templates
 
-## 88. What is PowerShell
+## What is PowerShell
 
 PowerShell
 
@@ -24,7 +50,7 @@ Text input -> cmd -> text output or .NET objects
 
 Cmdlets (commands) - collected in modules (collections of commands)
 
-## 89. Installing PowerShell
+## Installing PowerShell
 
 https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.3
 
@@ -33,7 +59,7 @@ $PSVersionTable
 $PSVersionTable.PSVersion
 ```
 
-## 90. Installing Azure PowerShell
+## Installing Azure PowerShell
 
 Install Az
 
@@ -61,11 +87,11 @@ Account              SubscriptionName     TenantId                             E
 dpoluektov@gmail.com Azure subscription 1 87349d34-316a-481c-ab12-5f5c7af3cd99 AzureCloud
 ```
 
-## 91. Azure PowerShell - Using Visual Studio Code
+## Azure PowerShell - Using Visual Studio Code
 
 VSCode + PowerShell + Azure PowerShell
 
-## 92. Lab - Azure PowerShell - Create Azure Web App
+## Lab - Azure PowerShell - Create Azure Web App
 
 ```powershell
 <#
@@ -101,7 +127,7 @@ New-AzWebApp -ResourceGroupName $ResourceGroupName -Name $WebAppName `
 
 ```
 
-## 93. Lab - Azure PowerShell - Configuration / Integration with GitHub
+## Lab - Azure PowerShell - Configuration / Integration with GitHub
 
 ```powershell
 
@@ -133,7 +159,7 @@ Set-AzResource -ResourceGroupName $ResourceGroupName `
 
 ```
 
-## 94. Lab - Azure PowerShell - Deployment Slots
+## Lab - Azure PowerShell - Deployment Slots
 
 Issue:
 PS F:\\git\az-204> . 'F:\\git\az-204\Scripts\DeploymentSlots.ps1'
@@ -222,37 +248,37 @@ Switch-AzWebAppSlot -Name $WebAppName -ResourceGroupName $ResourceGroupName `
 -SourceSlotName $SlotName -DestinationSlotName $TargetSlot
 ```
 
-## 95. Installing Azure CLI
+## Installing Azure CLI
 
 <https://learn.microsoft.com/en-us/cli/azure/install-azure-cli>
 
 az login
 
-## 96. Lab - Azure CLI - Azure Web App - Docker Container
+## Lab - Azure CLI - Azure Web App - Docker Container
 
 <https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest>
 
 ```
-# 1. First we can create an App service plan
+# First we can create an App service plan
 
 # --is-linux = linux compute machine,
 # windows by default)
 az appservice plan create --name companyplan --resource-group app-grp --is-linux
 
-# 2. Then we create the web app
+# Then we create the web app
 
 az webapp create --resource-group app-grp --plan companyplan --name sqlappGenfromAz --deployment-container-image-name appregistry3100.azurecr.io/sqlapp:latest
 
-# 3. If you want to turn on container-based logging
+# If you want to turn on container-based logging
 
 az webapp log config --name sqlappGenfromAz --resource-group app-grp --docker-container-logging filesystem
 
-# 4. Enable the log stream
+# Enable the log stream
 
 az webapp log tail --name sqlappGenfromAz --resource-group app-grp
 ```
 
-## 97. Lab - Azure CLI - Azure Kubernetes
+## Lab - Azure CLI - Azure Kubernetes
 
 Azure Cloud Shell requires storage account
 
@@ -299,7 +325,7 @@ kubectl apply -f service.yml
 az group delete --name kubernetes-grp
 ```
 
-## 98. What are ARM templates
+## What are ARM templates
 
 Azure Resource Manager template (ARM template)
 
@@ -331,13 +357,13 @@ Template format, simplest structure:
 }
 ```
 
-## 99. ARM Templates - Setting up Visual Studio Code
+## ARM Templates - Setting up Visual Studio Code
 
 Ext: Azure Resource Manager (ARM) Tools
 
 type "arm" in json to gen template
 
-## 100. ARM - Lab - Azure Storage Account - Building the template
+## ARM - Lab - Azure Storage Account - Building the template
 
 --- --- I Removed all resources and app-grp
 json
@@ -345,7 +371,7 @@ json
 {} - json object, name-value pairs
 [] - array of json based objects
 
-## 101. ARM - Lab - Azure Storage Account - Deploying the template
+## ARM - Lab - Azure Storage Account - Deploying the template
 
 Template
 
@@ -410,7 +436,7 @@ Check Status
 
 ProvisioningState       : **Succeeded**
 
-## 102. ARM - Lab - Deploying a template via the Azure Portal
+## ARM - Lab - Deploying a template via the Azure Portal
 
 All Resources
 
@@ -422,7 +448,7 @@ Build your own template in the editor
 
 Review and Create
 
-## 103. ARM - Lab - Multiple copies of a resource
+## ARM - Lab - Multiple copies of a resource
 
 CreateMultipleCopiesOfStorageAccounts.json
 
@@ -460,7 +486,7 @@ DeploymentName          : CreateMultipleCopiesOfStorageAccounts
 
 ProvisioningState       : Succeeded
 
-## 104. ARM Templates - Azure Virtual Machines
+## ARM Templates - Azure Virtual Machines
 
 In the template there is no order => "dependsOn" - is important.
 

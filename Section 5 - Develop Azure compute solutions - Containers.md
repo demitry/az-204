@@ -1,8 +1,46 @@
+<!-- TOC -->
+
+- [Section 5: Develop Azure compute solutions - Containers](#section-5-develop-azure-compute-solutions---containers)
+    - [What are we going to cover](#what-are-we-going-to-cover)
+    - [What is the need for containers](#what-is-the-need-for-containers)
+        - [Issue 1 - Isolation](#issue-1---isolation)
+        - [Issue 2 - Portability](#issue-2---portability)
+    - [What is Docker](#what-is-docker)
+    - [Lab - Installing docker on Linux VM](#lab---installing-docker-on-linux-vm)
+    - [Running a simple container](#running-a-simple-container)
+    - [Let's containerize a .NET application](#lets-containerize-a-net-application)
+    - [If you have made a mistake](#if-you-have-made-a-mistake)
+    - [The need for a registry](#the-need-for-a-registry)
+    - [Lab - Azure Container Registry](#lab---azure-container-registry)
+    - [Pushing an image to the Azure container registry](#pushing-an-image-to-the-azure-container-registry)
+        - [Step-by-step installation instructions to install the Azure CLI.](#step-by-step-installation-instructions-to-install-the-azure-cli)
+        - [Use Azure CLI to push images to Azure](#use-azure-cli-to-push-images-to-azure)
+    - [Azure Container Instances](#azure-container-instances)
+    - [Multi-stage builds](#multi-stage-builds)
+    - [Azure Container Groups](#azure-container-groups)
+    - [Setting up our application against MySQL database](#setting-up-our-application-against-mysql-database)
+    - [Deploying a MySQL database container](#deploying-a-mysql-database-container)
+    - [Creating a custom MySQL image](#creating-a-custom-mysql-image)
+    - [Check the application is connecting to MySQL container](#check-the-application-is-connecting-to-mysql-container)
+    - [Deploying the custom MySQL container](#deploying-the-custom-mysql-container)
+    - [Let's deploy an Azure Container Group](#lets-deploy-an-azure-container-group)
+    - [What is Azure Kubernetes](#what-is-azure-kubernetes)
+    - [Lab - Deploying an Azure Kubernetes cluster](#lab---deploying-an-azure-kubernetes-cluster)
+        - [Pod](#pod)
+        - [Deployment](#deployment)
+    - [Lab - Azure Kubernetes - Deployment - NGINX](#lab---azure-kubernetes---deployment---nginx)
+        - [Request a quota increase](#request-a-quota-increase)
+    - [Lab - Deploying our application on Kubernetes](#lab---deploying-our-application-on-kubernetes)
+    - [Quiz 4: Short Quiz](#quiz-4-short-quiz)
+    - [Misc](#misc)
+
+<!-- /TOC -->
+
 # Section 5: Develop Azure compute solutions - Containers
 
-## 63. What are we going to cover
+## What are we going to cover
 
-## 64. What is the need for containers
+## What is the need for containers
 
 ### Issue 1 - Isolation
 
@@ -18,9 +56,9 @@ no impact on another container unit
 
 Run on VM1, VM2,...
 
-## 65. What is Docker
+## What is Docker
 
-## 66. Lab - Installing docker on Linux VM
+## Lab - Installing docker on Linux VM
 
 docker-grp
 
@@ -308,7 +346,7 @@ linuxuser@linuxvm:~$
 ```
 </details>
 
-## 67. Running a simple container
+## Running a simple container
 
 <https://hub.docker.com/_/nginx>
 
@@ -360,7 +398,7 @@ Public IP address = nginx page
 
 nginx is running in container in VM
 
-## 68. Let's containerize a .NET application
+## Let's containerize a .NET application
 
 Build Image: on Windows machine - docker toolset is required, additional services
 
@@ -481,7 +519,7 @@ sqlapp       latest    1b44ddcac9b0   13 minutes ago   221MB
 nginx        latest    6efc10a0510f   2 days ago       142MB
 ```
 
-## 69. If you have made a mistake
+## If you have made a mistake
 
 remove publish dir, copy new + Dockerfile
 
@@ -516,9 +554,9 @@ linuxuser@linuxvm:~/publish$ sudo docker run --name sqlapp-1 -p 80:80 -d sqlapp
 linuxuser@linuxvm:~/publish$
 ```
 
-## 70. The need for a registry
+## The need for a registry
 
-## 71. Lab - Azure Container Registry
+## Lab - Azure Container Registry
 
 Create container registry
 
@@ -534,7 +572,7 @@ Goto appregistry3100 | Access keys
 
 Enable Admin User => you have user name appregistry3100 and passwords
 
-## 72. Pushing an image to the Azure container registry
+## Pushing an image to the Azure container registry
 
 Install the Azure CLI on Linux
 
@@ -598,7 +636,7 @@ Goto appregistry3100 | Repositories
 
 Observe the image in the repo
 
-## 73. Azure Container Instances
+## Azure Container Instances
 
 1) Easy deploy
 2) No need to manage infrastructure
@@ -634,7 +672,7 @@ Public Ip = our site
 
 20.54.23.204
 
-## 74. Multi-stage builds
+## Multi-stage builds
 
 ```
 sudo docker images
@@ -740,7 +778,7 @@ linuxuser@linuxvm:~/source/sqlapp$
 
 The size of the image is the same, we just build from the source
 
-## 75. Azure Container Groups
+## Azure Container Groups
 
 1-st container = application, 2-nd container = database
 
@@ -751,7 +789,7 @@ Need deploy together = use Azure Container Groups
 3) Deployment via Resource Manager template or YAML file
 4) Persist data via Azure File shares
 
-## 76. Setting up our application against MySQL database
+## Setting up our application against MySQL database
 
 mysqlserver1100 | Connect
 
@@ -759,7 +797,7 @@ Add Client IP  to allow connectivity using any local client tools like MySQL wor
 
 "Server=mysqlserver1100.mysql.database.azure.com; Port=3306; UserID=sqladmin; Password= ; Database=appdb; SslMode=Required;"
 
-## 77. Deploying a MySQL database container
+## Deploying a MySQL database container
 
 linuxvm | Networking
 
@@ -829,7 +867,7 @@ mysql> show databases
 
 Workbench -> New cn, linuxvm, 168.63.57.194
 
-## 78. Creating a custom MySQL image
+## Creating a custom MySQL image
 
 01.sql
 
@@ -918,7 +956,7 @@ mysql> SELECT * FROM Products;
 
 ```
 
-## 79. Check the application is connecting to MySQL container
+## Check the application is connecting to MySQL container
 
 ```cs
         private MySqlConnection GetConnection()
@@ -926,7 +964,7 @@ mysql> SELECT * FROM Products;
             return new MySqlConnection("Server=168.63.57.194; Port=3306; UserID=root; Password={PASSWORD}; Database=appdb; SslMode=Required;");
         }
 ```
-## 80. Deploying the custom MySQL container
+## Deploying the custom MySQL container
 
 appregistry3100 | Access keys 
 
@@ -958,7 +996,7 @@ mysql -uroot -p
 
 show databases;
 
-## 81. Let's deploy an Azure Container Group
+## Let's deploy an Azure Container Group
 
 Deploy with localhost cn
 
@@ -1203,9 +1241,9 @@ SQLAppGroup
 
 Public IP = our app
 
-## 82. What is Azure Kubernetes
+## What is Azure Kubernetes
 
-## 83. Lab - Deploying an Azure Kubernetes cluster
+## Lab - Deploying an Azure Kubernetes cluster
 
 ### Pod
 
@@ -1221,7 +1259,7 @@ Pod 10.0.0.16 = Container (port 8080) + Container (port 8090) + ...
 
 * Deployment controller is used to ensure the desired state of environement is always met
 
-## 84. Lab - Azure Kubernetes - Deployment - NGINX
+## Lab - Azure Kubernetes - Deployment - NGINX
 
 Create
 
@@ -1334,7 +1372,7 @@ spec:
 
 LoadBalancer = has external IP address = nginx site
 
-## 85. Lab - Deploying our application on Kubernetes
+## Lab - Deploying our application on Kubernetes
 
 appcluster | Services and ingresses
 
