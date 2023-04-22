@@ -1,9 +1,10 @@
 ﻿using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System.Reflection.Metadata;
-
-// cn from stacc10001 | Access key
 
 string connectionString = "DefaultEndpointsProtocol=https;AccountName=stacc10001;AccountKey=abst_COPY_acc10001_Access key_xg==;EndpointSuffix=core.windows.net";
 
@@ -62,63 +63,66 @@ Console.WriteLine("Blob was downloaded");
 
 await BlobHelper.AddBlobMetadataAsync(blobClient2);
 
-Console.WriteLine($"Some metadata was added to {containerName} -> {blobName}");
+Console.WriteLine($"Some meta-data was added to {containerName} -> {blobName}");
 
 await BlobHelper.ReadBlobMetadataAsync(blobClient2);
 
+//await JustAckLease();
+await AckLeaseAndRelease();
 
-public static class BlobHelper
+async Task JustAckLease()
 {
-    public static async Task AddBlobMetadataAsync(BlobClient blob)
-    {
-        Console.WriteLine("Adding blob metadata...");
+    BlobClient client = new BlobClient(connectionString, containerName, blobName);
 
-        try
-        {
-            IDictionary<string, string> metadata =
-               new Dictionary<string, string>();
+    BlobLeaseClient blobLeaseClient = client.GetBlobLeaseClient();
 
-            // Add metadata to the dictionary by calling the Add method
-            metadata.Add("docType", "textDocuments");
+    TimeSpan leaseTime = TimeSpan.FromSeconds(60);
 
-            // Add metadata to the dictionary by using key/value syntax
-            metadata["category"] = "guidance";
-
-            metadata["Department"] = "Logistics";
-
-            // Set the blob's metadata.
-            await blob.SetMetadataAsync(metadata);
-        }
-        catch (RequestFailedException e)
-        {
-            Console.WriteLine($"HTTP error code {e.Status}: {e.ErrorCode}");
-            Console.WriteLine(e.Message);
-            Console.ReadLine();
-        }
-    }
-
-    public static async Task ReadBlobMetadataAsync(BlobClient blob)
-    {
-        try
-        {
-            // Get the blob's properties and metadata.
-            BlobProperties properties = await blob.GetPropertiesAsync();
-
-            Console.WriteLine("Blob metadata:");
-
-            // Enumerate the blob's metadata.
-            foreach (var metadataItem in properties.Metadata)
-            {
-                Console.WriteLine($"\tKey: {metadataItem.Key}");
-                Console.WriteLine($"\tValue: {metadataItem.Value}");
-            }
-        }
-        catch (RequestFailedException e)
-        {
-            Console.WriteLine($"HTTP error code {e.Status}: {e.ErrorCode}");
-            Console.WriteLine(e.Message);
-            Console.ReadLine();
-        }
-    }
+    Console.WriteLine($"Acquiring {containerName} - {blobName} for {leaseTime} s.");
+    Console.WriteLine($"Please test the resource, it should be not editable");
+    //This blob has an active lease and can not be deleted or edited.
+    
+    Response<BlobLease> response = await blobLeaseClient.AcquireAsync(duration: leaseTime);
+    
+    Console.WriteLine($"Lease Id is: {response.Value.LeaseId}");
 }
 
+async Task AckLeaseAndRelease()
+{
+    BlobClient client = new BlobClient(connectionString, containerName, blobName);
+    BlobLeaseClient blobLeaseClient = client.GetBlobLeaseClient();
+    TimeSpan leaseTime = TimeSpan.FromSeconds(60);
+
+    // Request a lease and set its duration
+    Response<BlobLease> response = await blobLeaseClient.AcquireAsync(leaseTime);
+
+    var metadata = new Dictionary<string, string>
+    {
+        { "lease1", "value1" }
+    };
+
+
+    //await BlobHelper.SetBlobMetadataAsync(client, metadata);  // X X X
+
+    /*
+     * Adding blob meta-data...
+     * HTTP error code 412: LeaseIdMissing
+     * There is currently a lease on the blob and no lease ID was specified in the request.
+     *  Status: 412 (There is currently a lease on the blob and no lease ID was specified in the request.)
+     */
+
+    /* If you're unable to add metadata to the blob after acquiring the lease with AcquireAsync(), 
+     * it's likely because the request to set metadata doesn't include the lease ID that was acquired with the lease.
+     * To set blob metadata after acquiring the lease,
+     * you'll need to include the lease ID in the BlobHttpHeaders object that's passed to the SetHttpHeadersAsync() method.
+     */
+
+    await BlobHelper.SetBlobMetadataAsync(client, metadata, response.Value.LeaseId);
+
+    Console.WriteLine("Text successfully appended to the Append Blob!");
+
+    // Release the lease
+    await blobLeaseClient.ReleaseAsync();
+
+    Console.WriteLine("Lease successfully acquired and released!");
+}

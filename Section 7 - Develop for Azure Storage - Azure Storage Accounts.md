@@ -733,6 +733,24 @@ public static class BlobHelper
 
 ## Lab - .NET - Blob lease
 
+Leasing a blob can be useful in a number of scenarios, such as:
+
+1. Preventing concurrent writes: If multiple clients are writing to a blob at the same time, they may overwrite each other's changes and corrupt the data. By leasing the blob, you can ensure that only one client has write access at any given time.
+
+2. Batch processing: If you need to perform batch processing on a set of blobs, you can lease each blob to prevent other clients from modifying them while the processing is taking place.
+
+3. Coordinating access: If you have multiple threads or processes accessing a blob, you can use a lease to coordinate access and prevent conflicts.
+
+When you acquire a lease on a blob, you can specify the duration of the lease. If the lease is not renewed before it expires, it will be automatically released. You can also release the lease manually at any time.
+
+CloudBlob.AcquireLeaseAsync Method
+
+//Time - If null, an infinite lease will be acquired. If not null, this must be 15 to 60 seconds.
+
+https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.storage.blob.cloudblob.acquireleaseasync?view=azure-dotnet
+
+https://github.com/Azure/azure-storage-net/blob/master/Test/WindowsRuntime/Blob/LeaseTests.cs
+
 ## Lab - AzCopy Tool
 
 ## Moving a storage account to another region
