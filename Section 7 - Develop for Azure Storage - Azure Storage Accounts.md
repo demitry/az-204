@@ -765,16 +765,75 @@ notepad++ Settings > Preferences > Cloud & Link - Disable http links
 copy azcopy to win dir or add path
 
 ```
+//First create the shared access signature
+
+// To create a container
 azcopy make "https://stacc10001.blob.core.windows.net/mycontainer___SAS___"
+
+// To upload a blob
 azcopy copy myfile.txt "https://stacc10001.blob.core.windows.net/mycontainer/myfile.txt___SAS___"
+
+// Download blob data
 azcopy copy "https://stacc10001.blob.core.windows.net/mycontainer/myfile.txt___SAS___" "myfile_copy.txt"
 ```
 
 ## Moving a storage account to another region
 
+<https://learn.microsoft.com/en-us/azure/storage/common/storage-account-move?tabs=azure-portal>
+
+Create a new storage account at the destination region
+
+<r>There in no direct way to copy or move storage account</r>
+
+- Export a template.
+- Modify the template by adding the target region and storage account name.
+- Deploy the template to create the new storage account.
+- Configure the new storage account.
+- Move data to the new storage account.
+- Delete the resources in the source region.
+
+AzCopy or
+
+You can also use **Azure Data Factory** to move your data
+
+
+
+stacc10001 | Export template
+
+new resource
+
+Template deployment (deploy using custom templates)
+
+ Build your own template in the editor
+
 ## Assignment 1: Assignment – AzCopy Tool
 
+Copy from 1 acc container to 2 acc container:
+
+azcopy copy "https://source_storage.blob.core.windows.net/source_container/source_SAS_Key" "https://target_storage.blob.core.windows.net/target_container/target_SAS_Key" --recursive=true
+
 ## Lab - Azure Blob - Change Feed
+
+- Ordered, guaranteed, durable, immutable, read-only log of changes
+- Audit log of events to Blob data - Create, update, delete
+- Stored in $blobchangefeed container
+- Apache Avro format 
+
+stacc10001 | Data protection
+
+Enable blob change feed
+
+Keep track of create, modification, and delete changes to blobs in your account.Learn more
+
+- Keep all logs
+
+- Delete change feed logs after (in days) 7
+
+=> $blobchangefeed containter created
+
+Change some data in containers
+
+$blobchangefeed / log / 00 / 2023 / 04 / 22 / 1500 / 00000.avro
 
 ## What is Azure Table Storage
 
