@@ -753,6 +753,23 @@ https://github.com/Azure/azure-storage-net/blob/master/Test/WindowsRuntime/Blob/
 
 ## Lab - AzCopy Tool
 
+<https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10>
+
+Supported method of authorization
+
+- Blob storage: Azure AD & SAS
+- File storage: SAS only
+
+notepad++ Settings > Preferences > Cloud & Link - Disable http links
+
+copy azcopy to win dir or add path
+
+```
+azcopy make "https://stacc10001.blob.core.windows.net/mycontainer___SAS___"
+azcopy copy myfile.txt "https://stacc10001.blob.core.windows.net/mycontainer/myfile.txt___SAS___"
+azcopy copy "https://stacc10001.blob.core.windows.net/mycontainer/myfile.txt___SAS___" "myfile_copy.txt"
+```
+
 ## Moving a storage account to another region
 
 ## Assignment 1: Assignment – AzCopy Tool
