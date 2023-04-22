@@ -40,6 +40,7 @@
     - [Moving a storage account to another region](#moving-a-storage-account-to-another-region)
     - [Assignment 1: Assignment – AzCopy Tool](#assignment-1-assignment--azcopy-tool)
     - [Lab - Azure Blob - Change Feed](#lab---azure-blob---change-feed)
+        - [Avro tools](#avro-tools)
     - [What is Azure Table Storage](#what-is-azure-table-storage)
     - [Elements of Azure Table Storage](#elements-of-azure-table-storage)
     - [Lab - Azure Table Storage](#lab---azure-table-storage)
@@ -817,7 +818,7 @@ azcopy copy "https://source_storage.blob.core.windows.net/source_container/sourc
 - Ordered, guaranteed, durable, immutable, read-only log of changes
 - Audit log of events to Blob data - Create, update, delete
 - Stored in $blobchangefeed container
-- Apache Avro format 
+- Apache Avro format
 
 stacc10001 | Data protection
 
@@ -829,11 +830,25 @@ Keep track of create, modification, and delete changes to blobs in your account.
 
 - Delete change feed logs after (in days) 7
 
-=> $blobchangefeed containter created
+=> $blobchangefeed container created
 
 Change some data in containers
 
 $blobchangefeed / log / 00 / 2023 / 04 / 22 / 1500 / 00000.avro
+
+### Avro tools
+
+- Avro Tools: This is a command-line tool that comes with the Avro library. It allows you to view Avro files in various formats, including JSON and binary.
+
+- AvroView: This is a web-based viewer that allows you to visualize and analyze Avro files in a browser. It supports filtering, sorting, and searching of data.
+
+- Apache NiFi: This is a data integration tool that supports Avro files. It allows you to view and process Avro data in real-time.
+
+- Hadoop File Viewer: This is a web-based viewer that is used to view and analyze Hadoop files, including Avro files. It allows you to browse, search, and download Avro files.
+
+- Parquet Viewer: This is a GUI-based viewer that allows you to view and analyze Parquet files, which is another popular data serialization format used in big data processing. It also supports Avro files.
+
+- There are also other commercial tools like Talend Big Data Studio and StreamSets Data Collector that provide support for Avro files 
 
 ## What is Azure Table Storage
 
