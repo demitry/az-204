@@ -5,7 +5,12 @@
     - [What are we going to cover [146]](#what-are-we-going-to-cover-146)
     - [What is Azure Cosmos DB [147]](#what-is-azure-cosmos-db-147)
     - [Concept of Partitions [148]](#concept-of-partitions-148)
+        - [Partitions](#partitions)
+        - [Partition Key](#partition-key)
     - [Costing [149]](#costing-149)
+        - [Request Units](#request-units)
+        - [Serverless mode](#serverless-mode)
+        - [Autoscale mode](#autoscale-mode)
     - [Lab - Creating an Azure Cosmos DB Account [150]](#lab---creating-an-azure-cosmos-db-account-150)
     - [The usage of JSON [151]](#the-usage-of-json-151)
     - [Adding items to the container [152]](#adding-items-to-the-container-152)
@@ -71,22 +76,57 @@ Database
 
 ## Concept of Partitions [148]
 
-- Partitions
-  - Logical Partition - items in a container are divided into subsets (partitions)
-  - Partition key - the partition for the item is decided by the partition key that is associated with the item in the container
-  - Item Id - uniquely identifies an item in the partition
-  - Identification: **[Partition key + Item Id]** uniquely identifies an item in the container
-  - Size: logical partition - up to 20 Gb
-  - Limit: No limit when it comes to the number of logical partitions within a container
+### Partitions
 
-- Partition Ket
-  - <r> **Choose property for the partition key which the value does not change.**</r>
-  - The property should have a wide range of possible values.
-  - Once decide on a partition key for the container - <r>**you CANNOT change it.**</r>
+- Logical Partition - items in a container are divided into subsets (partitions)
+- Partition key - the partition for the item is decided by the partition key that is associated with the item in the container
+- Item Id - uniquely identifies an item in the partition
+- Identification: **[Partition key + Item Id]** uniquely identifies an item in the container
+- Size: logical partition - up to 20 Gb
+- Limit: No limit when it comes to the number of logical partitions within a container
 
+### Partition Key
+
+- <r> **Choose property for the partition key which the value does not change.**</r>
+- The property should have a wide range of possible values.
+- Once decide on a partition key for the container - <r>**you CANNOT change it.**</r>
 
 ## Costing [149]
 
+### Request Units
+
+- Cost of DB operations is measured in terms of Request Units
+- Request Units - blended measure of CPU, IOPS and memory usage
+- No matter which API is used
+
+Everything is managed by the platform
+
+- Cost of reading 1KB = 1 Request Unit
+- Other operations - has their own measure of charged Request Units
+- For each operation you can see the amount of Request Units for this operation
+
+You are billed on an hourly basis
+
+Provision : On the container level or on the database level
+
+"throughput" - speed at which data is transferred
+
+### Serverless mode
+
+- You don't provision any throughput
+
+- This is managed by Cosmos DB
+
+- Bill - based on Request Units you consume
+
+### Autoscale mode
+
+Automatically scale up and down the required resources based on the number of requests that your application receives.
+
+- Request Units can autoscale up and down based on demand
+- Demand is checked on container abd database level
+- Great for critical workloads
+ 
 ## Lab - Creating an Azure Cosmos DB Account [150]
 
 ## The usage of JSON [151]
