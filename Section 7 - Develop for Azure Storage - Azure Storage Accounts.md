@@ -852,9 +852,48 @@ $blobchangefeed / log / 00 / 2023 / 04 / 22 / 1500 / 00000.avro
 
 ## What is Azure Table Storage
 
+- Service for non-relational structured data
+- based on structured NoSQL data
+- key-attribute store with schemaless design
+
+Use cases where
+
+- you don't want to have a strict schema
+- you don't require complex joins and foreign keys
+- want fast access to the data
+
 ## Elements of Azure Table Storage
 
+- A table is a collection of entities
+- Entities don't abide by schema
+- entities can have a different set of properties
+- An entity is made up of properties
+- Each property = name value pair
+
+Entity ("row")
+
+- **Partition Key** - string - Identifies partition that entity belongs to
+- **Row Key** - string - Uniquely Identifies each entity within the partition
+- **Partition Key + Row Key** = Uniquely Identifies each entity within the table
+
+Billions of rows - Data split into partitions
+
+Split, for example by product category
+
+Partition 1: Game consoles
+
+Partition 2: Household furniture
+...
+
 ## Lab - Azure Table Storage
+
+stacc10001 | Tables -> new, Orders
+
+stacc10001 | Storage browser -> Tables -> Orders
+
+Add entity
+
+schemaless design => can add properties on the fly
 
 ## Lab - .NET - Azure Table Storage - Add Entity
 
