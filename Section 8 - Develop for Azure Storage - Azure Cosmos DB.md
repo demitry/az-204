@@ -256,6 +256,58 @@ GROUP BY o.category
 
 ## Objects within Objects [155]
 
+```sql
+SELECT o.orderId, o.category, o.quantity, o.customer
+FROM Orders o
+WHERE o.category="Desktop"
+```
+
+```json
+[
+    {
+        "orderId": "03",
+        "category": "Desktop",
+        "quantity": 25,
+        "customer": {
+            "customerId": "C3",
+            "customerName": "CustomerA"
+        }
+    },
+    {
+        "orderId": "04",
+        "category": "Desktop",
+        "quantity": 425,
+        "customer": {
+            "customerId": "C3",
+            "customerName": "CustomerC"
+        }
+    }
+]
+```
+
+```sql
+SELECT o.orderId, o.category, o.quantity, o.customer.customerName
+FROM Orders o
+WHERE o.category="Desktop"
+```
+
+```json
+[
+    {
+        "orderId": "03",
+        "category": "Desktop",
+        "quantity": 25,
+        "customerName": "CustomerA"
+    },
+    {
+        "orderId": "04",
+        "category": "Desktop",
+        "quantity": 425,
+        "customerName": "CustomerC"
+    }
+]
+```
+
 ## JSON Arrays [156]
 
 ## Assignment 3: Assignment - Customer quantity total [    ]
