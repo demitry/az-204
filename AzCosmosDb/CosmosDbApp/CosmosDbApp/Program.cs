@@ -7,10 +7,10 @@ string cosmosDBKey = "";
 string databaseName = "appdb";
 string ordersContainerName = "Orders";
 
-//1
+// 1 - Create Database
 //await CreateDatabase("appdb");
 
-//2
+// 2 - Create Container
 //await CreateContainer("appdb", "Orders", "/category");
 
 async Task CreateDatabase(string databaseName)
@@ -35,7 +35,7 @@ async Task CreateContainer(string databaseName, string containerName, string par
 }
 
 
-// 3 Add Items
+// 3 - Add Items
 //await AddItem("O1", "Laptop", 100);
 //await AddItem("O2", "Mobiles", 200);
 //await AddItem("O3", "Desktop", 75);
@@ -73,11 +73,10 @@ Added item with Order Id O3
 Request Units consumed 6.67
 Added item with Order Id O4
 Request Units consumed 6.67
+*/
 
- */
 
-
-// 4 - ReadItems
+// 4 - Read Items
 
 await ReadItems();
 
@@ -106,10 +105,11 @@ async Task ReadItems()
     }
 }
 
+// 5 - Replace Items 
 
-await ReplaceItems();
+//await ReplaceItems();
 
-await ReadItems(); //to verify
+//await ReadItems(); //to verify
 
 async Task ReplaceItems()
 {
@@ -179,4 +179,73 @@ Quantity 75
 Order Id O4
 Category Laptop
 Quantity 25
- */
+*/
+
+// 6 - Delete Item
+
+await DeleteItem();
+
+await ReadItems(); //to verify
+
+async Task DeleteItem()
+{
+    CosmosClient cosmosClient;
+    cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+    Database database = cosmosClient.GetDatabase(databaseName);
+    Container container = database.GetContainer(ordersContainerName);
+
+    string orderId = "O1";
+    string sqlQuery = $"SELECT o.id,o.category FROM Orders o WHERE o.orderId='{orderId}'";
+
+    string id = string.Empty;
+    string category = string.Empty;
+
+    QueryDefinition queryDefinition = new QueryDefinition(sqlQuery);
+
+    using FeedIterator<Order> feedIterator = container.GetItemQueryIterator<Order>(queryDefinition);
+
+    while (feedIterator.HasMoreResults)
+    {
+        FeedResponse<Order> response = await feedIterator.ReadNextAsync();
+        foreach (Order order in response)
+        {
+            id = order.id;
+            category = order.category;
+        }
+    }
+
+    // Get the specific item first
+    ItemResponse<Order> orderResponse = await container.ReadItemAsync<Order>(id, new PartitionKey(category));
+
+    await container.DeleteItemAsync<Order>(id, new PartitionKey(category));
+
+    Console.WriteLine("Item is deleted");
+}
+
+/*
+Order Id O1
+Category Laptop
+Quantity 300
+Order Id O2
+Category Mobiles
+Quantity 200
+Order Id O3
+Category Desktop
+Quantity 75
+Order Id O4
+Category Laptop
+Quantity 25
+
+Item is deleted
+
+Order Id O2
+Category Mobiles
+Quantity 200
+Order Id O3
+Category Desktop
+Quantity 75
+Order Id O4
+Category Laptop
+Quantity 25
+*/

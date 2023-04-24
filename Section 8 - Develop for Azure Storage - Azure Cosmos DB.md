@@ -508,6 +508,44 @@ async Task ReplaceItems()
 
 ## Lab NET - Deleting items [161]
 
+```csharp
+async Task DeleteItem()
+{
+    CosmosClient cosmosClient;
+    cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+    Database database = cosmosClient.GetDatabase(databaseName);
+    Container container = database.GetContainer(ordersContainerName);
+
+    string orderId = "O1";
+    string sqlQuery = $"SELECT o.id,o.category FROM Orders o WHERE o.orderId='{orderId}'";
+
+    string id = string.Empty;
+    string category = string.Empty;
+
+    QueryDefinition queryDefinition = new QueryDefinition(sqlQuery);
+
+    using FeedIterator<Order> feedIterator = container.GetItemQueryIterator<Order>(queryDefinition);
+
+    while (feedIterator.HasMoreResults)
+    {
+        FeedResponse<Order> response = await feedIterator.ReadNextAsync();
+        foreach (Order order in response)
+        {
+            id = order.id;
+            category = order.category;
+        }
+    }
+
+    // Get the specific item first
+    ItemResponse<Order> orderResponse = await container.ReadItemAsync<Order>(id, new PartitionKey(category));
+
+    await container.DeleteItemAsync<Order>(id, new PartitionKey(category));
+
+    Console.WriteLine("Item is deleted");
+}
+```
+
 ## Lab NET - Array of Objects - Adding item [162]
 
 ## Assignment 4: Assignment NET - Array of Objects - Reading items [    ]
