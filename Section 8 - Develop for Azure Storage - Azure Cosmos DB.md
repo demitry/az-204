@@ -310,6 +310,15 @@ WHERE o.category="Desktop"
 
 ## JSON Arrays [156]
 
+Create Customers container
+
+Partition Key: /customerCity
+
+```sql
+SELECT c.orders FROM Customers c
+SELECT o.quantity FROM o in Customers.orders
+```
+
 ## Assignment 3: Assignment - Customer quantity total [    ]
 
 ## Lab NET - Create Database and container [157]
