@@ -14,6 +14,8 @@
     - [Lab - Creating an Azure Cosmos DB Account [150]](#lab---creating-an-azure-cosmos-db-account-150)
     - [The usage of JSON [151]](#the-usage-of-json-151)
     - [Adding items to the container [152]](#adding-items-to-the-container-152)
+        - [New database](#new-database)
+        - [New container](#new-container)
     - [More on Partition Keys [153]](#more-on-partition-keys-153)
     - [Running a few queries [154]](#running-a-few-queries-154)
     - [Objects within Objects [155]](#objects-within-objects-155)
@@ -126,16 +128,131 @@ Automatically scale up and down the required resources based on the number of re
 - Request Units can autoscale up and down based on demand
 - Demand is checked on container abd database level
 - Great for critical workloads
- 
+
 ## Lab - Creating an Azure Cosmos DB Account [150]
+
+mycosmosacc
+
+mycosmosacc | Quick start
+
+mycosmosacc | Data Explorer
 
 ## The usage of JSON [151]
 
+JSON-based data
+
+if sql: relationships between tables, easier to fetch related data
+
+but not all apps need to have complicated design
+
+- don't want to have a strict schema for the data
+- don't require complex joins and foreign keys
+- want fast access to data
+
 ## Adding items to the container [152]
+
+### New database
+
+mycosmosacc | Data Explorer
+
+- New container
+- New database
+
+appdb
+
+Database throughput
+- Autoscale
+- **Manual** (Database throughput (400 - unlimited RU/s)
+
+Estimated cost (USD): $0.032 hourly / $0.77 daily / $23.36 monthly (1 region, 400RU/s, $0.00008/RU)
+
+### New container
+
+Select existing appdb
+
+Container id: Orders (name)
+
+Partition Key: /category
+
+Enable Azure Synapse Link on your Cosmos DB account
+Enable Azure Synapse Link to perform near real time analytical analytics on this account, without impacting the performance of your transactional workloads. Azure Synapse Link brings together Cosmos Db Analytical Store and Synapse Analytics
+
+Enabling Azure Synapse Link for this account. This may take a few minutes before you can enable analytical store for this account.
+
+Add Items
+
+```json
+{
+    "orderId" : "01",
+    "category" : "Laptop",
+    "quantity" : 100
+}
+```
+
+Save
+
+```json
+{
+    "orderId": "01",
+    "category": "Laptop",
+    "quantity": 100,
+    "id": "60d486d0-b378-4ae7-ac5d-634bd88f69af",
+    "_rid": "lPVgAPaiwlkBAAAAAAAAAA==",
+    "_self": "dbs/lPVgAA==/colls/lPVgAPaiwlk=/docs/lPVgAPaiwlkBAAAAAAAAAA==/",
+    "_etag": "\"0000dd9d-0000-0c00-0000-644689cf0000\"",
+    "_attachments": "attachments/",
+    "_ts": 1682344399
+}
+```
+
+System based properties added, generated "id" and other.
 
 ## More on Partition Keys [153]
 
+Large amounts of data
+
+If search query is based on "category" => quick
+
+Wide range of partition values - important
+
 ## Running a few queries [154]
+
+```sql
+SELECT * FROM c
+
+SELECT * FROM Orders
+
+SELECT * FROM Orders o
+WHERE o.category = "Laptop"
+
+SELECT o.orderId, o.category, o.quantity FROM Orders o
+WHERE o.category = "Laptop"
+```
+
+```sql
+SELECT o.category, SUM(o.quantity) AS Quantity
+FROM Orders o
+GROUP BY o.category
+```
+
+```json
+[
+    {
+        "category": "Desktop",
+        "Quantity": 25
+    },
+    {
+        "category": "Mobiles",
+        "Quantity": 75
+    },
+    {
+        "category": "Laptop",
+        "Quantity": 233
+    }
+]
+```
+
+**Case Sensitive!!!** 
 
 ## Objects within Objects [155]
 
