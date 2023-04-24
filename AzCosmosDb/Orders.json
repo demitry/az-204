@@ -1,0 +1,15 @@
+{
+    "orderId" : "01",
+    "category" : "Laptop",
+    "quantity" : 100
+}
+{
+    "orderId" : "02",
+    "category" : "Mobiles",
+    "quantity" : 75
+}
+{
+    "orderId" : "01",
+    "category" : "Desktop",
+    "quantity" : 25
+}
