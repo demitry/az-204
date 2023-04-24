@@ -347,6 +347,42 @@ group by c.customerName
 
 ## Lab NET - Create Database and container [157]
 
+mycosmosacc | Keys
+
+URI and KEY
+
+```csharp
+
+using Microsoft.Azure.Cosmos;
+
+string cosmosDBEndpointUri = "";
+string cosmosDBKey = "==";
+
+//await CreateDatabase("appdb");
+await CreateContainer("appdb", "Orders", "/category");
+
+async Task CreateDatabase(string databaseName)
+{
+    CosmosClient cosmosClient;
+    cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+    await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName);
+    Console.WriteLine("Database created");
+}
+
+async Task CreateContainer(string databaseName, string containerName, string partitionKey)
+{
+    CosmosClient cosmosClient;
+    cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+    Database database = cosmosClient.GetDatabase(databaseName);
+
+    await database.CreateContainerAsync(containerName, partitionKey);
+
+    Console.WriteLine("Container created");
+}
+```
+
 ## Lab NET - Adding an item [158]
 
 ## Lab NET - Reading items [159]
