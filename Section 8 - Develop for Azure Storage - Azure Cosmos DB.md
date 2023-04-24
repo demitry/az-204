@@ -321,6 +321,30 @@ SELECT o.quantity FROM o in Customers.orders
 
 ## Assignment 3: Assignment - Customer quantity total [    ]
 
+```sql
+select c.customerName, sum(orders.quantity) as Quantity
+from Customers c 
+join orders in c.orders 
+group by c.customerName
+```
+
+```json
+[
+    {
+        "customerName": "CustomerC",
+        "Quantity": 450
+    },
+    {
+        "customerName": "CustomerB",
+        "Quantity": 75
+    },
+    {
+        "customerName": "CustomerA",
+        "Quantity": 100
+    }
+]
+```
+
 ## Lab NET - Create Database and container [157]
 
 ## Lab NET - Adding an item [158]
