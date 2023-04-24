@@ -6,6 +6,7 @@ using Microsoft.Azure.Cosmos;
 string cosmosDBEndpointUri = "";
 string cosmosDBKey = "";
 
+
 string databaseName = "appdb";
 string ordersContainerName = "Orders";
 //1
@@ -37,10 +38,10 @@ async Task CreateContainer(string databaseName, string containerName, string par
 
 
 // 3 Add Items
-await AddItem("O1", "Laptop", 100);
-await AddItem("O2", "Mobiles", 200);
-await AddItem("O3", "Desktop", 75);
-await AddItem("O4", "Laptop", 25);
+//await AddItem("O1", "Laptop", 100);
+//await AddItem("O2", "Mobiles", 200);
+//await AddItem("O3", "Desktop", 75);
+//await AddItem("O4", "Laptop", 25);
 
 async Task AddItem(string orderId, string category, int quantity)
 {
@@ -76,3 +77,33 @@ Added item with Order Id O4
 Request Units consumed 6.67
 
  */
+
+
+// 4 - ReadItems
+
+await ReadItems();
+
+async Task ReadItems()
+{
+    CosmosClient cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+    Database database = cosmosClient.GetDatabase(databaseName);
+    Container container = database.GetContainer(ordersContainerName);
+
+    string sqlQuery = "SELECT o.orderId, o.category, o.quantity FROM Orders o";
+
+    QueryDefinition queryDefinition = new QueryDefinition(sqlQuery);
+    
+    using FeedIterator<Order> feedIterator = container.GetItemQueryIterator<Order>(queryDefinition);
+
+    while (feedIterator.HasMoreResults)
+    {
+        FeedResponse<Order> response = await feedIterator.ReadNextAsync();
+        foreach (Order order in response)
+        {
+            Console.WriteLine("Order Id {0}", order.orderId);
+            Console.WriteLine("Category {0}", order.category);
+            Console.WriteLine("Quantity {0}", order.quantity);
+        }
+    }
+}
