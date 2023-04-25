@@ -774,7 +774,175 @@ Cosmos Table API = Table Storage API = the same API
 
 ## Lab - Stored Procedures [166]
 
+mycosmosacc | Data Explorer
+
+New Stored Procedure
+
+Template
+
+```JavaScript
+// SAMPLE STORED PROCEDURE
+function sample(prefix) {
+    var collection = getContext().getCollection();
+
+    // Query documents and take 1st item.
+    var isAccepted = collection.queryDocuments(
+        collection.getSelfLink(),
+        'SELECT * FROM root r',
+    function (err, feed, options) {
+        if (err) throw err;
+
+        // Check the feed and if empty, set the body to 'no docs found', 
+        // else take 1st element from feed
+        if (!feed || !feed.length) {
+            var response = getContext().getResponse();
+            response.setBody('no docs found');
+        }
+        else {
+            var response = getContext().getResponse();
+            var body = { prefix: prefix, feed: feed[0] };
+            response.setBody(JSON.stringify(body));
+        }
+    });
+
+    if (!isAccepted) throw new Error('The query was not accepted by the server.');
+}
+```
+
+Name = Display
+
+```javascript
+function Display()
+{
+    var context = getContext(); // get current context of the request
+    
+    var response = context.getResponse();
+    
+    response.setBody("This is a stored procedure.")
+}
+```
+
+Save
+
+```csharp
+using Microsoft.Azure.Cosmos;
+
+string cosmosDBEndpointUri = "mycosmosacc | Keys";
+string cosmosDBKey = "==";
+
+string databaseName = "appdb";
+string containerName = "Orders";
+
+CosmosClient cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+var container = cosmosClient.GetContainer(databaseName, containerName);
+
+await CallStoredProcedure();
+
+async Task CallStoredProcedure()
+{
+    var result = await container.Scripts.ExecuteStoredProcedureAsync<string>("Display", new PartitionKey(""), null);
+    Console.WriteLine(result);
+}
+```
+
 ## Lab - Stored Procedures - Create an item [167]
+
+```javascript
+function createItems(items) 
+{
+    var context = getContext();        
+    var response = context.getResponse();
+    
+    if(!items) 
+    {         
+            response.setBody("Error: Items are undefined");    
+            return;
+    }
+    
+    var numOfItems=items.length;
+    
+    checkLength(numOfItems);
+
+    for(let i=0; i<numOfItems; i++)
+    {
+        createItem(items[i]);
+    }
+    
+    response.setBody("Items added to collection: " + numOfItems);    
+
+    function checkLength(itemLength)
+    {
+         if(itemLength==0)    
+         {
+            response.setBody("Error: There are no items to add");    
+            return;
+         }
+    }       
+
+    function createItem(item)
+    {
+        var collection = getContext().getCollection();
+        var collectionLink = collection.getSelfLink();
+        collection.createDocument(collectionLink,item); 
+    }
+}
+```
+
+```csharp
+using Microsoft.Azure.Cosmos;
+
+string cosmosDBEndpointUri = "";
+string cosmosDBKey = "";
+
+string databaseName = "appdb";
+string containerName = "Orders";
+
+CosmosClient cosmosClient = new CosmosClient(cosmosDBEndpointUri, cosmosDBKey);
+
+var container = cosmosClient.GetContainer(databaseName, containerName);
+
+await CallStoredProcedure();
+
+async Task CallStoredProcedure()
+{
+    var result = await container.Scripts.ExecuteStoredProcedureAsync<string>("Display", new PartitionKey(""), null);
+    Console.WriteLine(result);
+
+    dynamic[] orderItems = new dynamic[]
+    {
+        new
+        {
+            id = Guid.NewGuid().ToString(),
+            orderId = "01",
+            category = "Laptop",
+            quantity = 66
+        },
+        new
+        {
+            id = Guid.NewGuid().ToString(),
+            orderId = "02",
+            category = "Laptop",
+            quantity = 77
+        },
+        new
+        {
+            id = Guid.NewGuid().ToString(),
+            orderId = "03",
+            category = "Laptop",
+            quantity = 88
+        },
+    };
+
+    var insertResult = await container.Scripts.ExecuteStoredProcedureAsync<string>(
+        "createItems", 
+        new PartitionKey("Laptop"), 
+        new[] {orderItems});
+    
+    Console.WriteLine(insertResult);
+}
+
+```
 
 ## Lab - Triggers [168]
 
