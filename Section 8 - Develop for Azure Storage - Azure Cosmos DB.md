@@ -22,6 +22,7 @@
     - [JSON Arrays [156]](#json-arrays-156)
     - [Assignment 3: Assignment - Customer quantity total [    ]](#assignment-3-assignment---customer-quantity-total-----)
     - [Lab NET - Create Database and container [157]](#lab-net---create-database-and-container-157)
+        - [Which API best suits your workload?](#which-api-best-suits-your-workload)
     - [Lab NET - Adding an item [158]](#lab-net---adding-an-item-158)
     - [Lab NET - Reading items [159]](#lab-net---reading-items-159)
     - [Lab NET - Replacing items [160]](#lab-net---replacing-items-160)
@@ -346,6 +347,16 @@ group by c.customerName
 ```
 
 ## Lab NET - Create Database and container [157]
+
+### Which API best suits your workload?
+
+- Azure Cosmos DB **for NoSQL** - Azure Cosmos DB's core, or native API for working with documents. Supports fast, flexible development with familiar SQL query language and client libraries for .NET, JavaScript, Python, and Java.
+- Azure Cosmos DB **for PostgreSQL** - Fully-managed relational database service for PostgreSQL with distributed query execution, powered by the Citus open source extension. Build new apps on single or multi-node clusters—with support for JSONB, geospatial, rich indexing, and high-performance scale-out.
+- Azure Cosmos DB **for MongoDB** - Fully managed database service for apps written for MongoDB. Recommended if you have existing MongoDB workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Apache Cassandra** - Fully managed Cassandra database service for apps written for Apache Cassandra. Recommended if you have existing Cassandra workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Table** - Fully managed database service for apps written for Azure Table storage. Recommended if you have existing Azure Table storage workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Apache Gremlin** - Fully managed graph database service using the Gremlin query language, based on Apache TinkerPop project. Recommended for new workloads that need to store relationships between data.
+
 
 mycosmosacc | Keys
 
@@ -712,6 +723,41 @@ async Task AddOrderUpdateCustomer()
 ```
 
 ## Lab - Azure Cosmos DB - Table API [163]
+
+cosmosacctable
+
+cosmosacctable | Data Explorer
+
+new table - no concept of partition key
+
+Orders - entities - add entity
+
+PartitionKey Laptop
+
+cosmosacctable | Connection strings
+
+```csharp
+        static async Task Main(string[] args)
+        {
+            AddEntity("O1", "Mobile", 100);
+            AddEntity("O2", "Laptop", 50);
+            AddEntity("O3", "Desktop", 70);
+            AddEntity("O4", "Laptop", 200);
+        }
+
+        public static void AddEntity(string orderID, string category, int quantity)
+        {
+            TableClient tableClient = new TableClient(connectionString, tableName);
+
+            TableEntity tableEntity = new TableEntity(category, orderID)
+            {
+                {"quantity",quantity}
+            };
+
+            tableClient.AddEntity(tableEntity);
+            Console.WriteLine("Added Entity with order ID {0}", orderID);
+        }
+```
 
 ## Lab NET - Table API - Adding items [164]
 
