@@ -736,6 +736,10 @@ PartitionKey Laptop
 
 cosmosacctable | Connection strings
 
+## Lab NET - Table API - Adding items [164]
+
+Cosmos Table API = Table Storage API = the same API
+
 ```csharp
         static async Task Main(string[] args)
         {
@@ -758,8 +762,6 @@ cosmosacctable | Connection strings
             Console.WriteLine("Added Entity with order ID {0}", orderID);
         }
 ```
-
-## Lab NET - Table API - Adding items [164]
 
 ## When to choose what API [165]
 
