@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Azure.Cosmos;
-
-
-using System.ComponentModel;
+﻿using Microsoft.Azure.Cosmos;
 using Container = Microsoft.Azure.Cosmos.Container;
 
 string cosmosDBEndpointUri = "https://.documents.azure.com:443/";
@@ -12,6 +8,7 @@ string databaseName = "appdb";
 string ordersContainerName = "Orders";
 
 // 3 - Add Items
+
 await AddItem("X1", "Laptop", 100);
 await AddItem("X2", "Mobiles", 200);
 await AddItem("X3", "Desktop", 75);

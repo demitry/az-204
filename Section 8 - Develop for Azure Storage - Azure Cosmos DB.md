@@ -37,7 +37,7 @@
     - [Lab - Stored Procedures - Create an item [167]](#lab---stored-procedures---create-an-item-167)
     - [Lab - Triggers [168]](#lab---triggers-168)
     - [Change Feed [169]](#change-feed-169)
-    - [Lab - Change Feed - Azure Functions [170]](#lab---change-feed---azure-functions-170)
+    - [TODO: Lab - Change Feed - Azure Functions [170]](#todo-lab---change-feed---azure-functions-170)
     - [Lab - Change Feed - Feed Processor [171]](#lab---change-feed---feed-processor-171)
     - [Using Composite Indexes [172]](#using-composite-indexes-172)
     - [Time to live [173]](#time-to-live-173)
@@ -948,8 +948,10 @@ async Task CallStoredProcedure()
 
 Trigger Type
 
-- Pre
-- Post
+- Pre (before the operation occurs)
+- Post (after the operation occurs)
+
+Can define multiple triggers
 
 Trigger Operation
 
@@ -1014,9 +1016,71 @@ async Task AddItem(string orderId, string category, int quantity)
 
 ```
 
+Can define multiple triggers, => specify which should be called
+
+```csharp
+    ItemResponse<Order> response = await container.CreateItemAsync<Order>(order, null, 
+        new ItemRequestOptions() { PreTriggers = new List<string> { "validateItem" } });
+```
+
 ## Change Feed [169]
 
-## Lab - Change Feed - Azure Functions [170]
+- **Record changes** - recorded in order they occur
+- **Feed** - insert and update. **Deletes are not recorded**
+- **Process Change Feed** - you can process change feed with use of Azure Functions or a change feed processor
+- **Records** - the records for the change feed are written to the another container.
+- **Sorting** - The change feed is sorted in the order of modification within each logical partition key value
+- **Throughput** - the same provisioned throughput can be used to read from the container containing the changes.
+
+## TODO: Lab - Change Feed - Azure Functions [170]
+
+Create Function
+
+cosmosdbfunapp1000
+
+Resource Group app-grp
+Name cosmosdbfunapp1000
+Runtime stack .NET 6 (LTS)
+
+cosmosdbfunapp1000 | Functions
+
+Create
+
+Azure Cosmos DB trigger
+
+A function that will be run whenever documents change in a document collection
+
+New Function: CosmosTriggerOrderChanged
+Cosmos DB account connection: Create new (mycosmosacc_DOCUMENTDB)
+Database name: appdb
+Collection name: Orders
+Collection name for leases: leases (**leases helps to track our changes**)
+Create lease collection if it does not exist: Yes
+
+CosmosTriggerOrderChanged | Code + Test
+
+```cs
+#r "Microsoft.Azure.DocumentDB.Core"
+using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Documents;
+
+public static void Run(IReadOnlyList<Document> input, ILogger log)
+{
+    if (input != null && input.Count > 0)
+    {
+        log.LogInformation("Documents modified " + input.Count);
+        log.LogInformation("First document Id " + input[0].Id);
+    }
+}
+
+```
+
+**leases container should be created in appdb**
+
+BUT IS WAS NOT CREATED!
+
+Trigger doesn't work!
 
 ## Lab - Change Feed - Feed Processor [171]
 
