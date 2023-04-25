@@ -22,7 +22,6 @@
     - [JSON Arrays [156]](#json-arrays-156)
     - [Assignment 3: Assignment - Customer quantity total [    ]](#assignment-3-assignment---customer-quantity-total-----)
     - [Lab NET - Create Database and container [157]](#lab-net---create-database-and-container-157)
-        - [Which API best suits your workload?](#which-api-best-suits-your-workload)
     - [Lab NET - Adding an item [158]](#lab-net---adding-an-item-158)
     - [Lab NET - Reading items [159]](#lab-net---reading-items-159)
     - [Lab NET - Replacing items [160]](#lab-net---replacing-items-160)
@@ -33,6 +32,7 @@
     - [Lab - Azure Cosmos DB - Table API [163]](#lab---azure-cosmos-db---table-api-163)
     - [Lab NET - Table API - Adding items [164]](#lab-net---table-api---adding-items-164)
     - [When to choose what API [165]](#when-to-choose-what-api-165)
+        - [Which API best suits your workload?](#which-api-best-suits-your-workload)
     - [Lab - Stored Procedures [166]](#lab---stored-procedures-166)
     - [Lab - Stored Procedures - Create an item [167]](#lab---stored-procedures---create-an-item-167)
     - [Lab - Triggers [168]](#lab---triggers-168)
@@ -347,16 +347,6 @@ group by c.customerName
 ```
 
 ## Lab NET - Create Database and container [157]
-
-### Which API best suits your workload?
-
-- Azure Cosmos DB **for NoSQL** - Azure Cosmos DB's core, or native API for working with documents. Supports fast, flexible development with familiar SQL query language and client libraries for .NET, JavaScript, Python, and Java.
-- Azure Cosmos DB **for PostgreSQL** - Fully-managed relational database service for PostgreSQL with distributed query execution, powered by the Citus open source extension. Build new apps on single or multi-node clusters—with support for JSONB, geospatial, rich indexing, and high-performance scale-out.
-- Azure Cosmos DB **for MongoDB** - Fully managed database service for apps written for MongoDB. Recommended if you have existing MongoDB workloads that you plan to migrate to Azure Cosmos DB.
-- Azure Cosmos DB **for Apache Cassandra** - Fully managed Cassandra database service for apps written for Apache Cassandra. Recommended if you have existing Cassandra workloads that you plan to migrate to Azure Cosmos DB.
-- Azure Cosmos DB **for Table** - Fully managed database service for apps written for Azure Table storage. Recommended if you have existing Azure Table storage workloads that you plan to migrate to Azure Cosmos DB.
-- Azure Cosmos DB **for Apache Gremlin** - Fully managed graph database service using the Gremlin query language, based on Apache TinkerPop project. Recommended for new workloads that need to store relationships between data.
-
 
 mycosmosacc | Keys
 
@@ -764,6 +754,23 @@ Cosmos Table API = Table Storage API = the same API
 ```
 
 ## When to choose what API [165]
+
+- Azure Cosmos DB **for NoSQL** - Azure Cosmos DB's core, or native API for working with documents. Supports fast, flexible development with familiar SQL query language and client libraries for .NET, JavaScript, Python, and Java.
+- Azure Cosmos DB **for PostgreSQL** - Fully-managed relational database service for PostgreSQL with distributed query execution, powered by the Citus open source extension. Build new apps on single or multi-node clusters—with support for JSONB, geospatial, rich indexing, and high-performance scale-out.
+- Azure Cosmos DB **for MongoDB** - Fully managed database service for apps written for MongoDB. Recommended if you have existing MongoDB workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Apache Cassandra** - Fully managed Cassandra database service for apps written for Apache Cassandra. Recommended if you have existing Cassandra workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Table** - Fully managed database service for apps written for Azure Table storage. Recommended if you have existing Azure Table storage workloads that you plan to migrate to Azure Cosmos DB.
+- Azure Cosmos DB **for Apache Gremlin** - Fully managed graph database service using the Gremlin query language, based on Apache TinkerPop project. Recommended for new workloads that need to store relationships between data.
+
+### Which API best suits your workload?
+
+- **NoSQL** - 
+- **PostgreSQL** - sql
+- **MongoDB** - migrate mongodb, similar to SQL api
+- **Apache Cassandra** - column friendly database, don't support joins and subqueries
+- **Table** - single key vakue pairs
+- **Apache Gremlin** - graph db
+
 
 ## Lab - Stored Procedures [166]
 
