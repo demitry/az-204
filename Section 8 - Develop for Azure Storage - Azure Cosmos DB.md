@@ -1290,4 +1290,41 @@ Failed to query user defined functions for container Orders:
  
 ## Consistency [174]
 
+Add read locations,
+
+1 write region, multiple read locations, 
+
+Replicate data globally
+
+- affects RU's
+
+Replication takes time
+
+1 write - 2 replications, 
+1 read
+
+Setting of consistency
+
+What will you see?
+
+- the most recent item,
+- older version of item
+
+**Strong** consistency level - recent committed item
+Best consistency, More latency. Less throughput.
+Have to wait when all updated - more time.
+Hospital systems = very important.
+
+Changes are in order
+
+**Eventual** - Least Consistency, least latency.
+
+- Strong
+- Bounded staleness
+- Session
+- Consistent prefix
+- Eventual
+
+<https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels>
+
 Quiz 7: Short Quiz [    ]
