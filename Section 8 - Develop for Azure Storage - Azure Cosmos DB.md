@@ -1076,11 +1076,35 @@ public static void Run(IReadOnlyList<Document> input, ILogger log)
 
 ```
 
+Problem:
+
 **leases container should be created in appdb**
 
 BUT IS WAS NOT CREATED!
 
 Trigger doesn't work!
+
+Cannot select storage account for app function, no Hosting tab.
+
+Q1
+can you change storage account used by Function app after it will be created? I.e. go to Function app > Configuration and change connection strings stored in AzureWebJobsDashboard and AzureWebJobsStorage app settings.
+
+A
+I had tried that route as well, but the Function App still gave warning "Storage Account is not configured properly" (similar to this).
+
+I had an internal discussion on this. According to our core team, premium is not supported for free trial subscriptions. For consumption, **we block it because applications running on this plan need storages and storages don’t have a free tier**. However, it is still possible to create a consumption app without storage but scale out will have limitations without storage i.e. it won’t be able to cross-stamp scale ( due to its dynamic nature ) and therefore will fail under load or will have unpredictable scaling depending on how over/under utilized it’s home stamp is.
+If the app is being created through script/arm template, this might work since control plane is not blocking it but we are discussing about this too to maintain consistency. If there is any further update I will update this thread accordingly.
+
+<https://www.techwatching.dev/posts/azure-functions-without-azurewebjobsstorage>
+
+<https://learn.microsoft.com/en-us/azure/azure-functions/scripts/functions-cli-create-serverless>
+
+Subscription
+a77b1bf0-3869-4d3f-9d30-42037952d048
+
+My Udemy Comment
+I got the same issue, and I found the root cause - the leases container was not created, I tried to create it manually and got an error "Bad request, ... "Your account is currently configured with a total throughput limit of 1000 RU. This operation failed because it would have increased the total throughput to 1200 RU", so I deleted the Customers container to reduce RU, restarted the function, and the leases container was created automatically. https://learn.microsoft.com/en-us/azure/cosmos-db/free-tier
+
 
 ## Lab - Change Feed - Feed Processor [171]
 
