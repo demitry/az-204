@@ -1197,6 +1197,67 @@ public class Order
 
 ## Using Composite Indexes [172]
 
+```sql
+SELECT * FROM Orders o order by o.category -- OK
+
+SELECT * FROM Orders o order by o.category, o.quantity -- "Errors":["The order by query does not have a corresponding composite index that it can be served from."
+```
+
+Orders -> Scale & Settings -> Indexing Policy
+
+```json
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path": "/*"
+        }
+    ],
+    "excludedPaths": [
+        {
+            "path": "/\"_etag\"/?"
+        }
+    ]
+}
+```
+-> add composite index:
+
+```json
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path": "/*"
+        }
+    ],
+    "excludedPaths": [
+        {
+            "path": "/\"_etag\"/?"
+        }
+    ],
+    "compositeIndexes": [
+        [
+            {
+                "path": "/category",
+                "order": "ascending"                
+            },
+            {
+                "path": "/quantity",
+                "order": "ascending"                
+            }
+        ]
+    ]
+}
+```
+
+Save
+
+```sql
+SELECT * FROM Orders o order by o.category, o.quantity -- OK
+```
+
 ## Time to live [173]
 
 ## Consistency [174]
