@@ -1102,11 +1102,98 @@ If the app is being created through script/arm template, this might work since c
 Subscription
 a77b1bf0-3869-4d3f-9d30-42037952d048
 
-My Udemy Comment
-I got the same issue, and I found the root cause - the leases container was not created, I tried to create it manually and got an error "Bad request, ... "Your account is currently configured with a total throughput limit of 1000 RU. This operation failed because it would have increased the total throughput to 1200 RU", so I deleted the Customers container to reduce RU, restarted the function, and the leases container was created automatically. https://learn.microsoft.com/en-us/azure/cosmos-db/free-tier
+Re-created app fun + storage account using ubuntu bash 
 
+My Udemy Comment
+
+```
+I got the same issue, and I found the root cause - the leases container was not created, I tried to create it manually and got an error "Bad request, ... "Your account is currently configured with a total throughput limit of 1000 RU. This operation failed because it would have increased the total throughput to 1200 RU", so I deleted the Customers container to reduce RU, restarted the function, and the leases container was created automatically. https://learn.microsoft.com/en-us/azure/cosmos-db/free-tier
+```
+
+So, Azure Function tracking the changes
 
 ## Lab - Change Feed - Feed Processor [171]
+
+Now implement your own change feed processor class, program running on a virtual machine.
+
+Main components:
+
+- Monitored container - data from which change feed is generated.
+- Lease container - stores the state and coordinates the processing of change feed across multiple workers.
+- Compute instance - hosts the change feed processor that is used to listen for changes.
+- Delegate - code that is used to process the batch of changes.
+
+Change feed processor library
+
+- automatically checks for changes
+- if changes found -> they are pushed to the client
+- if you have enough throughput and a lot of changes that need to be read, you can have multiple clients to read the change feed.
+
+```cs
+using Microsoft.Azure.Cosmos;
+
+string cosmosEndpointUri = "https://..azure.com:443/";
+
+string cosmosDBKey = "==";
+
+
+string databaseName = "appdb";
+
+string monitoredContainerName = "Orders";
+
+string leaseContainerName = "leases";
+
+await StartChangeProcessor();
+
+async Task StartChangeProcessor()
+{
+    CosmosClient cosmosClient = new CosmosClient(cosmosEndpointUri, cosmosDBKey);
+
+    Container leaseContainer = cosmosClient.GetContainer(databaseName, leaseContainerName);
+
+    ChangeFeedProcessor changeFeedProcessor =
+        cosmosClient.GetContainer(databaseName, monitoredContainerName)
+        .GetChangeFeedProcessorBuilder<Order>(
+            processorName: "ManageChanges", 
+            onChangesDelegate: ManageChanges)
+        .WithInstanceName("appHost")
+        .WithLeaseContainer(leaseContainer)
+        .Build();
+
+    Console.WriteLine("Starting the change feed processor");
+    await changeFeedProcessor.StartAsync();
+
+    Console.Read();
+    await changeFeedProcessor.StopAsync();
+}
+
+static async Task ManageChanges(
+    ChangeFeedProcessorContext context,
+    IReadOnlyCollection<Order> itemCollection,
+    CancellationToken cancellationToken)
+{
+    foreach(var item in itemCollection)
+    {
+        Console.WriteLine(item);
+    }
+}
+
+public class Order
+{
+    public string id { get; set; }
+
+    public string orderId { get; set; }
+
+    public string category { get; set; }
+
+    public int quantity { get; set; }
+    
+    public DateTime creationTime { get; set; }
+
+    public override string ToString() => $"Id: {id} OrderId: {orderId}, Category: {category}, Quantity: {quantity} CreationTime: {creationTime}";
+    
+}
+```
 
 ## Using Composite Indexes [172]
 
