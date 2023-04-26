@@ -1260,6 +1260,34 @@ SELECT * FROM Orders o order by o.category, o.quantity -- OK
 
 ## Time to live [173]
 
+- Delete items after period of time
+- Level - can be set on yhe **item level** or **container level** 
+- Deletion process - delete based on **Time to live** (**TTL**)
+- Background task - uses Requests Units
+- For TTL to work at the item level - should be also defined on container level
+- Benefit - managed by Azure Cosmos DB
+
+Container -> Scale & Settings -> Settings -> Time to live
+- Off
+- On (no default)
+- On
+
+- On (The system will automatically delete items based on the TTL value (in seconds) you provide, without needing a delete operation explicitly issued by a client application. For more information see, Time to Live (TTL) in Azure Cosmos DB.)
+
+15768000 seconds = 4380 hours = 182.5 days = 26 weeks + 1/2 day
+
+10:14 PM
+Failed to update container Orders:
+ The access token expiry UTC time '4/26/2023 10:19:34 AM' is earlier than current UTC time '4/26/2023 7:14:23 PM'.
+
+10:16 PM
+Failed to query triggers for container Orders:
+ The access token expiry UTC time '4/26/2023 10:19:34 AM' is earlier than current UTC time '4/26/2023 7:16:43 PM'.
+error
+10:16 PM
+Failed to query user defined functions for container Orders:
+ The access token expiry UTC time '4/26/2023 10:19:34 AM' is earlier than current UTC time '4/26/2023 7:16:43 PM'.
+ 
 ## Consistency [174]
 
 Quiz 7: Short Quiz [    ]
