@@ -131,9 +131,87 @@ UserA now can access storage account
 
 ## Introduction to Application Objects [181]
 
+1 Way: App - authorize - Azure Storage Account
 
+2 Way:
+
+    - Create separate Application Object in Azure Active Directory
+    - Application Object can given access via RBAC on storage account
+    - Set different permissions on different objects
+    - Can reuse Application Objects
+    - Application Objects - part of Microsoft Identity Platform
 
 ## Lab - Application Object - Blob objects [182]
+
+Operations: list blobs, read, write - we authorized with access keys.
+
+BUT
+
+we will define app obj in azure AD
+
+Access key:
+K0l...iv8A==
+
+storage connection string:
+DefaultEndpointsProtocol=https;AccountName=stacc505050;AccountKey=...;EndpointSuffix=core.windows.net
+
+The problem with Access Keys - could be compromised
+Account Key have all sort of permissions
+
+Create app object
+
+- Azure AD
+- App registrations
+- New registration
+- Register an application
+- BlobApp
+- Redirect URI (optional)
+- Register
+
+Associate object with dotnet application
+
+stacc505050 | Access Control (IAM)
+Role assignments
+Add role assignment
+Reader
+Next
+Select Members
+**Search BlobApp**
+Select
+Review and Assign
+
+stacc505050 | Access Control (IAM)
+Add role assignment
+Storage Blob Data Reader
+Select Members
+**Search BlobApp**
+Select
+Review and Assign
+
+Account Key have all sort of permissions
+but here we have granular permissions
+
+no need container name and connection string
+
+BlobApp
+Application (client) ID
+45c63e12-a365-4dea-bb53-79e516131d8a
+
+Directory (tenant) ID
+87349d34-316a-481c-ab12-5f5c7af3cd99
+
+BlobApp
+
+Certificates and Secrets
+New client secret
+Expies
+
+COPY VALUE 
+secret
+R1u8Q~6jKsoZPDx9qNCFsOpRd8mFzOQUvGC9ucLf
+
+
+
 ## What is Microsoft Graph [183]
 ## Lab - Getting user and group information - Application Configuration [184]
 ## Lab - Getting user and group information - Implementation [185]
