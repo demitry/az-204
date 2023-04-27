@@ -134,12 +134,11 @@ UserA now can access storage account
 1 Way: App - authorize - Azure Storage Account
 
 2 Way:
-
-    - Create separate Application Object in Azure Active Directory
-    - Application Object can given access via RBAC on storage account
-    - Set different permissions on different objects
-    - Can reuse Application Objects
-    - Application Objects - part of Microsoft Identity Platform
+- Create separate Application Object in Azure Active Directory
+- Application Object can given access via RBAC on storage account
+- Set different permissions on different objects
+- Can reuse Application Objects
+- Application Objects - part of Microsoft Identity Platform
 
 ## Lab - Application Object - Blob objects [182]
 
@@ -208,7 +207,7 @@ Expies
 
 COPY VALUE 
 secret
-R1u8Q~6jKsoZPDx9qNCFsOpRd8mFzOQUvGC9ucLf
+
 
 
 
