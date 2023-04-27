@@ -399,6 +399,49 @@ If you add extra permissions, old token will not help,
 The token should be regenerated, based on app object and permissions.
 
 ## Lab - Graph API - Update user [186]
+
+Postman - **Add App permission**: User.ReadWrite.All Read and write all users' full profiles
+
+Grant admin consent ...
+
+=> **REGENERATE TOKEN**
+
+User Id 
+
+"id": "f7cfd9f3-7ea0-450d-b65f-4f3715670516"
+
+**PATCH** https://graph.microsoft.com/v1.0/users/f7cfd9f3-7ea0-450d-b65f-4f3715670516
+
+```json
+{
+    "error": {
+        "code": "InvalidAuthenticationToken",
+        "message": "Access token is empty.",
+        "innerError": {
+            "date": "2023-04-27T15:31:47",
+            "request-id": "e29f462a-4e5a-4dd1-9593-f163d9ca4fa2",
+            "client-request-id": "e29f462a-4e5a-4dd1-9593-f163d9ca4fa2"
+        }
+    }
+}
+```
+
+Headers
+
+Authorization Bearer **newtoken**
+
+Body - Raw, Text - JSON
+
+```json
+{
+    "givenName":"John Doe"
+}
+```
+
+Send, Status 204 No Content (Success, no content was returned)
+
+Check in portal, the first name of UserA is updated.
+
 ## Azure Key Vault [187]
 ## Lab - Azure Key Vault [188]
 ## Lab - Azure Key Vault - Encryption keys [189]
