@@ -9,10 +9,13 @@
     - [Lab - Role-based access control [180]](#lab---role-based-access-control-180)
     - [Introduction to Application Objects [181]](#introduction-to-application-objects-181)
     - [Lab - Application Object - Blob objects [182]](#lab---application-object---blob-objects-182)
-    - [](#)
     - [What is Microsoft Graph [183]](#what-is-microsoft-graph-183)
     - [Lab - Getting user and group information - Application Configuration [184]](#lab---getting-user-and-group-information---application-configuration-184)
+        - [Register an Application in Azure AD](#register-an-application-in-azure-ad)
+        - [Provide permissions](#provide-permissions)
+        - [Provide admin consent](#provide-admin-consent)
     - [Lab - Getting user and group information - Implementation [185]](#lab---getting-user-and-group-information---implementation-185)
+        - [](#)
     - [Lab - Graph API - Update user [186]](#lab---graph-api---update-user-186)
     - [Azure Key Vault [187]](#azure-key-vault-187)
     - [Lab - Azure Key Vault [188]](#lab---azure-key-vault-188)
@@ -27,6 +30,7 @@
     - [Lab - User Assigned Identity [197]](#lab---user-assigned-identity-197)
     - [Lab - User Assigned Identity - PowerShell [198]](#lab---user-assigned-identity---powershell-198)
     - [Lab - PowerShell - Managed Identity [199]](#lab---powershell---managed-identity-199)
+    - [Lab - PowerShell - Storage Account - Key Vault [200]](#lab---powershell---storage-account---key-vault-200)
 
 <!-- /TOC -->
 # Section 9 - Implement Azure security
@@ -230,8 +234,170 @@ Console.WriteLine("The blob is downloaded");
 ```
 
 ## What is Microsoft Graph [183]
+
+https://graph.microsoft.com
+
+https://learn.microsoft.com/en-us/graph/overview
+
+Get info about users, groups etc.
+
+The workflow is important
+
+for OAuth
+
+**you have to authorize** to access this api
+
 ## Lab - Getting user and group information - Application Configuration [184]
+
+I want info about AD Users
+
+API call to MS Graph API
+
+Step 1 : Authorize
+
+Access Token like a key
+
+### Register an Application in Azure AD
+
+=> Define application object to use in Postman to get this access token.
+
+App registrations
+
+New
+
+Postman
+
+### Provide permissions
+
+Allow postman to read info into Azure directory
+
+Postman | API permissions
+
+Microsoft Graph (1)
+User.Read
+Delegated
+Sign in and read user profile
+**Remove it**
+
+Two types of permissions
+
+- Application
+- Delegated
+
+Add permission
+Microsoft Graph
+https://graph.microsoft.com/
+
+What type of permissions does your application require?
+
+- Delegated permissions
+Your application needs to access the API as the signed-in user.
+- Application permissions
+Your application runs as a background service or daemon without a signed-in user.
+
+Application permissions 
+
+User.Read.All
+
+### Provide admin consent
+
+Not granted for Default directory
+
+Press "Grant admin consent for Default Directory"
+
 ## Lab - Getting user and group information - Implementation [185]
+
+Application permissions = Runs on behalf of the application
+
+```
+APP ----------------- Call the MS auth service -------------------------> AD 
+
+APP <----------------- Get the access token ----------------------------- AD 
+
+APP ----------------- Access a resource using the access token ---------> AD 
+
+```
+
+Application (client) ID:  2618a067-95e9-4460-bd00-d616f50baafc
+Object ID:                f8d1d5dc-49b5-4d0e-aa48-3854f7fe9ae5
+Directory (tenant) ID :   87349d34-316a-481c-ab12-5f5c7af3cd99
+
+Postman Overview - Endpoints
+
+OAuth 2.0 token endpoint (v2)
+
+POST
+
+```
+https://login.microsoftonline.com/87349d34-316a-481c-ab12-5f5c7af3cd99/oauth2/v2.0/token
+```
+note, 87349d34-316a-481c-ab12-5f5c7af3cd99 - is a directory tenant id
+
+Body
+
+x-www-form-urlencoded
+
+key values
+
+grant_type    client_credentials (part of OAuth)
+client_id     2618a067-95e9-4460-bd00-d616f50baafc (Application (client) ID: )
+client_secret Postman | Certificates & secrets -> New, Copy Value
+scope         https://graph.microsoft.com/.default
+
+Send to get the access token, get:
+
+
+```json
+{
+    "token_type": "Bearer",
+    "expires_in": 3599,
+    "ext_expires_in": 3599,
+    "access_token": "eyJ0e...H9YlA"
+}
+```
+### 
+
+GET https://graph.microsoft.com/v1.0/users
+
+Headers
+
+Authorization - Bearer ourToken
+
+```json
+{
+    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users",
+    "value": [
+        {
+          ...
+        },
+        {
+          ...
+        },
+        {
+            "businessPhones": [],
+            "displayName": "UserA",
+            "givenName": null,
+            "jobTitle": null,
+            "mail": null,
+            "mobilePhone": null,
+            "officeLocation": null,
+            "preferredLanguage": null,
+            "surname": null,
+            "userPrincipalName": "UserA@dpoluektovgmail.onmicrosoft.com",
+            "id": "f7cfd9f3-7ea0-450d-b65f-4f3715670516"
+        }
+    ]
+}
+```
+
+Access token - have no required permissions,
+
+Permissions should be granted for app object
+
+If you add extra permissions, old token will not help,
+
+The token should be regenerated, based on app object and permissions.
+
 ## Lab - Graph API - Update user [186]
 ## Azure Key Vault [187]
 ## Lab - Azure Key Vault [188]
