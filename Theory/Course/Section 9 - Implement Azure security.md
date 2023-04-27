@@ -9,6 +9,7 @@
     - [Lab - Role-based access control [180]](#lab---role-based-access-control-180)
     - [Introduction to Application Objects [181]](#introduction-to-application-objects-181)
     - [Lab - Application Object - Blob objects [182]](#lab---application-object---blob-objects-182)
+    - [](#)
     - [What is Microsoft Graph [183]](#what-is-microsoft-graph-183)
     - [Lab - Getting user and group information - Application Configuration [184]](#lab---getting-user-and-group-information---application-configuration-184)
     - [Lab - Getting user and group information - Implementation [185]](#lab---getting-user-and-group-information---implementation-185)
@@ -26,7 +27,6 @@
     - [Lab - User Assigned Identity [197]](#lab---user-assigned-identity-197)
     - [Lab - User Assigned Identity - PowerShell [198]](#lab---user-assigned-identity---powershell-198)
     - [Lab - PowerShell - Managed Identity [199]](#lab---powershell---managed-identity-199)
-    - [Lab - PowerShell - Storage Account - Key Vault [200]](#lab---powershell---storage-account---key-vault-200)
 
 <!-- /TOC -->
 # Section 9 - Implement Azure security
@@ -205,11 +205,29 @@ Certificates and Secrets
 New client secret
 Expies
 
-COPY VALUE 
-secret
+COPY SECRET VALUE yo the secret place
 
+```cs
+using Azure.Identity;
+using Azure.Storage.Blobs;
 
+string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99";
+string clientId = "45c63e12-a365-4dea-bb53-79e516131d8a";
+string clientSecret = "";
 
+string blobURI = "https://stacc505050.blob.core.windows.net/mycontainer/myfile.txt";
+
+string filePath = "F:\\aztmp\\myfile.txt";
+
+ClientSecretCredential clientCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+
+BlobClient blobClient = new BlobClient(new Uri(blobURI),clientCredential);
+
+await blobClient.DownloadToAsync(filePath);
+
+Console.WriteLine("The blob is downloaded");
+
+```
 
 ## What is Microsoft Graph [183]
 ## Lab - Getting user and group information - Application Configuration [184]
