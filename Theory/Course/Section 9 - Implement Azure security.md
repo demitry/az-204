@@ -15,7 +15,6 @@
         - [Provide permissions](#provide-permissions)
         - [Provide admin consent](#provide-admin-consent)
     - [Lab - Getting user and group information - Implementation [185]](#lab---getting-user-and-group-information---implementation-185)
-        - [](#)
     - [Lab - Graph API - Update user [186]](#lab---graph-api---update-user-186)
     - [Azure Key Vault [187]](#azure-key-vault-187)
     - [Lab - Azure Key Vault [188]](#lab---azure-key-vault-188)
@@ -355,7 +354,6 @@ Send to get the access token, get:
     "access_token": "eyJ0e...H9YlA"
 }
 ```
-### 
 
 GET https://graph.microsoft.com/v1.0/users
 
@@ -471,8 +469,6 @@ VS
 
 nuget Azure.Security.KeyVault.Keys
 
-## Lab - Azure Key Vault - Secrets [190]
-
 keyapp
 
 keyvaultdpol | Access policies
@@ -538,6 +534,56 @@ Console.WriteLine("Decrypted text:");
 Console.WriteLine(Encoding.UTF8.GetString(textDecrypted.Plaintext));
 
 Console.ReadKey();
+```
+
+## Lab - Azure Key Vault - Secrets [190]
+
+Secure save secret in a Key Vault instead of embedding into application itself
+
+Secure call to the Azure Key Vault to catch the secret
+
+Connection String
+
+keyvaultdpol | Secrets
+
+Create a secret
+
+dbconnectionstring
+
+database | Connection Strings
+
+copy cn with the password
+
+**NB!**
+
+- keyvaultdpol | Access policies
+- KeyVaultApp -> Edit
+- Secret permissions [x] Get
+
+nuget Azure.Security.KeyVault.Secrets
+
+```csharp
+using Azure.Security.KeyVault.Secrets;
+//...
+        private SqlConnection GetConnection()
+        {
+            string tenantId = "";     //Directory (tenant) ID
+            string clientId = "";     //Application (client) ID
+            string clientSecret = ""; // KeyVaultApp | Certificates & secrets - new
+
+            string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
+            string secretName = "dbconnectionstring";
+            
+            ClientSecretCredential clientSecretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+            SecretClient secretClient = new SecretClient(new Uri(keyVaultUrl), clientSecretCredential);
+
+            var secret = secretClient.GetSecret(secretName);
+
+            string connectionString = secret.Value.Value;
+
+
+            return new SqlConnection(connectionString);
+        }
 ```
 
 ## Managed Identities [191]
