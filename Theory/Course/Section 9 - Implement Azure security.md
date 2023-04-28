@@ -728,7 +728,93 @@ create c:\tmp1, run app
 
 ## Lab - Managed Identity - Getting the access token [193]
 
+When we enabled managed identity for the VM,
+
+we can make a call to metadata service - IP **169.254.169.254**
+
+https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token
+
+Sample request using the Azure Instance Metadata Service (IMDS) endpoint (recommended):
+
+```
+GET 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com/' HTTP/1.1 Metadata: true
+```
+
 ## Lab - Managed Identity - Using the access token [194]
+
+Get Blob
+
+https://learn.microsoft.com/en-us/rest/api/storageservices/get-blob?tabs=azure-ad
+
+https://learn.microsoft.com/en-us/rest/api/storageservices/versioning-for-the-azure-storage-services
+
+```csharp
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+
+string tokenUri = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://storage.azure.com";
+HttpClient httpClient = new HttpClient();
+httpClient.DefaultRequestHeaders.Add("Metadata", "true");
+
+// Get the access token:
+
+HttpResponseMessage response = await httpClient.GetAsync(tokenUri);
+string content = await response.Content.ReadAsStringAsync();
+
+Console.WriteLine("Response Content: " + content);
+
+Dictionary<string,string> values = JsonConvert.DeserializeObject<Dictionary<string,string>>(content);
+
+if(values == null)
+{
+    Console.WriteLine("Cannot parse response, Quit");
+    return;
+}
+
+foreach(KeyValuePair<string,string> pair in values)
+{
+    Console.WriteLine("Key is " + pair.Key);
+    Console.WriteLine("Value is " + pair.Value);
+}
+
+Console.WriteLine("values[\"access_token\"] is" + values["access_token"]);
+
+// We can now access the blob using access token
+
+string applicationUri = "https://stacc505050.blob.core.windows.net/mycontainer/myfile.txt";
+
+HttpClient httpClientStorage = new HttpClient();
+httpClientStorage.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", values["access_token"]);
+httpClientStorage.DefaultRequestHeaders.Add("x-ms-version", "2017-11-09");
+
+HttpResponseMessage blobResponse = await httpClientStorage.GetAsync(applicationUri);
+string blobContent = await blobResponse.Content.ReadAsStringAsync();
+
+Console.WriteLine("blob content: " + blobContent);
+Console.Read();
+```
+
+```
+Response Content: {"access_token":"eyJ...evw","client_id":"7538c7c4-d090-4c11-8f0f-d7847123c2fb","expires_in":"84498","expires_on":"1682773537","ext_expires_in":"86399","not_before":"1682686837","resource":"https://storage.azure.com","token_type":"Bearer"}
+Key is access_token
+Value is ey....Ehvw
+Key is client_id
+Value is 7538c7c4-d090-4c11-8f0f-d7847123c2fb
+Key is expires_in
+Value is 84498
+Key is expires_on
+Value is 1682773537
+Key is ext_expires_in
+Value is 86399
+Key is not_before
+Value is 1682686837
+Key is resource
+Value is https://storage.azure.com
+Key is token_type
+Value is Bearer
+values["access_token"] isey...vw
+blob content: our content
+```
 
 ## Lab - Azure Web App - Managed Identity [195]
 
