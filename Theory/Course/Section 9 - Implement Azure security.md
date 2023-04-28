@@ -29,6 +29,7 @@
     - [Lab - Managed Identity - Using the access token [194]](#lab---managed-identity---using-the-access-token-194)
     - [Lab - Azure Web App - Managed Identity [195]](#lab---azure-web-app---managed-identity-195)
         - [Re-implement: Lab - Azure Key Vault - Secrets [190]](#re-implement-lab---azure-key-vault---secrets-190)
+        - [Use Managed Identity to fetch the value of secret from the keyvault](#use-managed-identity-to-fetch-the-value-of-secret-from-the-keyvault)
     - [Note on user assigned identities [196]](#note-on-user-assigned-identities-196)
     - [Lab - User Assigned Identity [197]](#lab---user-assigned-identity-197)
     - [Lab - User Assigned Identity - PowerShell [198]](#lab---user-assigned-identity---powershell-198)
@@ -836,7 +837,7 @@ database | Connection Strings
 copy cn with the password
 **NB!**
 - keyvaultdpol | Access policies
-- KeyVautApp -> Edit (vault)
+- KeyVautApp -> Edit (vault) // app registration
 - Secret permissions [x] Get
 nuget Azure.Security.KeyVault.Secrets
 ```
@@ -850,9 +851,10 @@ using Azure.Security.KeyVault.Secrets;
 //...
         private SqlConnection GetConnection()
         {
+            // from app registration
             string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99";     // Directory (tenant) ID
             string clientId = "9402fc42-8020-454e-a041-a11c8bf615a7";     // Application (client) ID
-            string clientSecret = "wJE8Q~"; // KeyVaultApp | Certificates & secrets - new
+            string clientSecret = "wJE8Q~";                               // KeyVaultApp | Certificates & secrets - new
 
             string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
             string secretName = "dbconnectionstring";
@@ -868,8 +870,35 @@ using Azure.Security.KeyVault.Secrets;
         }
 ```
 
-Use manage identity to fetch the value of secret from the keyvault
+### Use Managed Identity to fetch the value of secret from the keyvault
 
+```cs
+        private SqlConnection GetConnection()
+        {
+            TokenCredential tokenCredential = new DefaultAzureCredential();
+
+            string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
+            string secretName = "dbconnectionstring";
+
+            SecretClient secretClient = new SecretClient(new Uri(keyVaultUrl), tokenCredential);
+
+            var secret = secretClient.GetSecret(secretName);
+
+            string connectionString = secret.Value.Value;
+
+            return new SqlConnection(connectionString);
+        }
+```
+
+**VERY IMPORTANT**
+
+- webapp10001 | Identity - System assigned - On - Save
+
+- keyvaultdpol | Access policies
+  - Create -  Secret Permission - [x] Get
+  - Principal : search webapp10001 (it has identity)
+
+Publish App -> webapp10001
 
 ## Note on user assigned identities [196]
 

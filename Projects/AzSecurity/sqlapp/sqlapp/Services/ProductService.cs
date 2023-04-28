@@ -1,4 +1,5 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
+using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.FeatureManagement;
 using sqlapp.Models;
@@ -25,15 +26,12 @@ namespace sqlapp.Services
 
         private SqlConnection GetConnection()
         {
-            string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99";           // Directory (tenant) ID
-            string clientId = "9402fc42-8020-454e-a041-a11c8bf615a7";           // Application (client) ID
-            string clientSecret = "wJE8Q~";                                     // KeyVaultApp | Certificates & secrets - new
+            TokenCredential tokenCredential = new DefaultAzureCredential();
 
             string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
             string secretName = "dbconnectionstring";
 
-            ClientSecretCredential clientSecretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-            SecretClient secretClient = new SecretClient(new Uri(keyVaultUrl), clientSecretCredential);
+            SecretClient secretClient = new SecretClient(new Uri(keyVaultUrl), tokenCredential);
 
             var secret = secretClient.GetSecret(secretName);
 
