@@ -818,6 +818,10 @@ blob content: our content
 
 ## Lab - Azure Web App - Managed Identity [195]
 
+recreated webapp and db/server
+
+sqladmin/L
+
 ## Note on user assigned identities [196]
 
 ## Lab - User Assigned Identity [197]

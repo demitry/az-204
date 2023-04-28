@@ -114,11 +114,11 @@ Connectivity method
 * Public endpoint
 * Private endpoint
 
-Choose Connectivity method: Public endpoint
+**Choose Connectivity method: Public endpoint**
 
-Allow Azure services and resources to access this server: Yes
+**Allow Azure services and resources to access this server: Yes**
 
-Add current client IP address: Yes
+**Add current client IP address: Yes**
 
 ## Populating our database with data
 
