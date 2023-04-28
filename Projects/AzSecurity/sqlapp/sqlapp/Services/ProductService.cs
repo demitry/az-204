@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
+﻿using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.FeatureManagement;
 using sqlapp.Models;
 using System.Data.SqlClient;
@@ -22,18 +23,21 @@ namespace sqlapp.Services
             return await _featureManager.IsEnabledAsync("betaFeature");
         }
 
-        /*
         private SqlConnection GetConnection()
         {
-            // return new SqlConnection(_configuration["SQLConnection"]);
-            //Hardcoded for docker usage:
-            return new SqlConnection("Server=tcp:sqlserver1000.database.windows.net,1433;Initial Catalog=appdb;Persist Security Info=False;User ID=sqladmin;PasswordLedZeppelin1!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-        }
-        */
+            string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99";           // Directory (tenant) ID
+            string clientId = "9402fc42-8020-454e-a041-a11c8bf615a7";           // Application (client) ID
+            string clientSecret = "wJE8Q~";                                     // KeyVaultApp | Certificates & secrets - new
 
-        private SqlConnection GetConnection()
-        {
-            string connectionString = "Server=tcp:dbserver11101.database.windows.net,1433;Initial Catalog=appdb;Persist Security Info=False;User ID=sqladmin;Password=!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
+            string secretName = "dbconnectionstring";
+
+            ClientSecretCredential clientSecretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+            SecretClient secretClient = new SecretClient(new Uri(keyVaultUrl), clientSecretCredential);
+
+            var secret = secretClient.GetSecret(secretName);
+
+            string connectionString = secret.Value.Value;
 
             return new SqlConnection(connectionString);
         }
@@ -67,21 +71,5 @@ namespace sqlapp.Services
                 return products;
             }
         }
-        
-        /*
-        public async Task<List<Product>> GetProducts()
-        {
-            string functionUrl = "https://functionapp1100.azurewebsites.net/api/GetProducts?code=JF8zoZOxbN4m6QbaIudlJQpYBnqW7rkRFget-PHBlhW6AzFuUaOYdA==";
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(functionUrl);
-
-                string content = await responseMessage.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<List<Product>>(content) ?? new List<Product>();
-            }
-        }
-        */
     }
 }
