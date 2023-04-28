@@ -22,6 +22,9 @@
     - [Lab - Azure Key Vault - Secrets [190]](#lab---azure-key-vault---secrets-190)
     - [Managed Identities [191]](#managed-identities-191)
     - [Lab - Managed identities [192]](#lab---managed-identities-192)
+        - [Configure Managed identity for VM](#configure-managed-identity-for-vm)
+        - [DefaultAzureCredential Class](#defaultazurecredential-class)
+        - [Setup RDP, map C drive](#setup-rdp-map-c-drive)
     - [Lab - Managed Identity - Getting the access token [193]](#lab---managed-identity---getting-the-access-token-193)
     - [Lab - Managed Identity - Using the access token [194]](#lab---managed-identity---using-the-access-token-194)
     - [Lab - Azure Web App - Managed Identity [195]](#lab---azure-web-app---managed-identity-195)
@@ -587,7 +590,7 @@ using Azure.Security.KeyVault.Secrets;
         }
 ```
 
-We still use clientSecret in our app.
+**We still use clientSecret in our app.**
 
 ## Managed Identities [191]
 
@@ -597,6 +600,131 @@ appvm
 demitry/ LZ1!
 
 ## Lab - Managed identities [192]
+
+Previous versions:
+
+```csharp
+using Azure.Identity;
+using Azure.Storage.Blobs;
+
+string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99";
+string clientId = "45c63e12-a365-4dea-bb53-79e516131d8a";
+string clientSecret = "R1u8Q....9ucLf";
+
+string blobURI = "https://stacc505050.blob.core.windows.net/mycontainer/myfile.txt";
+
+string filePath = "F:\\aztmp\\myfile.txt";
+
+ClientSecretCredential clientCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+
+BlobClient blobClient = new BlobClient(new Uri(blobURI),clientCredential);
+
+await blobClient.DownloadToAsync(filePath);
+
+Console.WriteLine("The blob is downloaded");
+
+```
+
+appvm = 40.87.148.228
+
+### Configure Managed identity for VM
+
+appvm | Identity
+
+System assigned
+
+Turn on and Save
+
+A system assigned managed identity is restricted to one per resource and is tied to the lifecycle of this resource.
+
+You can grant permissions to the managed identity by using Azure role-based access control (Azure RBAC).
+
+The managed identity is authenticated with Azure AD, **so you don’t have to store any credentials in code**
+
+stacc505050 | Access Control (IAM)
+
+- Add role assignment
+- **Reader**
+- Select members
+- Search appvm - you will see identity
+- Select
+- Review and assign
+
+- Add role assignment
+- **Storage Blob Data Reader**
+- Select members
+- Search appvm - you will see identity
+- Select
+- Review and assign
+
+On this env we will deploy our app
+
+```csharp
+using Azure.Core;
+using Azure.Identity;
+using Azure.Storage.Blobs;
+
+string blobURI = "https://stacc505050.blob.core.windows.net/mycontainer/myfile.txt";
+string filePath = "C:\\tmp1\\myfile.txt";
+
+TokenCredential tokenCredential = new DefaultAzureCredential();
+
+BlobClient blobClient = new BlobClient(new Uri(blobURI), tokenCredential);
+
+await blobClient.DownloadToAsync(filePath);
+
+Console.WriteLine("The blob is downloaded");
+```
+
+### DefaultAzureCredential Class
+
+https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet
+
+Provides a default TokenCredential authentication flow for applications that will be deployed to Azure. The following credential types if enabled will be tried, in order:
+
+If we define WorkloadIdentityCredential, **DefaultAzureCredential can automatically get a token based on credentials that are defined for our environment**
+
+- EnvironmentCredential (environment variables for virtual machine, for example)
+- **WorkloadIdentityCredential** (our case)
+- ManagedIdentityCredential
+- AzureDeveloperCliCredential
+- SharedTokenCacheCredential
+- VisualStudioCredential
+- VisualStudioCodeCredential
+- AzureCliCredential
+- AzurePowerShellCredential
+- InteractiveBrowserCredential
+
+### Setup RDP, map C drive
+
+VM
+
+appvm | Connect (Preview)
+
+Native RDP
+Connect via native RDP without any additional software needed. Recommended for testing only
+
+Download and open the RDP file
+Download and open the RDP file to connect to the virtual machine.
+
+appvm.rdp
+```
+full address:s:40.87.148.228:3389
+    prompt for credentials:i:1
+    administrative session:i:1
+```
+
+appvm.rdp -> Edit -> Local resources -> More -> Drives -> [x] Local Disk (C:)
+
+Connect
+
+copy uor debug deploy
+
+az-204\Projects\AzSecurity\ManagedIdentities\BlobApp\BlobApp\bin\Debug\
+
+-> VM
+
+create c:\tmp1, run app
 
 ## Lab - Managed Identity - Getting the access token [193]
 
