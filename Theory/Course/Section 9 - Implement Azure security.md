@@ -294,7 +294,7 @@ Your application needs to access the API as the signed-in user.
 - Application permissions
 Your application runs as a background service or daemon without a signed-in user.
 
-Application permissions 
+Application permissions
 
 User.Read.All
 
@@ -316,6 +316,8 @@ APP <----------------- Get the access token ----------------------------- AD
 APP ----------------- Access a resource using the access token ---------> AD 
 
 ```
+
+App registrations:
 
 Application (client) ID:  2618a067-95e9-4460-bd00-d616f50baafc
 Object ID:                f8d1d5dc-49b5-4d0e-aa48-3854f7fe9ae5
@@ -344,7 +346,6 @@ client_secret Postman | Certificates & secrets -> New, Copy Value
 scope         https://graph.microsoft.com/.default
 
 Send to get the access token, get:
-
 
 ```json
 {
@@ -494,6 +495,7 @@ using Azure.Security.KeyVault.Keys;
 using Azure.Security.KeyVault.Keys.Cryptography;
 using System.Text;
 
+//App registrations:
 string tenantId = "87349d34-316a-481c-ab12-5f5c7af3cd99"; //Directory (tenant) ID
 string clientId = "9402fc42-8020-454e-a041-a11c8bf615a7"; //Application (client) ID
 string clientSecret = "v1g8Q~.._3dwj"; // KeyVautApp | Certificates & secrets - new
@@ -567,8 +569,8 @@ using Azure.Security.KeyVault.Secrets;
 //...
         private SqlConnection GetConnection()
         {
-            string tenantId = "";     //Directory (tenant) ID
-            string clientId = "";     //Application (client) ID
+            string tenantId = "";     // Directory (tenant) ID
+            string clientId = "";     // Application (client) ID
             string clientSecret = ""; // KeyVaultApp | Certificates & secrets - new
 
             string keyVaultUrl = "https://keyvaultdpol.vault.azure.net/";
@@ -581,19 +583,35 @@ using Azure.Security.KeyVault.Secrets;
 
             string connectionString = secret.Value.Value;
 
-
             return new SqlConnection(connectionString);
         }
 ```
 
+We still use clientSecret in our app.
+
 ## Managed Identities [191]
+
+Helps Azure resources to authenticate TO services that support Azure AD authentication
+
+appvm
+demitry/ LZ1!
+
 ## Lab - Managed identities [192]
+
 ## Lab - Managed Identity - Getting the access token [193]
+
 ## Lab - Managed Identity - Using the access token [194]
+
 ## Lab - Azure Web App - Managed Identity [195]
+
 ## Note on user assigned identities [196]
+
 ## Lab - User Assigned Identity [197]
+
 ## Lab - User Assigned Identity - PowerShell [198]
+
 ## Lab - PowerShell - Managed Identity [199]
+
 ## Lab - PowerShell - Storage Account - Key Vault [200]
+
 Quiz 8: Short Quiz

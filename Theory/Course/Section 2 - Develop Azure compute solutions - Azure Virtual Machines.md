@@ -6,6 +6,7 @@
     - [Lab - Building a Windows virtual machine](#lab---building-a-windows-virtual-machine)
     - [Connecting to the Virtual Machine](#connecting-to-the-virtual-machine)
     - [Lab - Installing Internet Information Services](#lab---installing-internet-information-services)
+        - [Install IIS = Host our app](#install-iis--host-our-app)
     - [Lab - Deploying a .NET Core app on Windows Server](#lab---deploying-a-net-core-app-on-windows-server)
         - [Step 1: Assign a DNS name to the VM](#step-1-assign-a-dns-name-to-the-vm)
         - [Step 2: Add a rule for the port 8172 to the Network Security Group open WebDeploy port 8172 on Azure](#step-2-add-a-rule-for-the-port-8172-to-the-network-security-group-open-webdeploy-port-8172-on-azure)
@@ -46,17 +47,13 @@ Subscription (my free 200)
 
 Resource group - logical grouping of resources
 
-<https://portal.azure.com/#view/HubsExtension/BrowseAll>
-
-All resources
-
 ## Connecting to the Virtual Machine
 
 Download RDP file and login
 
 ## Lab - Installing Internet Information Services
 
-Install IIS = Host our app
+### Install IIS = Host our app
 
 Start -> Server Manager (dashboard)
 
@@ -74,7 +71,7 @@ Web server by default listens on port 80
 
 Network Security Group
 
-Create rule to allow traffic on port 80
+### Create rule to allow traffic on port 80
 
 Networking -> Inbound port rules
 
