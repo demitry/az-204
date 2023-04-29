@@ -947,10 +947,36 @@ You may also create a **managed identity as a standalone Azure resource**. You c
 
 ## Lab - User Assigned Identity [197]
 
+Create separate resource "User Assigned Managed Identity"
+
+Separate resource => The life cycle of a user-assigned identity is different
+
+Name:app-identity
+
+appvm | Identity -> User assigned -> Add -> Select app-identity -> Add
+
+stacc505050 | Access Control (IAM)
+
+Add -> Add role assignment -> Role - Reader
+
+Assign access to: Managed identity, Select Members -> User assigned -> Select out identity -> Review and assign -> Review and assign
+
+also Add role assignment "Storage Blob Data Reader"
+
+==> app from the appvm will have access to the blob.    
+
+You can assign it on Azure Web-App, Azure Function, 1 identity can be used across resources.
+
 ## Lab - User Assigned Identity - PowerShell [198]
+
+//TODO
 
 ## Lab - PowerShell - Managed Identity [199]
 
+//TODO
+
 ## Lab - PowerShell - Storage Account - Key Vault [200]
+
+//TODO
 
 Quiz 8: Short Quiz
