@@ -31,6 +31,9 @@
         - [Re-implement: Lab - Azure Key Vault - Secrets [190]](#re-implement-lab---azure-key-vault---secrets-190)
         - [Use Managed Identity to fetch the value of secret from the keyvault](#use-managed-identity-to-fetch-the-value-of-secret-from-the-keyvault)
     - [Note on user assigned identities [196]](#note-on-user-assigned-identities-196)
+        - [Managed identity types](#managed-identity-types)
+            - [**System-assigned**](#system-assigned)
+            - [**User-assigned**](#user-assigned)
     - [Lab - User Assigned Identity [197]](#lab---user-assigned-identity-197)
     - [Lab - User Assigned Identity - PowerShell [198]](#lab---user-assigned-identity---powershell-198)
     - [Lab - PowerShell - Managed Identity [199]](#lab---powershell---managed-identity-199)
@@ -901,6 +904,46 @@ using Azure.Security.KeyVault.Secrets;
 Publish App -> webapp10001
 
 ## Note on user assigned identities [196]
+
+https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+
+### Managed identity types
+
+System-assigned vs user assigned
+
+**System-assigned - directly linked to the resource** (we are enabling it for app VM itself)
+
+**User-assigned - separate from the resource itself** (has its own life cycle)
+
+if you have 10 VMs, you want to assign access to storage account,
+
+- you will not 10 times assign system-assigned identity
+- you will assign 1 user identity once
+
+if you delete 1 VM, user-assigned identity will stay, it has its own life cycle
+
+There are two types of managed identities:
+
+#### **System-assigned**
+
+Some Azure resources, such as virtual machines allow you to enable a managed identity **directly on the resource**. When you enable a system-assigned managed identity:
+
+- A service principal of a special type is created in Azure AD for the identity. **The service principal is tied to the lifecycle of that Azure resource**. When the Azure resource is deleted, **Azure automatically deletes the service principal for you**.
+- By design, only that Azure resource can use this identity to request tokens from Azure AD.
+- You authorize the managed identity to have access to one or more services.
+- The name of the system-assigned service principal is always the same as the name of the Azure resource it is created for. For a deployment slot, the name of its system-assigned identity is
+
+```
+<app-name>/slots/<slot-name>.
+```
+
+#### **User-assigned**
+
+You may also create a **managed identity as a standalone Azure resource**. You can create a user-assigned managed identity and assign it to one **or more** Azure Resources. When you enable a user-assigned managed identity:
+
+- A service principal of a special type is created in Azure AD for the identity. The service principal **is managed separately from the resources** that use it.
+- User-assigned identities **can be used by multiple resources**.
+- You authorize the managed identity to have access to one or more services.
 
 ## Lab - User Assigned Identity [197]
 
