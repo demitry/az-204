@@ -1,7 +1,6 @@
 <!-- TOC -->
 
 - [Section 10: Implement Azure security - Authentication and Authorization](#section-10-implement-azure-security---authentication-and-authorization)
-    - [Section Resources download [201]](#section-resources-download-201)
     - [What are we going to cover [202]](#what-are-we-going-to-cover-202)
     - [Authentication and Authorization [203]](#authentication-and-authorization-203)
     - [API's and Authorization [204]](#apis-and-authorization-204)
@@ -35,9 +34,29 @@
 <!-- /TOC -->
 
 # Section 10: Implement Azure security - Authentication and Authorization
-## Section Resources download [201]
+
 ## What are we going to cover [202]
+
 ## Authentication and Authorization [203]
+
+Authentication - the process wherein you **prove that you are who you say you are**
+
+Authorization - the process of **granting access** to perform an action.
+
+**Old era**
+
+User <-> app <-> DB <-> Resources
+
+Problems:
+
+1. You have to maintain the database of user names and passwords
+
+2. You have to maintain the security of the database
+
+3. You need to implement newer methods of authentication - MFA (Multi-Factor Authentication)
+
+4. The application itself is responsible for authenticating the user.
+
 ## API's and Authorization [204]
 ## Using Microsoft libraries [205]
 ## OAuth2 - Authorization Code Grant - Initial Understanding [206]
