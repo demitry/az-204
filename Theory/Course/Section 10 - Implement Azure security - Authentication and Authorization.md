@@ -6,6 +6,7 @@
     - [API's and Authorization [204]](#apis-and-authorization-204)
     - [Using Microsoft libraries [205]](#using-microsoft-libraries-205)
     - [OAuth2 - Authorization Code Grant - Initial Understanding [206]](#oauth2---authorization-code-grant---initial-understanding-206)
+        - [OAuth 2.0 authorization process](#oauth-20-authorization-process)
     - [OAuth2 - Authorization Code Grant - More details [207]](#oauth2---authorization-code-grant---more-details-207)
     - [Review on what we have done so far [208]](#review-on-what-we-have-done-so-far-208)
     - [OAuth while logging into Azure [209]](#oauth-while-logging-into-azure-209)
@@ -104,7 +105,49 @@ Microsoft Authentication Library
 - Maintains the token cache and refresh tokens when they are about to expire.
 
 ## OAuth2 - Authorization Code Grant - Initial Understanding [206]
+
+OAuth 2.0 - Industry-standard protocol for authorization
+
+- Login to /NET Web App
+
+- User defined in Azure AD
+
+- App authenticate the user
+
+- User has permissions to view images in storage
+
+- Application will take users permission and access storage account
+
+<https://oauth.net/>
+
+<https://oauth.net/getting-started/>
+
+User (Resource owner) - the user who has access to the protected resource
+
+Client - Application requesting access to the protected resource
+
+### OAuth 2.0 authorization process
+
+- **Client Registration**: The client (the application requesting access to a user's resources) registers itself with the authorization server. During registration, the client obtains a client identifier and, optionally, a client secret.
+
+- **User Authorization Request**: The client initiates the authorization process by redirecting the user to the authorization server. The client includes the client identifier, the requested scope of access, and a redirect URI where the user will be redirected after authorization.
+
+- **User Consent**: At the authorization server, the user is presented with a consent screen that explains the permissions requested by the client. The user has the option to grant or deny access to their resources.
+
+- **Authorization Grant**: If the user grants access, the authorization server issues an authorization grant to the client. The type of grant issued depends on the specific OAuth 2.0 flow being used. Common grant types include authorization code, implicit, resource owner password credentials, and client credentials.
+
+- **Access Token Request**: The client sends a request to the authorization server to exchange the authorization grant for an access token. The request includes the grant type, client identifier, client secret (if applicable), and the authorization grant.
+
+- **Access Token Issuance**: The authorization server validates the request and, if successful, issues an access token to the client. The access token represents the client's authorization to access the requested resources.
+
+- **Accessing Protected Resources**: The client includes the access token in subsequent requests to the resource server (API server) to access the protected resources. The access token serves as proof of authorization.
+
+- **Token Expiration and Refresh**: Access tokens typically have a limited lifespan. When an access token expires, the client can use a refresh token (if provided) to obtain a new access token without involving the user again. The client sends a token refresh request to the authorization server to exchange the refresh token for a new access token.
+
 ## OAuth2 - Authorization Code Grant - More details [207]
+
+Step 1. The application makes a call to the authorization server which has the authorization code. At this time we are not getting the access token.
+
 ## Review on what we have done so far [208]
 ## OAuth while logging into Azure [209]
 ## Lab - ASP.NET - Adding Authentication [210]
