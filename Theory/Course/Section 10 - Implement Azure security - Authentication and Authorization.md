@@ -58,6 +58,33 @@ Problems:
 4. The application itself is responsible for authenticating the user.
 
 ## API's and Authorization [204]
+
+1. Delegate the task of authentication to an external identity provider (AD).
+
+2. The provider can take care of additional authentication mechanisms (MFA)
+
+**API**
+
+User - App - API (get customer/product/order info...) - DB
+
+API - code is isolated
+
+Multiple apps can access API (not embed this code)
+
+User - App - API (get customer/product/order info...) - DB
+
+API must authorize our user to access uor data.
+
+Authorization.
+
+App -> Identity Provider sends password to API
+
+Generate/send the access token - API can decide - five access.
+
+Life time - 60-90 min.
+
+The API can validate the token based on the aud claims
+
 ## Using Microsoft libraries [205]
 ## OAuth2 - Authorization Code Grant - Initial Understanding [206]
 ## OAuth2 - Authorization Code Grant - More details [207]
