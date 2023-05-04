@@ -86,6 +86,23 @@ Life time - 60-90 min.
 The API can validate the token based on the aud claims
 
 ## Using Microsoft libraries [205]
+
+Microsoft Identity PLatform
+
+- Connect using different identity providers
+
+- Social accounts
+
+- OAuth2.0 and OpenID Connect standards
+
+Microsoft Authentication Library
+
+- Acquire access tokens from the Microsoft Identity platform
+
+- This can be used to authenticate users and allow secure access to API's
+
+- Maintains the token cache and refresh tokens when they are about to expire.
+
 ## OAuth2 - Authorization Code Grant - Initial Understanding [206]
 ## OAuth2 - Authorization Code Grant - More details [207]
 ## Review on what we have done so far [208]
