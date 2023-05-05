@@ -368,6 +368,24 @@ https://learn.microsoft.com/en-us/azure/active-directory/develop/microsoft-ident
 
 Microsoft.Identity.Web.UI - Optional. Adds UI for user sign-in and sign-out and an associated controller for web apps.
 
+```cs
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddRazorPages().AddMvcOptions(options => {
+    var policy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+    
+    options.Filters.Add(new AuthorizeFilter(policy));
+}).AddMicrosoftIdentityUI();
+
+```
+
+```cs
+    //[Authorize] // no need
+    public class IndexModel : PageModel
+```
+
 ## Lab - ASP.NET - Adding Sign-in out - Part 2 [212]
 ## Lab - ASP.NET - Getting user claims [213]
 ## Lab - Getting Group claims [214]
