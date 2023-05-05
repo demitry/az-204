@@ -363,6 +363,11 @@ Redirect URIs
 The URIs we will accept as destinations when returning authentication responses (tokens) after successfully authenticating or signing out users. The redirect URI you send in the request to the login server should match one listed here. Also referred to as reply URLs. Learn more about Redirect URIs and their restrictions
 
 ## Lab - ASP.NET - Adding Sign-in out - Part 1 [211]
+
+https://learn.microsoft.com/en-us/azure/active-directory/develop/microsoft-identity-web
+
+Microsoft.Identity.Web.UI - Optional. Adds UI for user sign-in and sign-out and an associated controller for web apps.
+
 ## Lab - ASP.NET - Adding Sign-in out - Part 2 [212]
 ## Lab - ASP.NET - Getting user claims [213]
 ## Lab - Getting Group claims [214]
