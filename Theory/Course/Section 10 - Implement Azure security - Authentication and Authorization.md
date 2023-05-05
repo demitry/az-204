@@ -483,6 +483,23 @@ Object Id : 8c8...e
 - uti
 
 ## Lab - Getting other claims [215]
+
+AuthApp | Token configuration
+
+Add optional claim
+
+Token type: ID
+
+Access and ID tokens are used by applications for authentication
+[x] email
+[x] given_name
+
+Add
+
+[x] Turn on the Microsoft Graph ...(require for claims to appear in  token) 
+
+Users UserA - you can change properties
+
 ## Lab - Getting an access token [216]
 ## Lab - Using an access token [217]
 ## Lab - Publishing onto Azure Web Apps [218]
