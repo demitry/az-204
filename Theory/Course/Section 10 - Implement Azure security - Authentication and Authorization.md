@@ -443,6 +443,45 @@ so We can get user Claims - name-value pairs, info about user.
 ```
 
 ## Lab - Getting Group claims [214]
+
+Default Directory
+
+Groups | All groups
+
+New Group
+- Owners
+- No owners selected
+- Members
+- Add members
+
+AuthApp | Token configuration
+
+Edit groups claims
+[x] Security groups
+
+Document has all properties fo an application object
+
+AuthApp | Manifest
+
+"groupMembershipClaims": "SecurityGroup" (it was null)
+
+login with
+usera@dpoluektovgmail.onmicrosoft.com
+
+GroupA | Properties
+Object Id : 8c8...e
+
+- aio
+- cc
+- groups	8c8...e (Could be multiple groups)
+- name	UserA
+- http://schemas.microsoft.com/identity/claims/objectidentifier
+- preferred_username	UserA@dpoluektovgmail.onmicrosoft.com
+- rh
+- http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier	
+- http://schemas.microsoft.com/identity/claims/tenantid
+- uti
+
 ## Lab - Getting other claims [215]
 ## Lab - Getting an access token [216]
 ## Lab - Using an access token [217]
