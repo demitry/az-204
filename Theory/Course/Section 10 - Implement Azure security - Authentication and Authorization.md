@@ -208,6 +208,160 @@ https://login.live.com/oauth20_authorize.srf?scope=openid+profile+email+offline_
 response_type=code - initialize an exchange, code grant flow
 
 ## Lab - ASP.NET - Adding Authentication [210]
+
+AuthApp initial
+
+App registrations - New registration - AuthApp - Register
+
+Integrate with app
+
+appsettings.json - add
+
+
+```json
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "TenantId": "87349d34-316a-481c-ab12-5f5c7af3cd99", //AuthApp registration - Directory (tenant) ID
+    "ClientId": "a8084fa2-4e6a-4ec5-a599-de584d8f565e" //AuthApp registration - Application (client) ID
+  }
+```
+
+nuget Microsoft.Identity.Web
+
+Program.cs
+
+```cs
+using Microsoft.Identity.Web;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+
+# ------------------------------------------------------
+# NOTICE: AddMicrosoftIdentityWebAppAuthentication
+# ------------------------------------------------------
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd");
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+# ------------------------
+# NOTICE: Use MS Auth
+# ------------------------
+app.UseAuthentication(); // Now use MS Auth
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.Run();
+
+```
+
+If we want to access the index page - we need to authorize => add  [Authorize]
+
+```cs
+namespace AuthApp.Pages
+{
+    [Authorize]
+    public class IndexModel : PageModel
+    {
+```
+
+AuthApp | Authentication
+
+Add Platform
+
+Web
+
+- Redirect URIs - after auth has taken place => redirect, go back to app
+- Check [x] ID tokens (used for implicit and hybrid flows)
+- "Configure"
+
+AuthApp | API permissions
+
+```
+Microsoft Graph (1)
+User.Read
+Delegated
+Sign in and read user profile
+```
+
+Previously we added application type permissions (login without the user)
+
+This is **Delegated type permissions**
+
+- login with user defined in Azure AD, so take permissions of the user
+- This is consent screen
+
+Remember "Grant admin consent for Default Directory" ? with Postman? With Postman we are not logged in, no ability, we are NOT "Grant admin consent for Default Directory".
+
+- Can we access on your behalf ? Can we access your profile info?
+
+Accept
+
+```
+Sorry, but we’re having trouble signing you in.
+
+AADSTS50011: The redirect URI 'https://localhost:7236/signin-oidc' specified in the request does not match the redirect URIs configured for the application 'a8084fa2-4e6a-4ec5-a599-de584d8f565e'. Make sure the redirect URI sent in the request matches one added to your application in the Azure portal. Navigate to https://aka.ms/redirectUriMismatchError to learn more about how to fix this.
+```
+
+=> cofig signin and signout urls in package config and in AuthApp | Authentication
+ settings.
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "TenantId": "87349d34-316a-481c-ab12-5f5c7af3cd99", //AuthApp registration - Directory (tenant) ID
+    "ClientId": "a8084fa2-4e6a-4ec5-a599-de584d8f565e", //AuthApp registration - Application (client) ID
+    "CallbackPath": "/signin-oidc",                     // check AuthApp | Authentication - Redirect URIs
+    "SignedOutCallbackPath": "/signout-oidc"            // check AuthApp | Authentication - Front-channel logout URL
+  }
+}
+
+```
+
+AuthApp | Authentication
+
+Redirect URIs: https://localhost:7236/signin-oidc
+
+Front-channel logout URL: https://localhost:7236/signout-oidc
+
+Protocols Built on OAuth 2.0 - OpenID Connect (OpenID Foundation)
+
+https://openid.net/connect/
+
+MS used OpenID for authentication
+
+and then used OAuth for authorization
+
+We used [x] **ID tokens** (used for implicit and hybrid flows) - for OpenId connect
+
+Otherwise you will fail to authenticate to Azure AD.
+
+Redirect URIs
+
+The URIs we will accept as destinations when returning authentication responses (tokens) after successfully authenticating or signing out users. The redirect URI you send in the request to the login server should match one listed here. Also referred to as reply URLs. Learn more about Redirect URIs and their restrictions
+
 ## Lab - ASP.NET - Adding Sign-in out - Part 1 [211]
 ## Lab - ASP.NET - Adding Sign-in out - Part 2 [212]
 ## Lab - ASP.NET - Getting user claims [213]
