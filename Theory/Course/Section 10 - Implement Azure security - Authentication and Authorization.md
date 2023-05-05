@@ -387,6 +387,22 @@ builder.Services.AddRazorPages().AddMvcOptions(options => {
 ```
 
 ## Lab - ASP.NET - Adding Sign-in out - Part 2 [212]
+
+Project - Add - New Scaffolded Item... - Identity - Add
+
+Add identity
+ - Account\Login
+ - Account\Logout
+ - AuthApp.Data.AuthAppContext
+ - SQLite
+ - Add
+
+Support for ASP.NET Core Identity was added to your project.
+
+For setup and configuration information, see https://go.microsoft.com/fwlink/?linkid=2116645.
+
+
+
 ## Lab - ASP.NET - Getting user claims [213]
 ## Lab - Getting Group claims [214]
 ## Lab - Getting other claims [215]
