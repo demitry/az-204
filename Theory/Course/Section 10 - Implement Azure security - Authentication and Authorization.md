@@ -401,9 +401,47 @@ Support for ASP.NET Core Identity was added to your project.
 
 For setup and configuration information, see https://go.microsoft.com/fwlink/?linkid=2116645.
 
-
-
 ## Lab - ASP.NET - Getting user claims [213]
+
+Up to now - Authentication, it is based on OpenID protocol, which build on top on OAuth.
+
+We checked - [x] ID tokens (used for implicit and hybrid flows)
+
+so We can get user Claims - name-value pairs, info about user.
+
+- aio
+- http://schemas.microsoft.com/identity/claims/identityprovider
+- name	Dmytro P
+- http://schemas.microsoft.com/identity/claims/objectidentifier
+- preferred_username	d***v@gmail.com
+- rh
+- http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
+- http://schemas.microsoft.com/identity/claims/tenantid
+- uti
+
+```html
+<div class="text-center">
+    <h1 class="display-4">Displaying all the claims</h1>
+    <table class="table" table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Claim type</th>
+                <th scope="col">Claim Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var _claim in ((ClaimsIdentity)User.Identity).Claims)
+            {
+                <tr>
+                    <td>@_claim.Type</td>
+                    <td>@_claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+```
+
 ## Lab - Getting Group claims [214]
 ## Lab - Getting other claims [215]
 ## Lab - Getting an access token [216]
