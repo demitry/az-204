@@ -160,6 +160,29 @@ Step 3. The application requests for an access token. The access token will have
 Step 4. The web app will ask the resource server for access to the resource.
 
 ## Review on what we have done so far [208]
+
+BlobApp
+
+```csharp
+string connectionString = "DefaultEndpointsProtocol=https;AccountName=stacc10001;AccountKey=abst_COPY_acc10001_Access key_xg==;EndpointSuffix=core.windows.net";
+```
+
+Problem:
+
+AccountKey - "master" key, allow perform any operation within the storage account
+
+Access via:
+
+- Account Key
+- Application object + Managed identity (better security)
+access to app object: ClientSecretCredentials class, client secret
+- Postman - Graph API access token, grant_type: client_credentials outside the context of the user (we are not logged in as a user, just a client application)
+this was client credentials grant flow
+
+OAuth - protocol ans set of standards about how clients can authorize themselves to access the resource.
+
+Access API: Each service in azure platform has API.
+
 ## OAuth while logging into Azure [209]
 ## Lab - ASP.NET - Adding Authentication [210]
 ## Lab - ASP.NET - Adding Sign-in out - Part 1 [211]
