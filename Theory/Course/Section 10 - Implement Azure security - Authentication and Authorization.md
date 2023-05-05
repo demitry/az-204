@@ -122,6 +122,8 @@ OAuth 2.0 - Industry-standard protocol for authorization
 
 <https://oauth.net/getting-started/>
 
+<https://habr.com/ru/companies/vk/articles/115163/>
+
 User (Resource owner) - the user who has access to the protected resource
 
 Client - Application requesting access to the protected resource
@@ -147,6 +149,15 @@ Client - Application requesting access to the protected resource
 ## OAuth2 - Authorization Code Grant - More details [207]
 
 Step 1. The application makes a call to the authorization server which has the authorization code. At this time we are not getting the access token.
+
+Step 2. The authorization server sends the authorization code to the application.
+    - The auth code is just the initial step in the process. The app can't do much with this code.
+    - The application then needs to use the authorization code to get the access token. The authorization code is viewable in the browser.
+    - But the latter on process of getting the access token with the use of the authorization code is done by the application in the backend (you will not see it in the browser).
+
+Step 3. The application requests for an access token. The access token will have the permissions of the user.
+
+Step 4. The web app will ask the resource server for access to the resource.
 
 ## Review on what we have done so far [208]
 ## OAuth while logging into Azure [209]
