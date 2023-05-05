@@ -184,6 +184,29 @@ OAuth - protocol ans set of standards about how clients can authorize themselves
 Access API: Each service in azure platform has API.
 
 ## OAuth while logging into Azure [209]
+
+<https://portal.azure.com/>
+
+sign in
+
+```text
+https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize?redirect_uri= 
+&response_type= code... 
+&state=OpenIdConnect.AuthenticationProperties 
+&response_mode=form_post 
+&nonce= 
+&client-request-id= 
+&x-client-SKU=
+```
+
+oauth2 - authorize - to sign in
+
+```text
+https://login.live.com/oauth20_authorize.srf?scope=openid+profile+email+offline_access&response_type=code...
+```
+
+response_type=code - initialize an exchange, code grant flow
+
 ## Lab - ASP.NET - Adding Authentication [210]
 ## Lab - ASP.NET - Adding Sign-in out - Part 1 [211]
 ## Lab - ASP.NET - Adding Sign-in out - Part 2 [212]
