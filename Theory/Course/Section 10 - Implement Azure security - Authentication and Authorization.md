@@ -581,6 +581,9 @@ builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration,
 ```
 
 ## Lab - Using an access token [217]
+
+Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
+
 ## Lab - Publishing onto Azure Web Apps [218]
 ## Lab - Accessing Blob Storage via POSTMAN [219]
 ## Lab - Creating our Web API [220]

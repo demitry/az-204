@@ -5,6 +5,8 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AuthApp.Data;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AuthAppContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthAppContextConnection' not found.");
@@ -21,9 +23,15 @@ string ScopeUserImpersonation = "user_impersonation";
 
 string[] scope = new string[] { $"https://storage.azure.com/{ScopeUserImpersonation}" };
 
+// Add MSAL wrapper for web apps
+
 builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
     .EnableTokenAcquisitionToCallDownstreamApi(scope)
     .AddInMemoryTokenCaches();
+
+// Below code is necessary and must come AFTER you add the identity service.  If you don't include this
+// your ID token will be formatted as SAML claims instead of proper OAuth2 claims.
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddControllersWithViews();
 
