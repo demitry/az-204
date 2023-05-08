@@ -17,7 +17,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 // Add services to the container.
 
-builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd");
+string ScopeUserImpersonation = "user_impersonation";
+
+string[] scope = new string[] { $"https://storage.azure.com/{ScopeUserImpersonation}" };
+
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi(scope)
+    .AddInMemoryTokenCaches();
 
 builder.Services.AddControllersWithViews();
 

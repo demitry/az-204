@@ -17,6 +17,12 @@
     - [Lab - Getting Group claims [214]](#lab---getting-group-claims-214)
     - [Lab - Getting other claims [215]](#lab---getting-other-claims-215)
     - [Lab - Getting an access token [216]](#lab---getting-an-access-token-216)
+        - [Add role assignments for UserA](#add-role-assignments-for-usera)
+        - [Scope of the storage service](#scope-of-the-storage-service)
+            - [[x] user_impersonation](#x-user_impersonation)
+            - [[x] Access tokens used for implicit flows](#x-access-tokens-used-for-implicit-flows)
+        - [Client secret](#client-secret)
+        - [Get the access token](#get-the-access-token)
     - [Lab - Using an access token [217]](#lab---using-an-access-token-217)
     - [Lab - Publishing onto Azure Web Apps [218]](#lab---publishing-onto-azure-web-apps-218)
     - [Lab - Accessing Blob Storage via POSTMAN [219]](#lab---accessing-blob-storage-via-postman-219)
@@ -501,6 +507,79 @@ Add
 Users UserA - you can change properties
 
 ## Lab - Getting an access token [216]
+
+### Add role assignments for UserA
+
+Get the access token and ensure that user has access to the storage account  
+
+stacc505050 | Access Control (IAM)
+
+Role assignments
+
+UserA
+
+no role assignment
+
+Add - Role assignment - Role Reader - Next - Selcts Members - UserA
+
+Failed, already exists
+
+Storage Blob Data Reader - Successfully added
+
+### Scope of the storage service
+
+User -> App -> Storage Account
+
+We are not giving access to App, we are giving access to User.
+
+#### [x] user_impersonation
+
+AuthApp | API permissions
+
+Add a permission (Request API permissions) - Azure storage (https://storage.azure.com/)
+
+[x] user_impersonation
+
+Application can impersonate the user based on permissions given to the user to get the access token to get the access to the storage API.
+
+Not Granting consent.. => user will concent the permission
+
+#### [x] Access tokens (used for implicit flows)
+
+AuthApp | Authentication
+
+[x] Access tokens (used for implicit flows)
+
+### Client secret
+
+AuthApp | Certificates & secrets
+
+New client secret
+
+appsettings.json + "ClientSecret": ""
+
+### Get the access token
+
+```cs
+string ScopeUserImpersonation = "user_impersonation";
+
+string[] scope = new string[] { $"https://storage.azure.com/{ScopeUserImpersonation}" };
+
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi(scope)
+    .AddInMemoryTokenCaches();
+```
+
+```cs
+        public async Task OnGet()
+        {
+            string ScopeUserImpersonation = "user_impersonation";
+            string[] scope = new string[] { $"https://storage.azure.com/{ScopeUserImpersonation}" };
+
+            accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scope);
+        }
+```
+
 ## Lab - Using an access token [217]
 ## Lab - Publishing onto Azure Web Apps [218]
 ## Lab - Accessing Blob Storage via POSTMAN [219]
