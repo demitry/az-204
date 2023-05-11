@@ -44,6 +44,7 @@
         - [Create Certificate](#create-certificate)
         - [Upload Certificate](#upload-certificate)
         - [Configure the application for authentication and API reference](#configure-the-application-for-authentication-and-api-reference)
+        - [Define the platform and URLs](#define-the-platform-and-urls)
 
 <!-- /TOC -->
 
@@ -779,3 +780,22 @@ Thumbprint D5699FAE3CCBB3E938AED0CC724B24C28CB9548C
   "AllowedHosts": "*"
 }
 ```
+
+- Instance - The authentication endpoint. Check with the different available endpoints in National clouds.
+- TenantId - The identifier of the tenant where the application is registered. Replace the text in quotes with the Directory (tenant) ID value that was recorded earlier from the overview page of the registered application.
+- ClientId - The identifier of the application, also referred to as the client. Replace the text in quotes with the Application (client) ID value that was recorded earlier from the overview page of the registered application.
+- ClientCertificates - A self-signed certificate is used for authentication in the application. Replace the text of the CertificateThumbprint with the thumbprint of the certificate that was previously recorded.
+- CallbackPath - Is an identifier to help the server redirect a response to the appropriate application.
+- DownstreamApi - Is an identifier that defines an endpoint for accessing Microsoft Graph. The application URI is combined with the specified scope. To define the configuration for an application owned by the organization, the value of the Scopes attribute is slightly different.
+
+Save changes to the file.
+
+In the Properties folder, open the launchSettings.json file.
+
+Find and record the https value applicationURI within launchSettings.json, for example https://localhost:{port}. This URL will be used when defining the Redirect URI.
+
+```json
+"applicationUrl": "https://localhost:7273;
+```
+
+### Define the platform and URLs
