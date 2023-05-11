@@ -48,6 +48,9 @@
     - [Add sign in to an application](#add-sign-in-to-an-application)
         - [Install identity packages - Microsoft.Identity.Web.UI](#install-identity-packages---microsoftidentitywebui)
         - [Implement authentication and acquire tokens](#implement-authentication-and-acquire-tokens)
+        - [Result](#result)
+        - [Is a certificate's thumbprint considered private?](#is-a-certificates-thumbprint-considered-private)
+        - [Are Certificate Thumbprints Unique?](#are-certificate-thumbprints-unique)
 
 <!-- /TOC -->
 
@@ -869,3 +872,43 @@ app.MapControllers();
 app.Run();
 ```
 
+### Result
+
+Before rendering the page, the Page Model was able to make a call to Microsoft Graph's /me API for your user and received the following:
+
+```json
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users/$entity",
+  "businessPhones": [],
+  "displayName": "Dmytro Poluektov",
+  "givenName": "Dmytro",
+  "jobTitle": null,
+  "mail": null,
+  "mobilePhone": null,
+  "officeLocation": null,
+  "preferredLanguage": null,
+  "surname": "Poluektov",
+  "userPrincipalName": "dpoluektov_gmail.com#EXT#@dpoluektovgmail.onmicrosoft.com",
+  "id": "a6ef4cf0-3753-4433-9536-21a9f6a8e22a"
+}
+```
+
+Refreshing this page will continue to use the cached access token acquired for Microsoft Graph, which is valid for future page views will attempt to refresh this token as it nears its expiration.
+
+### Is a certificate's thumbprint considered private?
+
+https://security.stackexchange.com/questions/186754/is-a-certificates-thumbprint-considered-private
+
+No, thumbprint is not considered private. This is because, thumbprint is a result of one-way hashing function (SHA1 or other).
+
+By definition, hashing functions accepts messages of variable length as input and produce fixed-length output. Output length depends on actual hashing function. As the result, it is virtually impossible to recover input message by knowing only it's hash (thumbprint).
+
+Please note, that there are several types of attacks against hashes (for example, preimage attack) which allow you to find another input that produces same hash value (hash collision). This means that using such attacks you can get N number of inputs that produce particular hash. However, you cannot know which exactly of these inputs in N was in mind to calculate particular hash. Any of element in N could be. This means that you can spoof the thumbprint (although computationally difficult), but you cannot recover exact input, only possible candidates.
+
+So, you can post thumbprint value in public when necessary without worrying that someone will recover input message that produced specified thumbprint.
+
+### Are Certificate Thumbprints Unique?
+
+https://www.microsoft.com/en-us/research/publication/are-certificate-thumbprints-unique/
+
+A certificate thumbprint is a hash of a certificate, computed over all certificate data and its signature. Thumbprints are used as unique identifiers for certificates, in applications when making trust decisions, in configuration files, and displayed in interfaces. In this paper we show that thumbprints are not unique in two cases. First, we demonstrate that creating two X.509 certificates with the same thumbprint is possible when the hash function is weak, in particular when chosen-prefix collision attacks are possible. This type of collision attack is now practical for MD5, and expected to be practical for SHA-1 in the near future. Second, we show that certificates may be mauled in a way that they remain valid, but that they have different thumbprints. While these properties may be unexpected, we believe the scenarios where this could lead to a practical attack are limited and require very sophisticated attackers. We also checked the thumbprints of a large dataset of certificates used on the Internet, and found no evidence that would indicate thumbprints of certificates in use today are not unique.
