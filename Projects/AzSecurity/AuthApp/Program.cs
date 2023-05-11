@@ -1,3 +1,4 @@
+/*
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
@@ -6,42 +7,41 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AuthApp.Data;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("AuthAppContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthAppContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("AuthAppContextConnection"); ;
 
 builder.Services.AddDbContext<AuthAppContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlite(connectionString)); ;
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AuthAppContext>();
+    .AddEntityFrameworkStores<AuthAppContext>(); ;
 
 // Add services to the container.
 
-string ScopeUserImpersonation = "user_impersonation";
 
-string[] scope = new string[] { $"https://storage.azure.com/{ScopeUserImpersonation}" };
+//builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd");
+//JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddRazorPages().AddMvcOptions(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+}).AddMicrosoftIdentityUI();
+
 
 // Add MSAL wrapper for web apps
-
-builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
-    .EnableTokenAcquisitionToCallDownstreamApi(scope)
+builder.Services
+    .AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi()
     .AddInMemoryTokenCaches();
-
 // Below code is necessary and must come AFTER you add the identity service.  If you don't include this
 // your ID token will be formatted as SAML claims instead of proper OAuth2 claims.
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddRazorPages().AddMvcOptions(options => {
-    var policy = new AuthorizationPolicyBuilder()
-    .RequireAuthenticatedUser()
-    .Build();
-    
-    options.Filters.Add(new AuthorizeFilter(policy));
-}).AddMicrosoftIdentityUI();
 
 var app = builder.Build();
 
@@ -60,6 +60,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -68,5 +69,51 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapRazorPages();
+
+app.Run();
+
+
+*/
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+// </ms_docref_import_types>
+
+// <ms_docref_add_msal>
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+IEnumerable<string>? initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ');
+
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+        .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+        .AddInMemoryTokenCaches();
+// </ms_docref_add_msal>
+
+// <ms_docref_add_default_controller_for_sign-in-out>
+builder.Services.AddRazorPages().AddMvcOptions(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+                  .RequireAuthenticatedUser()
+                  .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+}).AddMicrosoftIdentityUI();
+// </ms_docref_add_default_controller_for_sign-in-out>
+
+// <ms_docref_enable_authz_capabilities>
+WebApplication app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+// </ms_docref_enable_authz_capabilities>
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapRazorPages();
+app.MapControllers();
 
 app.Run();

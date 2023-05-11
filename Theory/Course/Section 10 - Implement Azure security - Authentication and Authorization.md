@@ -37,6 +37,9 @@
     - [Note on Token Validation [228]](#note-on-token-validation-228)
     - [Delete your application objects in Azure AD [229]](#delete-your-application-objects-in-azure-ad-229)
     - [Assignment 6: Assignment - Web Application - Using Graph API](#assignment-6-assignment---web-application---using-graph-api)
+- [Microsoft Tutorial - WebApp](#microsoft-tutorial---webapp)
+    - [Register an application with the Microsoft identity platform](#register-an-application-with-the-microsoft-identity-platform)
+    - [Prepare an application for authentication](#prepare-an-application-for-authentication)
 
 <!-- /TOC -->
 
@@ -323,7 +326,7 @@ Sorry, but we’re having trouble signing you in.
 AADSTS50011: The redirect URI 'https://localhost:7236/signin-oidc' specified in the request does not match the redirect URIs configured for the application 'a8084fa2-4e6a-4ec5-a599-de584d8f565e'. Make sure the redirect URI sent in the request matches one added to your application in the Azure portal. Navigate to https://aka.ms/redirectUriMismatchError to learn more about how to fix this.
 ```
 
-=> cofig signin and signout urls in package config and in AuthApp | Authentication
+=> config signin and signout urls in package config and in AuthApp | Authentication
  settings.
 
 ```json
@@ -520,7 +523,7 @@ UserA
 
 no role assignment
 
-Add - Role assignment - Role Reader - Next - Selcts Members - UserA
+Add - Role assignment - Role Reader - Next - Select Members - UserA
 
 Failed, already exists
 
@@ -585,6 +588,91 @@ builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration,
 Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
 
 ## Lab - Publishing onto Azure Web Apps [218]
+
+webapp10001
+Web App
+
+Default domain
+webapp10001.azurewebsites.net
+
+AuthApp | Authentication
+
+https://localhost:7236/signout-oidc
+
+dpoluektovgmail.onmicrosoft.com
+
+Re-New Subscription
+
+https://webapp10001.azurewebsites.net/signin-oidc -> 
+
+https://authapp20230509005058.azurewebsites.net/signin-oid
+
+AuthApp | Authentication
+
+- authapp20230509005058.azurewebsites.net
+- https://authapp20230509005058.azurewebsites.net/signin-oidc
+- https://authapp20230509005058.azurewebsites.net/signout-oidc
+
+```
+An unhandled exception occurred while processing the request.
+MsalUiRequiredException: No account or login hint was passed to the AcquireTokenSilent call.
+Microsoft.Identity.Client.Internal.Requests.Silent.SilentRequest.ExecuteAsync(CancellationToken cancellationToken)
+
+MicrosoftIdentityWebChallengeUserException: IDW10502: An MsalUiRequiredException was thrown due to a challenge for the user. See https://aka.ms/ms-id-web/ca_incremental-consent.
+Microsoft.Identity.Web.TokenAcquisition.GetAuthenticationResultForUserAsync(IEnumerable<string> scopes, string authenticationScheme, string tenantId, string userFlow, ClaimsPrincipal user, TokenAcquisitionOptions tokenAcquisitionOptions)
+```
+
+```
+Error.
+An error occurred while processing your request.
+Request ID: 00-f6d95b0a108c9d4cb2be201ab2181975-9fa802eb85cdec4e-00
+
+Development Mode
+Swapping to the Development environment displays detailed information about the error that occurred.
+
+The Development environment shouldn't be enabled for deployed applications. It can result in displaying sensitive information from exceptions to end users. For local debugging, enable the Development environment by setting the ASPNETCORE_ENVIRONMENT environment variable to Development and restarting the app.
+```
+Disable //"ASPNETCORE_ENVIRONMENT": "Development", in launchConfig.json
+
+Switch to Production
+
+- "ASPNETCORE_ENVIRONMENT": "Production",
+- //"ASPNETCORE_ENVIRONMENT": "Development",
+
+
+```cs
+app.UseDeveloperExceptionPage();
+```
+
+Warning CS0618: 'TokenAcquisitionTokenCredential' is obsolete: 'Rather use TokenAcquirerTokenCredential'
+
+```
+An unhandled exception occurred while processing the request.
+MsalUiRequiredException: No account or login hint was passed to the AcquireTokenSilent call.
+Microsoft.Identity.Client.Internal.Requests.Silent.SilentRequest.ExecuteAsync(CancellationToken cancellationToken)
+
+MicrosoftIdentityWebChallengeUserException: IDW10502: An MsalUiRequiredException was thrown due to a challenge for the user. See https://aka.ms/ms-id-web/ca_incremental-consent.
+Microsoft.Identity.Web.TokenAcquisition.GetAuthenticationResultForUserAsync(IEnumerable<string> scopes, string authenticationScheme, string tenantId, string userFlow, ClaimsPrincipal user, TokenAcquisitionOptions tokenAcquisitionOptions)
+
+```
+
+https://localhost:7236/
+
+```
+An unhandled exception occurred while processing the request.
+MsalUiRequiredException: No account or login hint was passed to the AcquireTokenSilent call.
+Microsoft.Identity.Client.Internal.Requests.Silent.SilentRequest.ExecuteAsync(CancellationToken cancellationToken)
+
+MicrosoftIdentityWebChallengeUserException: IDW10502: An MsalUiRequiredException was thrown due to a challenge for the user. See https://aka.ms/ms-id-web/ca_incremental-consent.
+Microsoft.Identity.Web.TokenAcquisition.GetAuthenticationResultForUserAsync(IEnumerable<string> scopes, string authenticationScheme, string tenantId, string userFlow, ClaimsPrincipal user, TokenAcquisitionOptions tokenAcquisitionOptions)
+```
+
+
+Starting June 30th, 2020 we will no longer add any new features to Azure Active Directory Authentication Library (ADAL) and Azure AD Graph. We will continue to provide technical support and security updates but we will no longer provide feature updates. Applications will need to be upgraded to Microsoft Authentication Library (MSAL) and Microsoft Graph.
+
+
+MsalUiRequiredException: No account or login hint was passed to the AcquireTokenSilent call.
+
 ## Lab - Accessing Blob Storage via POSTMAN [219]
 ## Lab - Creating our Web API [220]
 ## Lab - Let's publish our Web API [221]
@@ -597,3 +685,24 @@ Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
 ## Note on Token Validation [228]
 ## Delete your application objects in Azure AD [229]
 ## Assignment 6: Assignment - Web Application - Using Graph API
+
+
+# Microsoft Tutorial - WebApp
+
+<https://learn.microsoft.com/en-us/azure/active-directory/develop/web-app-tutorial-01-register-application>
+
+## Register an application with the Microsoft identity platform
+
+App registrations > New registration.
+- NewAuthApp
+- Accounts in this organizational directory only
+- Redirect URI (optional) will be configured at a later stage.
+- Register
+
+Display name NewAuthApp
+- Application (client) ID     5dae781d-a2e1-4a25-b385-9bbb81be86ad
+- Object ID                   c98088f1-6cc0-4dd7-8610-f23e5b957ddb
+- Directory (tenant) ID       87349d34-316a-481c-ab12-5f5c7af3cd99
+
+## Prepare an application for authentication
+
