@@ -8,14 +8,8 @@ IEnumerable<string>? initialScopes = builder.Configuration["DownstreamApi:Scopes
 
 builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
     .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-    .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+    .AddDownstreamApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
     .AddInMemoryTokenCaches();
-
-
-/*
-warning CS0618: 'DownstreamWebApiExtensions.AddDownstreamWebApi(MicrosoftIdentityAppCallsWebApiAuthenticationBuilder, string, IConfiguration)' is obsolete: 'Use AddDownstreamApi in Microsoft.Identity.Abstractions, implemented in Microsoft.Identity.Web.DownstreamApi.See aka.ms/id-web-downstream-api-v2 for migration details.'
-https://github.com/AzureAD/microsoft-identity-web/blob/master/docs/blog-posts/downstreamwebapi-to-downstreamapi.md
-*/
 
 builder.Services.AddRazorPages().AddMvcOptions(options =>
 {

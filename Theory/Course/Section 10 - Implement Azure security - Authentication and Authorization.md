@@ -51,6 +51,7 @@
         - [Result](#result)
         - [Is a certificate's thumbprint considered private?](#is-a-certificates-thumbprint-considered-private)
         - [Are Certificate Thumbprints Unique?](#are-certificate-thumbprints-unique)
+        - [Migrating from DownstreamWebApi to DownstreamApi](#migrating-from-downstreamwebapi-to-downstreamapi)
 
 <!-- /TOC -->
 
@@ -912,3 +913,81 @@ So, you can post thumbprint value in public when necessary without worrying that
 https://www.microsoft.com/en-us/research/publication/are-certificate-thumbprints-unique/
 
 A certificate thumbprint is a hash of a certificate, computed over all certificate data and its signature. Thumbprints are used as unique identifiers for certificates, in applications when making trust decisions, in configuration files, and displayed in interfaces. In this paper we show that thumbprints are not unique in two cases. First, we demonstrate that creating two X.509 certificates with the same thumbprint is possible when the hash function is weak, in particular when chosen-prefix collision attacks are possible. This type of collision attack is now practical for MD5, and expected to be practical for SHA-1 in the near future. Second, we show that certificates may be mauled in a way that they remain valid, but that they have different thumbprints. While these properties may be unexpected, we believe the scenarios where this could lead to a practical attack are limited and require very sophisticated attackers. We also checked the thumbprints of a large dataset of certificates used on the Internet, and found no evidence that would indicate thumbprints of certificates in use today are not unique.
+
+### Migrating from DownstreamWebApi to DownstreamApi
+
+```cs
+/*
+warning CS0618: 'DownstreamWebApiExtensions.AddDownstreamWebApi(MicrosoftIdentityAppCallsWebApiAuthenticationBuilder, string, IConfiguration)' is obsolete: 'Use AddDownstreamApi in Microsoft.Identity.Abstractions, implemented in Microsoft.Identity.Web.DownstreamApi.See aka.ms/id-web-downstream-api-v2 for migration details.'
+*/
+```
+
+https://github.com/AzureAD/microsoft-identity-web/blob/master/docs/blog-posts/downstreamwebapi-to-downstreamapi.md
+
+Microsoft.Identity.Web 1.x had introduced an interface IDownstreamWebApi that called an API taking care of the authentication details (getting the token, adding the authorization header, ...). This interface grew organically based on your feature requests, and it became obvious that we needed to make public API breaking changes to enable all the scenarios you have asked for over the past couple of years.
+
+Rather than changing this existing API, the Microsoft.Identity.Web team has decided to build another interface, taking into account all your feedback. IDownstreamApi was born. We've deprecated the old interface, and the future efforts will be on the new implementation, but this choice should give you time to migrate if you choose to do so.
+
+This article explains:
+
+how to migrate from IDownstreamWebApi to IDownstreamApi
+what are the differences between IDownstreamWebApi and IDownstreamApi
+How to migrate from IDownstreamWebApi and IDownstreamApi
+To migrate your existing code using IDownstreamWebApi to Microsoft.Identity.Web 2.x and IDownstreamApi you will need to:
+
+- add a reference to the Microsoft.Identity.Web.DownstreamApi NuGet package
+
+- in the code doing the initialization of the application (usually startup.cs or program.cs) replace:
+
+```cs
+.AddDownstreamWebApi("serviceName", Configuration.GetSection("SectionName"))
+```
+
+by
+
+```cs
+.AddDownstreamApi("serviceName", Configuration.GetSection("SectionName"))
+```
+
+in the configuration file (appsettings.json), in the section representing the downstream web API, change the Scopes value from being a string to being an array of strings:
+
+```json
+"DownstreamApi1": {
+    "BaseUrl": "https://myapi.domain.com",
+    "Scopes": "https://myapi.domain.com/read  https://myapi.domain.com/write"
+},  
+```
+
+becomes
+
+```json
+"DownstreamApi1": {
+    "BaseUrl": "https://myapi.domain.com",
+    "Scopes": [
+        "https://myapi.domain.com/read",
+        "https://myapi.domain.com/write" 
+    ]
+}, 
+```
+ 
+[!WARNING] If you forget to change the Scopes to an array, when you try to use the IDownstreamApi the scopes will appear null, and IDownstreamApi will attempt an anonymous (unauthenticated) call to the downstream API, which will result in a 401/unauthenticated.
+
+in the controller:
+
+- add **using namespace Microsoft.Identity.Abstractions**
+- inject IDownstreamApi instead of IDownstreamWebApi
+- Replace CallWebApiForUserAsync by CallApiForUserAsync
+
+if you were using one of the method GetForUser, PutForUser, PostForUser, change the string that was expressing the relative path, to a delegate setting this relative path:
+
+```cs
+ Todo value = await _downstreamWebApi.GetForUserAsync<Todo>(ServiceName, $"api/todolist/{id}");
+```
+
+becomes
+
+```cs
+ Todo value = await _downstreamWebApi.GetForUserAsync<Todo>(
+      ServiceName,
+      options => options.RelativePath = $"api/todolist/{id}";);
+```

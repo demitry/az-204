@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Identity.Abstractions;
 using Microsoft.Identity.Web;
 
 namespace NewAuthAppLocal.Pages;
@@ -11,18 +12,18 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
 
-    private readonly IDownstreamWebApi _downstreamWebApi;
+    private readonly IDownstreamApi _downstreamApi;
 
-    public IndexModel(ILogger<IndexModel> logger, IDownstreamWebApi downstreamWebApi)
+    public IndexModel(ILogger<IndexModel> logger, IDownstreamApi downstreamApi)
     {
         _logger = logger;
-        _downstreamWebApi = downstreamWebApi;
+        _downstreamApi = downstreamApi;
     }
 
     public async Task OnGet()
     {
-        using var response = await _downstreamWebApi
-            .CallWebApiForUserAsync("DownstreamApi")
+        using var response = await _downstreamApi
+            .CallApiForUserAsync("DownstreamApi")
             .ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.OK)
