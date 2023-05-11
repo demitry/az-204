@@ -40,6 +40,10 @@
 - [Microsoft Tutorial - WebApp](#microsoft-tutorial---webapp)
     - [Register an application with the Microsoft identity platform](#register-an-application-with-the-microsoft-identity-platform)
     - [Prepare an application for authentication](#prepare-an-application-for-authentication)
+        - [Create project](#create-project)
+        - [Create Certificate](#create-certificate)
+        - [Upload Certificate](#upload-certificate)
+        - [Configure the application for authentication and API reference](#configure-the-application-for-authentication-and-api-reference)
 
 <!-- /TOC -->
 
@@ -706,3 +710,72 @@ Display name NewAuthApp
 
 ## Prepare an application for authentication
 
+### Create project
+
+- Open Visual Studio, and then select Create a new project.
+- Search for and choose the ASP.NET Core Web App template, and then select Next.
+- Enter a name for the project, such as NewWebAppLocal.
+- Choose a location for the project or accept the default option, and then select Next.
+- Accept the default for the Framework, Authentication type, and Configure for HTTPS. Authentication type can be set to none as this tutorial will cover this process.
+- Select Create.
+
+### Create Certificate
+
+dotnet dev-certs https -ep ./certificate.crt --trust
+
+```
+dotnet dev-certs https -ep ./certificate.crt --trust
+Failed to read environment variable [DOTNET_STARTUP_HOOKS], HRESULT: 0x800700CB
+Failed to read environment variable [DOTNET_STARTUP_HOOKS], HRESULT: 0x800700CB
+Trusting the HTTPS development certificate was requested. A confirmation prompt will be displayed if the certificate was not previously trusted. Click yes on the prompt to trust the certificate.
+Successfully trusted the existing HTTPS certificate.
+```
+
+### Upload Certificate
+
+NewAuthApp | Certificates & secrets
+
+Certificates (0)
+
+Upload certificate
+
+NewAuthAppCertificate
+
+NewAuthAppCertificate
+
+**Record the Thumbprint value**, which will be used in the next step.
+
+Certificate ID 1da3fc9d-c41a-474f-a3f6-3b71076e1dc1
+
+Thumbprint D5699FAE3CCBB3E938AED0CC724B24C28CB9548C
+
+### Configure the application for authentication and API reference
+
+```json
+{
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "TenantId": "Enter the tenant ID obtained from the Azure portal",
+    "ClientId": "Enter the client ID obtained from the Azure portal",
+    "ClientCertificates": [
+      {
+        "SourceType": "StoreWithThumbprint",
+        "CertificateStorePath": "CurrentUser/My",
+        "CertificateThumbprint": "Enter the certificate thumbprint obtained from the Azure portal"
+      }   
+    ],
+    "CallbackPath": "/signin-oidc"
+  },
+  "DownstreamApi": {
+    "BaseUrl": "https://graph.microsoft.com/v1.0/me",
+    "Scopes": "user.read"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+```
