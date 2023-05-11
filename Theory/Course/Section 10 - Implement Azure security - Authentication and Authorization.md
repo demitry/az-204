@@ -799,3 +799,18 @@ Find and record the https value applicationURI within launchSettings.json, for e
 ```
 
 ### Define the platform and URLs
+
+NewAuthApp | Authentication
+
+Add platform - Web
+
+ - Under Redirect URIs, enter the applicationURL and the CallbackPath, /signin-oidc, in the form of https://localhost:{port}/signin-oidc.
+
+ - Under Front-channel logout URL, enter the following URL for signing out, https://localhost:{port}/signout-oidc.
+
+https://localhost:7273/signin-oidc
+
+https://localhost:7273/signout-oidc
+
+Select Configure.
+
