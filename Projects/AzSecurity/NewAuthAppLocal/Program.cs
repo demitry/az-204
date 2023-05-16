@@ -21,6 +21,7 @@ builder.Services.AddRazorPages().AddMvcOptions(options =>
 
 
 WebApplication app = builder.Build();
+app.UseDeveloperExceptionPage();
 
 app.UseAuthentication();
 app.UseAuthorization();

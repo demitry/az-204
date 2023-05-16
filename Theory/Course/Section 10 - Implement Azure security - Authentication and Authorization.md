@@ -52,6 +52,10 @@
         - [Is a certificate's thumbprint considered private?](#is-a-certificates-thumbprint-considered-private)
         - [Are Certificate Thumbprints Unique?](#are-certificate-thumbprints-unique)
         - [Migrating from DownstreamWebApi to DownstreamApi](#migrating-from-downstreamwebapi-to-downstreamapi)
+        - [Program.cs With DownstreamApi](#programcs-with-downstreamapi)
+        - [Using a Certificate For Deployment](#using-a-certificate-for-deployment)
+        - [TODO:](#todo)
+        - [Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress 2021](#adam-freeman---pro-aspnet-core-identity-under-the-hood-with-authentication-and-authorization-in-aspnet-core-5-and-6-applications-apress-2021)
 
 <!-- /TOC -->
 
@@ -991,3 +995,76 @@ becomes
       ServiceName,
       options => options.RelativePath = $"api/todolist/{id}";);
 ```
+
+### Program.cs With DownstreamApi
+
+```cs
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+IEnumerable<string>? initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ');
+
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+    .AddDownstreamApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+    .AddInMemoryTokenCaches();
+
+builder.Services.AddRazorPages().AddMvcOptions(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+                  .RequireAuthenticatedUser()
+                  .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+}).AddMicrosoftIdentityUI();
+
+
+WebApplication app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapRazorPages();
+app.MapControllers();
+
+app.Run();
+```
+
+newauthapplocal.azurewebsites.net
+
+NewAuthApp | Authentication
+https://localhost:7273/signin-oidc
+https://localhost:7273/signout-oidc
+
+newauthapplocal.azurewebsites.net
+
+https://newauthapplocal.azurewebsites.net/signin-oidc
+https://newauthapplocal.azurewebsites.net/signout-oidc
+
+This page isn’t working newauthapplocal.azurewebsites.net is currently unable to handle this request.
+HTTP ERROR 500
+
+```cs
+app.UseDeveloperExceptionPage();
+```
+
+```
+ArgumentException: IDW10109: All client certificates passed to the configuration have expired or can't be loaded. (Parameter 'clientCredentials')
+```
+
+### Using a Certificate For Deployment
+
+The .NET test certificate can be used only during development, and you will need to use a real certificate when you are ready to deploy a project. If you don’t have a certificate, I recommend https://letsencrypt.org/, which is a nonprofit organization that issues certificates for free. As part of the registration process, you will need to prove you control the domain for which you require a certificate, but Let’s Encrypt provides tools for this process.
+
+Once you have a certificate—regardless of how you obtain one—you can find instructions for configuring ASP.NET Core at https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-5.0.
+
+### TODO:
+
+### Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress (2021)
