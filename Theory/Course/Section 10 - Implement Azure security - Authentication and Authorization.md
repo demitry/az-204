@@ -57,6 +57,7 @@
         - [TODO:](#todo)
             - [Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress 2021](#adam-freeman---pro-aspnet-core-identity-under-the-hood-with-authentication-and-authorization-in-aspnet-core-5-and-6-applications-apress-2021)
             - [WebApi and MS Identity Authentication](#webapi-and-ms-identity-authentication)
+            - [-229](#-229)
 
 <!-- /TOC -->
 
@@ -1070,6 +1071,22 @@ Once you have a certificate—regardless of how you obtain one—you can find in
 
 #### Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress (2021)
 
+<https://github.com/Apress/pro-asp.net-core-identity>
+
 #### WebApi and MS Identity Authentication
 
 <https://learn.microsoft.com/en-us/azure/active-directory/develop/web-api-quickstart?pivots=devlang-aspnet>
+
+#### 220-229
+
+- 220. Lab - Creating our Web API
+- 221. Lab - Let's publish our Web API
+- 222. Lab - Protecting our Web API - Application Registration
+- 223. Lab - Protecting our Web API - Code Configuration
+- 224. Lab - Calling our protected Web API from POSTMAN
+- 225. Lab - Invoking the Web API from a Console application
+- 226. Lab - Invoking the Web API from a Web App
+- 227. Lab - App Role claims
+- 228. Note on Token Validation
+- 229. Delete your application objects in Azure AD
+- Assignment 6: Assignment - Web Application - Using Graph API
