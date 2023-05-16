@@ -55,7 +55,8 @@
         - [Program.cs With DownstreamApi](#programcs-with-downstreamapi)
         - [Using a Certificate For Deployment](#using-a-certificate-for-deployment)
         - [TODO:](#todo)
-        - [Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress 2021](#adam-freeman---pro-aspnet-core-identity-under-the-hood-with-authentication-and-authorization-in-aspnet-core-5-and-6-applications-apress-2021)
+            - [Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress 2021](#adam-freeman---pro-aspnet-core-identity-under-the-hood-with-authentication-and-authorization-in-aspnet-core-5-and-6-applications-apress-2021)
+            - [WebApi and MS Identity Authentication](#webapi-and-ms-identity-authentication)
 
 <!-- /TOC -->
 
@@ -1067,4 +1068,8 @@ Once you have a certificate—regardless of how you obtain one—you can find in
 
 ### TODO:
 
-### Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress (2021)
+#### Adam Freeman - Pro ASP.NET Core Identity Under the Hood with Authentication and Authorization in ASP.NET Core 5 and 6 Applications-Apress (2021)
+
+#### WebApi and MS Identity Authentication
+
+<https://learn.microsoft.com/en-us/azure/active-directory/develop/web-api-quickstart?pivots=devlang-aspnet>
