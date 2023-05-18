@@ -279,6 +279,67 @@ Create resource from custom template
 Home - Monitor - Alert Rules
 
 ## Lab - ARM Templates - Dynamic Metric alerts [240]
+
+```
+NOTE:
+"criteria": {
+"odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+
+... "criterionType": "DynamicThresholdCriterion"
+```
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "DynamicCPUAlert",
+            "type": "Microsoft.Insights/metricAlerts",
+            "location": "global",
+            "apiVersion": "2018-03-01",
+            "properties": {
+                "description": "Dynamic Alert for an Azure VM",
+                "severity": 2,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Compute/virtualMachines', 'appvm')]"
+                ],
+                "evaluationFrequency": "PT5M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "criterionType": "DynamicThresholdCriterion",
+                            "name": "1st criterion",
+                            "metricName": "Percentage CPU",
+                            "dimensions": [],
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "alertSensitivity": "Medium",
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": "4",
+                                "minFailingPeriodsToAlert": "3"
+                            }
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('Microsoft.Insights/ActionGroups', 'AlertGroupB')]"
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}
+```
+
 ## Lab - Log Analytics Query Alert - PowerShell [241]
 ## What is Application Insights [242]
 ## Application Insights - Configure the SDK locally [243]
