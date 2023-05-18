@@ -45,8 +45,49 @@
 # Section 11: Monitor, troubleshoot, and optimize Azure solutions
 ## Section Resources download [230]
 ## What are we going to cover [231]
+
 ## Quick look at the Azure Monitor service [232]
+
+webapp10001 | Metrics
+
+Monitor | Metrics
+
+Monitor | Activity log
+
+- Logs any Azure administrative activity, check JSON
+
 ## Azure Monitor - Setting up alerts [233]
+
+Create an alert rule
+
+- Scope
+- Add Condition - Select a signal
+- Activity Log - based on an operation on VM (Power Off, ... )
+- => trigger alert
+- Metrics - (CPU percentage, memory percentage, network...)
+- Threshold: Static, Dynamic
+- Aggregation granularity: 5 min
+- Frequency of evaluation
+- Actions, Action Group - what needs to be done
+- Create an action Group, Notification type
+- Trigger
+  - Automation Runbook (Powershell Script)
+  - Azure Function
+  - Event Hub
+  - ITSM
+  - Logic App
+  - Secure Webhook
+  - Webhook
+- Severity
+  - 4 - Verbose
+  - 3 - Informational
+  - 2 - Warning
+  - 1 - Error
+  - 0 - Critical
+- Alert Rule Name
+- 0.10 USD/month - Metric Alert Rule - cost per month
+- Create
+
 ## Azure Monitor - Dynamic thresholds [234]
 ## What is a Log Analytics Workspace [235]
 ## Lab - Log Analytics workspace [236]
