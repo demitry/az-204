@@ -141,7 +141,7 @@ LogWorkspace | Agents Configuration
 - IIS Logs
 - Your own custom logs
 
-LogWorkspace | Logs - check table
+LogWorkspace | Logs - LogManagement -  check tables
 - Heartbeat
 - Event
 - Syslog
@@ -153,6 +153,44 @@ Event - Run
 to check log records
 
 ## Azure Web App - Diagnostic [237]
+
+webapp10001 | Diagnostic settings
+
+Click 'Add Diagnostic setting' above to configure the collection of the following data:
+
+- HTTP logs
+- App Service Console Logs
+- App Service Application Logs
+- Access Audit Logs
+- IPSecurity Audit logs
+- App Service Platform logs
+- AllMetrics
+
+Add diagnostic setting
+- [x] HTTP logs
+- [x] App Service Console Logs
+- [x] App Service Application Logs
+- [x] Access Audit Logs
+- [x] IPSecurity Audit logs
+- [x] App Service Platform logs
+
+Destination details
+- [x] Send to Log Analytics workspace
+  - Select LogWorkspace
+
+- [] Archive to a storage account
+- [] Stream to an event hub
+- [] Send to partner solution
+
+Save
+
+LogWorkspace | Logs - LogManagement
+
+- AppServiceAppLogs
+- AppServiceConsoleLogs
+- AppServiceHTTPLogs
+
+
 ## Lab - ARM Templates - Action Groups [238]
 ## Lab - ARM Templates - Azure Monitor Metrics [239]
 ## Lab - ARM Templates - Dynamic Metric alerts [240]
