@@ -89,8 +89,69 @@ Create an alert rule
 - Create
 
 ## Azure Monitor - Dynamic thresholds [234]
+
+Dynamic Threshold
+
+Azure Monitor uses machine learning to check the historical behavior of metrics.
+
+Metric is always 40 percent. But now it is 80 percent - deviating from normal.
+
+Based on historical data.
+
+Define sensitivity:
+
+  - High - alert triggered for the smallest deviation.
+  - Medium - more balanced thresholds
+  - Low - alert only triggered on large deviation
+
+Configure signal logic - Alert Logic - Dynamic (not static)
+
+Threshold sensitivity: Medium
+
 ## What is a Log Analytics Workspace [235]
+
+Log Data -> Log Analytics Workspace
+
+Custom Query Language
+
+Visualization and Dashboards
+
 ## Lab - Log Analytics workspace [236]
+
+Create Log Analytics workspace and connect multiple machines log to this centralized log workspace
+
+Deprecated:
+LogWorkspace | Service map (deprecated
+LogWorkspace | Virtual machines (deprecated)
+
+linuxvm - Connect
+
+linuxvm | Extensions and Applications - installs agent
+
+Installs Microsoft Monitoring Agent
+
+Which data should be collected?
+
+LogWorkspace | Agents Configuration
+
+- Windows event logs (application events log etc.)
+- Windows performance counters
+- Linux performance counters
+- Syslog
+- IIS Logs
+- Your own custom logs
+
+LogWorkspace | Logs - check table
+- Heartbeat
+- Event
+- Syslog
+
+type the name of the table - Run
+
+Event - Run
+
+to check log records
+
 ## Azure Web App - Diagnostic [237]
 ## Lab - ARM Templates - Action Groups [238]
 ## Lab - ARM Templates - Azure Monitor Metrics [239]
