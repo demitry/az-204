@@ -192,6 +192,41 @@ LogWorkspace | Logs - LogManagement
 
 
 ## Lab - ARM Templates - Action Groups [238]
+
+**Bicep** language support for Visual Studio Code and Visual Studio
+
+Create resource from custom template
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "apiVersion": "2021-09-01",
+      "name": "AlertGroupB",
+      "location": "Global",
+      "properties": {
+        "groupShortName": "AlertGroupB",
+        "enabled": true,
+        "emailReceivers": [
+          {
+            "name": "AdminEmail",
+            "emailAddress": "dpoluektov@gmail.com",
+            "useCommonAlertSchema": true
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {}
+}
+```
+
 ## Lab - ARM Templates - Azure Monitor Metrics [239]
 ## Lab - ARM Templates - Dynamic Metric alerts [240]
 ## Lab - Log Analytics Query Alert - PowerShell [241]
