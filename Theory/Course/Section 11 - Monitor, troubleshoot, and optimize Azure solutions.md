@@ -13,6 +13,7 @@
     - [Lab - ARM Templates - Azure Monitor Metrics [239]](#lab---arm-templates---azure-monitor-metrics-239)
     - [Lab - ARM Templates - Dynamic Metric alerts [240]](#lab---arm-templates---dynamic-metric-alerts-240)
     - [Lab - Log Analytics Query Alert - PowerShell [241]](#lab---log-analytics-query-alert---powershell-241)
+        - [My Comment](#my-comment)
     - [What is Application Insights [242]](#what-is-application-insights-242)
     - [Application Insights - Configure the SDK locally [243]](#application-insights---configure-the-sdk-locally-243)
     - [Lab - Azure Application Insights [244]](#lab---azure-application-insights-244)
@@ -341,6 +342,29 @@ NOTE:
 ```
 
 ## Lab - Log Analytics Query Alert - PowerShell [241]
+
+LogWorkspace | Properties
+Resource ID
+/subscriptions/a77b1bf0-3869-4d3f-9d30-42037952d048/resourceGroups/app-grp/providers/Microsoft.OperationalInsights/workspaces/LogWorkspace
+P:
+New-AzScheduledQueryRuleSource' is not recognized as a name of a cmdlet
+S:
+Install-Module -Name Az -AllowClobber
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+
+### My Comment
+
+Error message:
+"The term 'New-AzScheduledQueryRuleSource' is not recognized as a name of a cmdlet, function, script file, or executable program."
+```
+Note, there is a difference between versions of Az Powershell v. 8.3.0 and v. 9.7.1
+A lot of commands are removed in v. 9.7.1
+(New-AzScheduledQueryRuleSchedule, New-AzScheduledQueryRuleSource, New-AzScheduledQueryRuleTriggerCondition etc. were removed)
+Also the New-AzScheduledQueryRule command is run with a completely different set of parameters:
+```
+<https://learn.microsoft.com/en-us/powershell/module/az.monitor/new-azscheduledqueryrule?view=azps-8.3.0>
+<https://learn.microsoft.com/en-us/powershell/module/az.monitor/new-azscheduledqueryrule?view=azps-9.7.1>
+
 ## What is Application Insights [242]
 ## Application Insights - Configure the SDK locally [243]
 ## Lab - Azure Application Insights [244]
