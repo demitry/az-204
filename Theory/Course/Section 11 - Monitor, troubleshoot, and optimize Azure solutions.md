@@ -15,6 +15,8 @@
     - [Lab - Log Analytics Query Alert - PowerShell [241]](#lab---log-analytics-query-alert---powershell-241)
         - [My Comment](#my-comment)
     - [What is Application Insights [242]](#what-is-application-insights-242)
+        - [Application Insights](#application-insights)
+        - [How does it  work?](#how-does-it--work)
     - [Application Insights - Configure the SDK locally [243]](#application-insights---configure-the-sdk-locally-243)
     - [Lab - Azure Application Insights [244]](#lab---azure-application-insights-244)
     - [Lab - Application Insights - Performance data [245]](#lab---application-insights---performance-data-245)
@@ -366,7 +368,56 @@ Also the New-AzScheduledQueryRule command is run with a completely different set
 <https://learn.microsoft.com/en-us/powershell/module/az.monitor/new-azscheduledqueryrule?view=azps-9.7.1>
 
 ## What is Application Insights [242]
+
+### Application Insights
+
+  - Monitoring - performance management and monitoring of live web apps
+  - Aspects - detecting performance issues, or any other issues
+  - Support - .NET, Node.js, Java, Python
+  - Applications - hosted on Azure, pn-premises environment, other cloud
+  - Integration - Visual Studio IDE
+  - Users - you can see how users interact with your application
+
+### How does it  work?
+
+  - Install small SDK for your application
+  - Or use Application Insights agent
+  - Telemetry data sent by Application Insights has very little impact on the performance of your application
+
 ## Application Insights - Configure the SDK locally [243]
+
+VS -> sqlapp -> Right Click -> Configure Application Insights
+    - Application Insights Sdk (local)
+    - Azure Application Insights
+
+Choose local,
+ - [x] Code
+ - [y] Nuget Package
+
+ ```
+ Connecting to Application Insights Sdk (Local) dependency appInsights1 in the project...
+Installing NuGet packages to project...
+Installing package 'Microsoft.ApplicationInsights.AspNetCore' with version '2.15.0'.
+Adding code to Startup.cs...
+Serializing new Application Insights Sdk (Local) dependency metadata to disk...
+SuccessComplete. Application Insights Sdk (Local) appInsights1 is configured.
+ ```
+
+```cs
+// Program.cs
+builder.Services.AddApplicationInsightsTelemetry();
+```
+
+Run App
+
+VS -> View -> Other Windows -> Application Insights Search
+
+Diagnostic Tools -> Events - Observe Application Insights Events
+
+Search debug session telemetry
+
+Microsoft.ApplicationInsights.AspNetCore - Deprecated, Update It
+
 ## Lab - Azure Application Insights [244]
 ## Lab - Application Insights - Performance data [245]
 ## Application Insights - Usage Features [246]

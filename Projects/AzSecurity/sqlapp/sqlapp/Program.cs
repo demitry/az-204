@@ -19,6 +19,7 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddRazorPages();
 
 builder.Services.AddFeatureManagement();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
