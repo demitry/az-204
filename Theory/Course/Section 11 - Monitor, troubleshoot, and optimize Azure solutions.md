@@ -454,6 +454,10 @@ Publish App
 
 Insights-webapp10001202305262023 | Live metrics
 
+P: Data is temporarily inaccessible. The updates on our status are posted here https://aka.ms/aistatus
+
+S: **Disable Chrome AD Blockers!**
+
 ## Lab - Application Insights - Performance data [245]
 ## Application Insights - Usage Features [246]
 ## Application Insights - Availability Tests [247]
