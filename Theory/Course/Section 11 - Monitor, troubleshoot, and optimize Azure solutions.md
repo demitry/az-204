@@ -412,13 +412,48 @@ Run App
 
 VS -> View -> Other Windows -> Application Insights Search
 
-Diagnostic Tools -> Events - Observe Application Insights Events
+Diagnostic Tools -> Events => Observe Application Insights Events
 
 Search debug session telemetry
 
-Microsoft.ApplicationInsights.AspNetCore - Deprecated, Update It
+Microsoft.ApplicationInsights.AspNetCore - **Deprecated**, **Update It**
 
 ## Lab - Azure Application Insights [244]
+
+webapp10001 | Application Insights
+
+Application Insights
+
+Collect application monitoring data using Application Insights
+
+Enable
+
+Change your resource
+
+Create new resource
+
+New resource name: Insights-webapp10001202305262023
+
+Log Analytics Workspace
+
+  - Create a new Application Insights Resource
+  - Connect it to the Azure Web App
+  - Deploy New Analytic Workspace that will be connected to the Application Insights
+
+VS -> Connected Services
+    - Application Insights Sdk (Local)
+    - Azure App Configuration
+
+Right Click on Connected Services - Manage Connected Services
+
+Application Insights Sdk (Local) - Disconnect (Remove Dependency), Save All
+
+(because we connect to App Insights in the Azure Platform)
+
+Publish App
+
+Insights-webapp10001202305262023 | Live metrics
+
 ## Lab - Application Insights - Performance data [245]
 ## Application Insights - Usage Features [246]
 ## Application Insights - Availability Tests [247]
