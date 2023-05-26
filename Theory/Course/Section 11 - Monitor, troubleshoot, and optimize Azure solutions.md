@@ -19,6 +19,7 @@
         - [How does it  work?](#how-does-it--work)
     - [Application Insights - Configure the SDK locally [243]](#application-insights---configure-the-sdk-locally-243)
     - [Lab - Azure Application Insights [244]](#lab---azure-application-insights-244)
+        - [:8080 GET /robots933456.txt](#8080-get-robots933456txt)
     - [Lab - Application Insights - Performance data [245]](#lab---application-insights---performance-data-245)
     - [Application Insights - Usage Features [246]](#application-insights---usage-features-246)
     - [Application Insights - Availability Tests [247]](#application-insights---availability-tests-247)
@@ -457,6 +458,62 @@ Insights-webapp10001202305262023 | Live metrics
 P: Data is temporarily inaccessible. The updates on our status are posted here https://aka.ms/aistatus
 
 S: **Disable Chrome AD Blockers!**
+
+Insights-webapp10001202305262023 
+
+Investigate
+  - Application map
+  - Smart detection
+  - Live metrics
+  - Transaction search
+  - Availability
+  - Failures
+  - Performance
+  - Troubleshooting guides (preview)
+
+Monitoring
+  - Alerts
+  - Metrics
+  - Diagnostic settings
+  - Logs
+  - Workbooks
+
+Usage
+  - Users
+  - Sessions
+  - Events
+  - Funnels
+  - User Flows
+  - Cohorts
+  - More
+
+Configure
+  - Properties
+  - Smart detection settings
+  - Network Isolation
+  - Usage and estimated costs
+  - API Access
+  - Work Items
+
+Settings
+  - Locks
+  - Automation
+  - Tasks (preview)
+  - Export template
+  - Support + troubleshooting
+  - New Support Request
+
+### 169.254.130.6:8080 GET /robots933456.txt
+
+Failed Event
+
+169.254.130.6:8080 GET /robots933456.txt
+
+```
+You can safely ignore this message. /robots933456.txt is a dummy URL path that App Service uses to check if the container is capable of serving requests. A 404 response simply indicates that the path doesn't exist, but it lets App Service know that the container is healthy and ready to respond to requests.
+```
+
+<https://github.com/MicrosoftDocs/azure-docs/blob/main/includes/app-service-web-configure-robots933456.md>
 
 ## Lab - Application Insights - Performance data [245]
 ## Application Insights - Usage Features [246]
