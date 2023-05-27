@@ -516,6 +516,57 @@ You can safely ignore this message. /robots933456.txt is a dummy URL path that A
 <https://github.com/MicrosoftDocs/azure-docs/blob/main/includes/app-service-web-configure-robots933456.md>
 
 ## Lab - Application Insights - Performance data [245]
+
+Insights-webapp10001202305262023 | Performance
+
+  - OPERATION NAME
+  - DURATION (AVG)
+  - COUNT
+
+End-to-end transaction details
+
+GET /Index transaction
+
++ check Dependent request to the SQL Database
+
+dbserver11101 appdb
+
+Command(connection to the SQL DB)
+
+tcp:dbserver11101.database.windows.net,1433 | appdb
+
+Cannot see actual SQL command
+
+```cs
+string sqlQuery = "SELECT ProductId, ProductName, Quantity FROM Products";
+```
+
+How to see it in Application Insights ?
+
+Program.cs
+
+```cs
+using Microsoft.ApplicationInsights.DependencyCollector;
+/// ...
+builder.Services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = true; });
+```
+
+Publish
+
+Insights-webapp10001202305262023 | Performance
+
+
+Select a sample operation
+
+Sort by Date
+
+End-to-end transaction details
+
+Now you can see command
+
+```sql
+SELECT ProductId, ProductName, Quantity FROM Products
+```
 ## Application Insights - Usage Features [246]
 ## Application Insights - Availability Tests [247]
 ## Application Insights - Tracking Users [248]

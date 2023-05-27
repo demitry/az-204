@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.FeatureManagement;
 using sqlapp.Services;
 
@@ -20,6 +21,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddFeatureManagement();
 builder.Services.AddApplicationInsightsTelemetry();
+
+builder.Services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = true; });
 
 var app = builder.Build();
 
