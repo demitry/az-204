@@ -567,7 +567,37 @@ Now you can see command
 ```sql
 SELECT ProductId, ProductName, Quantity FROM Products
 ```
+
+For NON-PROD envs!
+
 ## Application Insights - Usage Features [246]
+
+Usage
+  - Users - how many users?
+  - Sessions - sessions of user activity, app pages and features
+  - Events - how often certain pages and features have been used? 
+  - Funnels - multiple stages like a pipeline, how users are processing through the app as an entire process
+  - Cohorts - set if users, sessions, events or operations, that have something in common. It helps analyze a particular set of users or events.
+  - Impact - how load times and other aspects of your application impact the conversion rate for your application
+  - Retention - how many users return back to your application
+  - User Flows
+    - What users click
+    - What users churn (go out) the most from the site
+    - Are there places in the application where the users repeat the same action over and over again
+  - More
+  
+
+Insights-webapp10001202305262023 | Users
+
+Insights-webapp10001202305262023 | Sessions
+
+Insights-webapp10001202305262023 | Events
+
+...
+
+View More Insights
+
+
 ## Application Insights - Availability Tests [247]
 ## Application Insights - Tracking Users [248]
 ## Optimizing Content Delivery [249]
