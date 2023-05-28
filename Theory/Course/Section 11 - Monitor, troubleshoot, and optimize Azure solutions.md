@@ -619,6 +619,47 @@ Test Locations (different locations)
 Samples, Duration from different locations....
  
 ## Application Insights - Tracking Users [248]
+
+How to Record and authenticate user Id when it come to App Insights ?
+
+Insights-webapp10001202305262023 | Users
+
+No users info
+
+Operating system <undefined>
+
+Browser version <undefined>
+
+Services/TelemetryService.cs
+
+```cs
+using Microsoft.ApplicationInsights.AspNetCore.TelemetryInitializers;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
+
+namespace sqlapp.Services
+{
+    public class TelemetryService : TelemetryInitializerBase
+
+    {
+        public TelemetryService(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        {
+        }
+
+        protected override void OnInitializeTelemetry(HttpContext platformContext, RequestTelemetry requestTelemetry, ITelemetry telemetry)
+        {
+            telemetry.Context.User.AuthenticatedUserId = platformContext.User?.Identity.Name ?? string.Empty;
+        }
+    }
+}
+```
+
+Program.cs
+
+```cs
+builder.Services.AddSingleton<ITelemetryInitializer, TelemetryService>();
+```
+
 ## Optimizing Content Delivery [249]
 ## What is Azure Cache for Redis [250]
 ## Lab - Creating the Cache [251]
