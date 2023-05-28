@@ -620,15 +620,17 @@ Samples, Duration from different locations....
  
 ## Application Insights - Tracking Users [248]
 
-How to Record and authenticate user Id when it come to App Insights ?
+How to Record an auth user Id when it come to App Insights ?
 
 Insights-webapp10001202305262023 | Users
 
-No users info
+**No users info**
 
-Operating system <undefined>
+Operating system - < undefined >
 
-Browser version <undefined>
+Browser version - < undefined >
+
+=>
 
 Services/TelemetryService.cs
 
