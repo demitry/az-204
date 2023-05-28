@@ -599,6 +599,25 @@ View More Insights
 
 
 ## Application Insights - Availability Tests [247]
+
+Insights-webapp10001202305262023 | Availability
+
+Add Standard test
+
+Name: WebTest
+
+URL: https://webapp10001.azurewebsites.net
+
+[] Parse dependent requests
+
+Test Frequency
+
+Test Locations (different locations)
+
+"Create"
+
+Samples, Duration from different locations....
+ 
 ## Application Insights - Tracking Users [248]
 ## Optimizing Content Delivery [249]
 ## What is Azure Cache for Redis [250]
