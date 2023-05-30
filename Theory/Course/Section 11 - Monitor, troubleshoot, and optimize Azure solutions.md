@@ -663,6 +663,29 @@ builder.Services.AddSingleton<ITelemetryInitializer, TelemetryService>();
 ```
 
 ## Optimizing Content Delivery [249]
+
+Optimize the content delivery and performance
+
+Web App (Central US location)
+
+Users - across the World
+
+How do users across the world get a seamless experience when it comes to delivery of application content?
+
+- **Azure Content Delivery Network Service**
+
+- **Redis Cahce**
+
+SQL Server database
+
+Fetching data from the disk - delay
+
+Each machine has fast cache memory
+
+Impossible to store all data in fast memory, just frequently accessed data
+
+Web App => Redis (faster memory) <=> Azure SQL Database
+
 ## What is Azure Cache for Redis [250]
 ## Lab - Creating the Cache [251]
 ## Lab - Azure Redis Data types [252]
