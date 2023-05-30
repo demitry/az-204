@@ -26,6 +26,11 @@
     - [Application Insights - Tracking Users [248]](#application-insights---tracking-users-248)
     - [Optimizing Content Delivery [249]](#optimizing-content-delivery-249)
     - [What is Azure Cache for Redis [250]](#what-is-azure-cache-for-redis-250)
+        - [Azure Cache for Redis](#azure-cache-for-redis)
+        - [Use cases](#use-cases)
+            - [Data Cache - Top 10 courses for the day](#data-cache---top-10-courses-for-the-day)
+            - [Content Cache - Header, Footer, Static content of web page](#content-cache---header-footer-static-content-of-web-page)
+            - [Session Store - E-Commerce - Cart item](#session-store---e-commerce---cart-item)
     - [Lab - Creating the Cache [251]](#lab---creating-the-cache-251)
     - [Lab - Azure Redis Data types [252]](#lab---azure-redis-data-types-252)
     - [Lab - Azure Cache for Redis - .NET [253]](#lab---azure-cache-for-redis---net-253)
@@ -674,7 +679,7 @@ How do users across the world get a seamless experience when it comes to deliver
 
 - **Azure Content Delivery Network Service**
 
-- **Redis Cahce**
+- **Azure Cache for Redis**
 
 SQL Server database
 
@@ -687,6 +692,39 @@ Impossible to store all data in fast memory, just frequently accessed data
 Web App => Redis (faster memory) <=> Azure SQL Database
 
 ## What is Azure Cache for Redis [250]
+
+### Azure Cache for Redis
+
+- Data Store - In-memory data store that is based on the Redis software
+- Server memory - Here you can store frequently accessed data in server memory
+- Advantage - quick R\W
+- For the application - helps to provide low latency to your data and high throughput
+
+### Use cases
+
+#### Data Cache - Top 10 courses for the day
+
+Cache is based on persistent data
+
+There is no direct connection between cache and database, they are separate components.
+
+Example:
+
+Top 10 courses for the day
+
+- The Application would calculate the Top 10 courses for the day based on the data in the database
+- Then the application would store it to the Azure Cache for Redis
+- The application would catch this data from Azure Cache for Redis
+- The application would then update this data on a daily basis.
+
+#### Content Cache - Header, Footer, Static content of web page
+
+Store Header, Footer, Static content of web page in the Azure Cache for Redis.
+
+#### Session Store - E-Commerce - Cart item
+
+E-Commerce session store - Cart item - stored in the Azure Cache
+
 ## Lab - Creating the Cache [251]
 ## Lab - Azure Redis Data types [252]
 ## Lab - Azure Cache for Redis - .NET [253]
