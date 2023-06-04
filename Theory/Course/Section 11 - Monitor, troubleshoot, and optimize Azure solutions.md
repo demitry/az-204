@@ -33,6 +33,8 @@
             - [Session Store - E-Commerce - Cart item](#session-store---e-commerce---cart-item)
     - [Lab - Creating the Cache [251]](#lab---creating-the-cache-251)
     - [Lab - Azure Redis Data types [252]](#lab---azure-redis-data-types-252)
+        - [Data types](#data-types)
+        - [Redis Console Commands](#redis-console-commands)
     - [Lab - Azure Cache for Redis - .NET [253]](#lab---azure-cache-for-redis---net-253)
     - [Lab - Azure Cache for Redis - Classes [254]](#lab---azure-cache-for-redis---classes-254)
     - [Assignment 7: Assignment - .NET Classes - Get Cache data [   ]](#assignment-7-assignment---net-classes---get-cache-data----)
@@ -744,6 +746,74 @@ Redis version: Latest - 6
 Todo: Console commands + interact from the App
 
 ## Lab - Azure Redis Data types [252]
+
+<https://redis.io/>
+
+<https://redis.io/docs/data-types/tutorial/>
+
+### Data types
+
+  - **Strings** - as sequence of bytes
+  - **Lists** - lists of strings sorted by insertion order
+  - **Sets** -  unordered collections of unique strings that act like the sets, you can add, remove, and test for existence O(1) time
+  - **Hashes** - are record types modeled as collections of field-value pairs. As such, Redis hashes resemble Python dictionaries, Java HashMaps
+  - **Sorted sets** - are collections of unique strings that maintain order by each string's associated score
+  - **Streams** - is a data structure that acts like an append-only log. Streams help record events in the order they occur and then syndicate them for processing.
+  - **Geospatial indexes** - are useful for finding locations within a given geographic radius or bounding box.
+  - **Bitmaps** - let you perform bitwise operations on strings
+  - **Bitfields** - efficiently encode multiple counters in a string value. Bitfields provide atomic get, set, and increment operations and support different overflow policies.
+  - **HyperLogLog** - data structures provide probabilistic estimates of the **cardinality** (i.e., number of elements) of large sets.
+
+Stored as key-value pairs
+
+### Redis Console Commands
+```bash
+>set top:3:courses "AZ-104,AZ-305,AZ-204"
+OK
+>get top:3:courses
+"AZ-104,AZ-305,AZ-204"
+>set top:course:rating 4.9
+OK
+>get top:course:rating
+"4.9"
+>set top:course:rating 4.8
+OK
+>get top:course:rating
+"4.8"
+>exists top:course:rating
+(integer) 1
+>del top:course:rating
+(integer) 1
+>exists top:course:rating
+(integer) 0
+```
+
+Introduction to Redis lists
+
+Redis lists are linked lists of string values. Redis lists are frequently used to:
+
+  - Implement stacks and queues.
+  - Build queue management for background worker systems.
+
+```bash
+>lpush top:3:courses "AZ-104"
+(error) WRONGTYPE Operation against a key holding the wrong kind of value
+>del top:3:courses
+(integer) 1
+>lpush top:3:courses "AZ-104"
+(integer) 1
+>lpush top:3:courses "AZ-305"
+(integer) 2
+>lpush top:3:courses "AZ-204"
+(integer) 3
+>lrange top:3:courses
+(error) ERR wrong number of arguments for 'lrange' command
+>lrange top:3:courses 0 -1
+1) "AZ-204"
+2) "AZ-305"
+3) "AZ-104"
+```
+
 ## Lab - Azure Cache for Redis - .NET [253]
 ## Lab - Azure Cache for Redis - Classes [254]
    ## Assignment 7: Assignment - .NET Classes - Get Cache data [   ]
