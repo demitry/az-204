@@ -815,6 +815,46 @@ Redis lists are linked lists of string values. Redis lists are frequently used t
 ```
 
 ## Lab - Azure Cache for Redis - .NET [253]
+
+nuget: StackExchange.Redis
+
+appcache1000 | Access keys
+
+Primary connection string (StackExchange.Redis)
+
+appcache1000.redis.cache.windows.net:6380,password=4o5...60c=,ssl=True,abortConnect=False
+
+```cs
+using StackExchange.Redis;
+
+string connectionString = "appcache1000.redis.cache.windows.net:6380,password=4o5...S60c=,ssl=True,abortConnect=False";
+
+string keyTopCourses = "top:3:courses";
+
+ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(connectionString);
+
+void SetCacheData()
+{
+    IDatabase database = redis.GetDatabase();
+    database.StringSet(keyTopCourses, "AZ-104,AZ-305,AZ-204");
+    Console.WriteLine("Cache data has been set");
+}
+
+void GetCacheData()
+{
+    IDatabase database = redis.GetDatabase();
+
+    string? result = database.KeyExists(keyTopCourses) ? 
+        database.StringGet(keyTopCourses) : "Key does not exist";
+    
+    Console.WriteLine(result);
+}
+
+SetCacheData();
+
+GetCacheData();
+```
+
 ## Lab - Azure Cache for Redis - Classes [254]
    ## Assignment 7: Assignment - .NET Classes - Get Cache data [   ]
 ## Note on Redis data types [255]
