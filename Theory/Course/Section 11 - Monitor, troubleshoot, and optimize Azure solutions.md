@@ -726,6 +726,23 @@ Store Header, Footer, Static content of web page in the Azure Cache for Redis.
 E-Commerce session store - Cart item - stored in the Azure Cache
 
 ## Lab - Creating the Cache [251]
+
+Create Resource - Azure Cache for Redis
+
+DNS name: appcache1000
+
+appcache1000.redis.cache.windows.net
+
+Cache type: C0 (View full pricing options) - Select, Basic C0 (250 Mb Cache, No SLA) - 16$ / month
+
+Connectivity method: Public Endpoint
+
+Non-TLS port [] Enable
+
+Redis version: Latest - 6
+
+Todo: Console commands + interact from the App
+
 ## Lab - Azure Redis Data types [252]
 ## Lab - Azure Cache for Redis - .NET [253]
 ## Lab - Azure Cache for Redis - Classes [254]
