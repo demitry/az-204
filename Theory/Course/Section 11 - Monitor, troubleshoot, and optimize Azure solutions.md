@@ -894,7 +894,23 @@ List<CartItem> GetClassCacheData(string userId)
 
 ```
 ## Note on Redis data types [255]
+
+Channels in Redis: Subscribe and unsubscribe
+
+<https://redis.io/docs/manual/pubsub/>
+
 ## Redis Cache key eviction [256]
+
+<https://redis.io/docs/reference/eviction/>
+
+How the eviction process works
+
+It is important to understand that the eviction process works like this:
+
+- A client runs a new command, resulting in more data added.
+- Redis checks the memory usage, and if it is greater than the maxmemory limit , it evicts (delete) keys according to the policy.
+- A new command is executed, and so forth.
+
 ## Lab - Invalidate Cache keys [257]
 ## ASP.NET Example - Azure Cache for Redis [258]
 ## What is Azure Content Delivery Network [259]
