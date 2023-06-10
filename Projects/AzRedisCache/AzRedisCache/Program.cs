@@ -62,10 +62,38 @@ List<CartItem> GetClassCacheData(string userId)
 //SetClassCacheData("u1", 20, 500);
 //SetClassCacheData("u1", 30, 200);
 
-var list = GetClassCacheData("u1");
+//var list = GetClassCacheData("u1");
 
 //lrange u1:cartitems 0 -1
 
 //SetCacheData();
 
 //GetCacheData();
+
+//>exists top:3:courses
+
+void DeleteKey(string keyName)
+{
+    IDatabase database = redis.GetDatabase();
+    if(database.KeyExists(keyName))
+    {
+        database.KeyDelete(keyName);
+        Console.WriteLine("Key deleted");
+    }
+    else
+    {
+        Console.WriteLine("Key does not exists");
+    }
+}
+
+//DeleteKey("top:3:courses");
+
+void SetExpiryTime(string key, TimeSpan expiry)
+{
+    IDatabase database = redis.GetDatabase();
+    database.KeyExpire(key, expiry);
+    Console.WriteLine($"Set the key {key} expiry to {expiry.TotalSeconds} seconds");
+}
+
+SetCacheData();
+SetExpiryTime(keyTopCourses, new TimeSpan(0, 0, 30));

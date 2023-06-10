@@ -41,6 +41,8 @@
     - [Note on Redis data types [255]](#note-on-redis-data-types-255)
     - [Redis Cache key eviction [256]](#redis-cache-key-eviction-256)
     - [Lab - Invalidate Cache keys [257]](#lab---invalidate-cache-keys-257)
+        - [DeleteKey](#deletekey)
+        - [Set Key Expiry Time](#set-key-expiry-time)
     - [ASP.NET Example - Azure Cache for Redis [258]](#aspnet-example---azure-cache-for-redis-258)
     - [What is Azure Content Delivery Network [259]](#what-is-azure-content-delivery-network-259)
     - [Lab - Azure Content Delivery Network [260]](#lab---azure-content-delivery-network-260)
@@ -912,6 +914,59 @@ It is important to understand that the eviction process works like this:
 - A new command is executed, and so forth.
 
 ## Lab - Invalidate Cache keys [257]
+
+### DeleteKey
+
+>exists top:3:courses
+
+(integer) 1
+
+```cs
+void DeleteKey(string keyName)
+{
+    IDatabase database = redis.GetDatabase();
+    if(database.KeyExists(keyName))
+    {
+        database.KeyDelete(keyName);
+        Console.WriteLine("Key deleted");
+    }
+    else
+    {
+        Console.WriteLine("Key does not exists");
+    }
+}
+
+DeleteKey("top:3:courses");
+```
+
+>exists top:3:courses
+
+(integer) 0
+
+### Set Key Expiry Time
+
+```cs
+void SetExpiryTime(string key, TimeSpan expiry)
+{
+    IDatabase database = redis.GetDatabase();
+    database.KeyExpire(key, expiry);
+    Console.WriteLine($"Set the key {key} expiry to {expiry.TotalSeconds} seconds");
+}
+
+SetCacheData();
+SetExpiryTime(keyTopCourses, new TimeSpan(0, 0, 30));
+```
+
+>exists top:3:courses
+
+(integer) 1
+
+After 30 sec:
+
+>exists top:3:courses
+
+(integer) 0
+
 ## ASP.NET Example - Azure Cache for Redis [258]
 ## What is Azure Content Delivery Network [259]
 ## Lab - Azure Content Delivery Network [260]
