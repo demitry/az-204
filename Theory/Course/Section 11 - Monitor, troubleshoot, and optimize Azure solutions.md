@@ -870,7 +870,29 @@ void SetClassCacheData(string userId, int productId, int quantity)
 
 ## Assignment 7: Assignment - .NET Classes - Get Cache data
 
-  
+```cs
+List<CartItem> GetClassCacheData(string userId)
+{
+    IDatabase database = redis.GetDatabase();
+    string key = String.Concat(userId, ":cartitems");
+    RedisValue[] redisValues = database.ListRange(key);
+    List<CartItem> cartItems = new List<CartItem>();
+
+    foreach (var redisValue in redisValues)
+    {
+        CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(redisValue);
+        cartItems.Add(cartItem);
+    }
+
+    foreach (var cart in cartItems)
+    {
+        Console.WriteLine($"{cart.ProductId} {cart.Quantity}");
+    }
+
+    return cartItems;
+}
+
+```
 ## Note on Redis data types [255]
 ## Redis Cache key eviction [256]
 ## Lab - Invalidate Cache keys [257]

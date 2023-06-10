@@ -17,15 +17,6 @@ void SetCacheData()
     Console.WriteLine("Cache data has been set");
 }
 
-void SetClassCacheData(string userId, int productId, int quantity)
-{
-    IDatabase database = redis.GetDatabase();
-    CartItem cartItem = new CartItem() { ProductId = productId, Quantity = quantity };
-    string key = String.Concat(userId, ":cartitems");
-    database.ListRightPush(key, JsonConvert.SerializeObject(cartItem));
-    Console.WriteLine("Cache data has been set");
-}
-
 void GetCacheData()
 {
     IDatabase database = redis.GetDatabase();
@@ -36,9 +27,42 @@ void GetCacheData()
     Console.WriteLine(result);
 }
 
-SetClassCacheData("u1", 10, 100);
-SetClassCacheData("u1", 20, 500);
-SetClassCacheData("u1", 30, 200);
+void SetClassCacheData(string userId, int productId, int quantity)
+{
+    IDatabase database = redis.GetDatabase();
+    CartItem cartItem = new CartItem() { ProductId = productId, Quantity = quantity };
+    string key = String.Concat(userId, ":cartitems");
+    database.ListRightPush(key, JsonConvert.SerializeObject(cartItem));
+    Console.WriteLine("Cache data has been set");
+}
+
+List<CartItem> GetClassCacheData(string userId)
+{
+    IDatabase database = redis.GetDatabase();
+    string key = String.Concat(userId, ":cartitems");
+    RedisValue[] redisValues = database.ListRange(key);
+    List<CartItem> cartItems = new List<CartItem>();
+
+    foreach (var redisValue in redisValues)
+    {
+        CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(redisValue);
+        cartItems.Add(cartItem);
+    }
+
+    foreach (var cart in cartItems)
+    {
+        Console.WriteLine($"{cart.ProductId} {cart.Quantity}");
+    }
+
+    return cartItems;
+}
+
+
+//SetClassCacheData("u1", 10, 100);
+//SetClassCacheData("u1", 20, 500);
+//SetClassCacheData("u1", 30, 200);
+
+var list = GetClassCacheData("u1");
 
 //lrange u1:cartitems 0 -1
 
