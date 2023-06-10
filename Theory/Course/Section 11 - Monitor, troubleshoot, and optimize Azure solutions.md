@@ -968,6 +968,76 @@ After 30 sec:
 (integer) 0
 
 ## ASP.NET Example - Azure Cache for Redis [258]
+
+Integrate Cache for Redis into Web App
+
+```cs
+using StackExchange.Redis;
+//...
+string redisConnectionString = "appcache1000.redis.cache.windows.net:6380,password=......=,ssl=True,abortConnect=False";
+var multiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+```
+
+```cs
+        public List<Product> GetProducts()
+        {
+            List<Product> products = new List<Product>();
+
+            IDatabase database = _redis.GetDatabase();
+            string key = "productlist";
+
+            if(database.KeyExists(key))
+            {
+                long listLenght = database.ListLength(key);
+                for (int i = 0; i < listLenght; i++)
+                {
+                    string value = database.ListGetByIndex(key, i);
+                    Product product = JsonConvert.DeserializeObject<Product>(value);
+                    products.Add(product);
+                }
+                return products;
+            }
+
+            string sqlQuery = "SELECT ProductId, ProductName, Quantity FROM Products";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Product product = new Product()
+                            {
+                                Id = reader.GetInt32(0),
+                                ProductName = reader.GetString(1),
+                                Quantity = reader.GetInt32(2),
+                            };
+                            database.ListRightPush(key, JsonConvert.SerializeObject(product));
+                            products.Add(product);
+                        }
+                    }
+                }
+                connection.Close();
+                return products;
+            }
+        }
+```
+
+
+>exists productlist
+
+(integer) 1
+
+>lrange productlist 0 -1
+1) "{\"Id\":1,\"ProductName\":\"Mobile\",\"Quantity\":100}"
+2) "{\"Id\":2,\"ProductName\":\"Laptop\",\"Quantity\":200}"
+3) "{\"Id\":3,\"ProductName\":\"Tabs\",\"Quantity\":300}"
+>
+
 ## What is Azure Content Delivery Network [259]
 ## Lab - Azure Content Delivery Network [260]
 ## Azure Content Delivery Network Caching [261]

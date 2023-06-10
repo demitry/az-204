@@ -1,6 +1,7 @@
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.FeatureManagement;
 using sqlapp.Services;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 //    });
 //});
 
+string redisConnectionString = "appcache1000.redis.cache.windows.net:6380,password=4o5FaUASBDttACpArQSE7Dp29dAn655RxAzCaAES60c=,ssl=True,abortConnect=False";
+var multiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 builder.Services.AddTransient<IProductService, ProductService>();
 
 // Add services to the container.
