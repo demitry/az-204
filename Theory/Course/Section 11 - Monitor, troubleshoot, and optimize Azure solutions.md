@@ -37,7 +37,7 @@
         - [Redis Console Commands](#redis-console-commands)
     - [Lab - Azure Cache for Redis - .NET [253]](#lab---azure-cache-for-redis---net-253)
     - [Lab - Azure Cache for Redis - Classes [254]](#lab---azure-cache-for-redis---classes-254)
-    - [Assignment 7: Assignment - .NET Classes - Get Cache data [   ]](#assignment-7-assignment---net-classes---get-cache-data----)
+    - [Assignment 7: Assignment - .NET Classes - Get Cache data](#assignment-7-assignment---net-classes---get-cache-data)
     - [Note on Redis data types [255]](#note-on-redis-data-types-255)
     - [Redis Cache key eviction [256]](#redis-cache-key-eviction-256)
     - [Lab - Invalidate Cache keys [257]](#lab---invalidate-cache-keys-257)
@@ -856,7 +856,21 @@ GetCacheData();
 ```
 
 ## Lab - Azure Cache for Redis - Classes [254]
-   ## Assignment 7: Assignment - .NET Classes - Get Cache data [   ]
+
+```cs
+void SetClassCacheData(string userId, int productId, int quantity)
+{
+    IDatabase database = redis.GetDatabase();
+    CartItem cartItem = new CartItem() { ProductId = productId, Quantity = quantity };
+    string key = String.Concat(userId, ":cartitems");
+    database.ListRightPush(key, JsonConvert.SerializeObject(cartItem));
+    Console.WriteLine("Cache data has been set");
+}
+```
+
+## Assignment 7: Assignment - .NET Classes - Get Cache data
+
+  
 ## Note on Redis data types [255]
 ## Redis Cache key eviction [256]
 ## Lab - Invalidate Cache keys [257]
