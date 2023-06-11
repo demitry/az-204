@@ -1039,6 +1039,39 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 >
 
 ## What is Azure Content Delivery Network [259]
+
+Azure CDN - delivering content across the globe
+
+Web App - Central US
+
+West US, North Europe access, not ideal access time?
+
+CDN helps to deliver content to users across the globe by placing content on physical nodes placed across the globe.
+
+We have source in Central US
+
+=> Create a CDN profile on global level, endpoint is defined and configured, endpoint points to our web app.
+
+Instead of giving URL to the app, we give URL that is attached to the CDN.
+
+East US, User <-> CDN profile (Global level, endpoint) <-> Web app (Central US, source)
+
+**Flow**:
+
+1. The user from East US makes a request to the CDN endpoint
+
+2. The CDN checks whether the the Point of Presence location is closest to the user has the requested file.
+
+3. If not - a request is made to the source.
+
+4. A server in the Point of presence location will then cache the requested file.
+
+5. The server will also send the file to the user.
+
+<https://datacenters.microsoft.com/globe/explore>
+
+Network PoP (Point of presence) - have ability to cache your data, when it comes to Azure CDN, CDN uses these PoP locations to deliver data across the globe.
+
 ## Lab - Azure Content Delivery Network [260]
 ## Azure Content Delivery Network Caching [261]
 ## What is Azure Front Door [262]
