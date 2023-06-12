@@ -44,6 +44,8 @@
         - [DeleteKey](#deletekey)
         - [Set Key Expiry Time](#set-key-expiry-time)
     - [ASP.NET Example - Azure Cache for Redis [258]](#aspnet-example---azure-cache-for-redis-258)
+    - [Redis Eviction Policies](#redis-eviction-policies)
+        - [Eviction policies](#eviction-policies)
     - [What is Azure Content Delivery Network [259]](#what-is-azure-content-delivery-network-259)
     - [Lab - Azure Content Delivery Network [260]](#lab---azure-content-delivery-network-260)
     - [Azure Content Delivery Network Caching [261]](#azure-content-delivery-network-caching-261)
@@ -203,6 +205,23 @@ LogWorkspace | Logs - LogManagement
 - AppServiceConsoleLogs
 - AppServiceHTTPLogs
 
+Question 8:
+Your team has an Azure Web App in place. You need to set the diagnostic setting for the Azure Web App to get the required log information. Which of the following can be used to check for any configuration changes to the Azure Web App?
+
+Answer:
+
+- AppServiceEnvironmentPlatformLogs
+
+Question 9:
+Your team has an Azure Web App in place. You need to set the diagnostic setting for the Azure Web App to get the required log information. Which of the following can be used to check for Container operation logs?
+
+Answer:
+
+- AppServicePlatformLogs
+
+Good job!
+
+You can get this information from AppServicePlatformLogs. For more information on the different types of logs you can go to the URL - <https://azure.microsoft.com/en-us/updates/azure-app-service-diagnostic-settings-feature-reaches-general-availability/>
 
 ## Lab - ARM Templates - Action Groups [238]
 
@@ -1038,6 +1057,56 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 3) "{\"Id\":3,\"ProductName\":\"Tabs\",\"Quantity\":300}"
 >
 
+## Redis Eviction Policies
+
+<https://redis.io/docs/reference/eviction/>
+
+Question 10:
+Which of the following is the ideal policy to use in Redis when you have the following requirement when it comes to items in the cache?
+
+“When you expect a subset of elements will be accessed far more than the rest”
+
+Answer: allkeys-lru
+
+### Eviction policies
+
+The exact behavior Redis follows when the maxmemory limit is reached is configured using the maxmemory-policy configuration directive.
+
+The following policies are available:
+
+noeviction: New values aren’t saved when memory limit is reached. When a database uses replication, this applies to the primary database
+
+allkeys-lru: Keeps most recently used keys; removes least recently used (LRU) keys
+
+allkeys-lfu: Keeps frequently used keys; removes least frequently used (LFU) keys
+
+volatile-lru: Removes least recently used keys with the expire field set to true.
+
+volatile-lfu: Removes least frequently used keys with the expire field set to true.
+
+allkeys-random: Randomly removes keys to make space for the new data added.
+
+volatile-random: Randomly removes keys with expire field set to true.
+
+volatile-ttl: Removes keys with expire field set to true and the shortest remaining 
+time-to-live (TTL) value.
+
+The policies volatile-lru, volatile-lfu, volatile-random, and volatile-ttl behave like noeviction if there are no keys to evict matching the prerequisites.
+
+Picking the right eviction policy is important depending on the access pattern of your application, however you can reconfigure the policy at runtime while the application is running, and monitor the number of cache misses and hits using the Redis INFO output to tune your setup.
+
+In general as a rule of thumb:
+
+Use the allkeys-lru policy when you expect a power-law distribution in the popularity of your requests. That is, you expect a subset of elements will be accessed far more often than the rest. This is a good pick if you are unsure.
+
+Use the allkeys-random if you have a cyclic access where all the keys are scanned continuously, or when you expect the distribution to be uniform.
+
+Use the volatile-ttl if you want to be able to provide hints to Redis about what are good candidate for expiration by using different TTL values when you create your cache objects.
+
+The volatile-lru and volatile-random policies are mainly useful when you want to use a single instance for both caching and to have a set of persistent keys. However it is usually a better idea to run two Redis instances to solve such a problem.
+
+It is also worth noting that setting an expire value to a key costs memory, so using a policy like allkeys-lru is more memory efficient since there is no need for an expire configuration for the key to be evicted under memory pressure.
+
 ## What is Azure Content Delivery Network [259]
 
 Azure CDN - delivering content across the globe
@@ -1228,6 +1297,33 @@ Whether you’re delivering content and files or building global apps and APIs, 
 Azure Front Door is Microsoft’s modern cloud Content Delivery Network (CDN) that provides fast, reliable, and secure access between your users and your applications’ static and dynamic web content across the globe. Azure Front Door delivers your content using Microsoft’s global edge network with hundreds of global and local points of presence (PoPs) distributed around the world close to both your enterprise and consumer end users.
 
 ## Lab - Azure Front Door - Setup [263]
+
+```txt
+            |- WebApp in Region 1
+Front Door <>
+            |- WebApp in Region 2
+```
+
 ## Lab - Azure Front Door - Implementation [264]
+
+Azure Latency Test
+
+<https://www.azurespeed.com/Azure/Latency>
+
+Least latency - direct to the proper site accordingly
+
 ## Azure Front Door - Other aspects [265]
+
+Improve performance by compressing files in Azure Front Door
+
+<https://learn.microsoft.com/en-us/azure/frontdoor/standard-premium/how-to-compression>
+
+app-froontdoor
+
+Update route
+
+[x] Enable caching
+
+[x] Enable compression
+
 ## Quiz 9: Short Quiz
