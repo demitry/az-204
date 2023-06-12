@@ -1154,8 +1154,63 @@ Stream line across the World,
 
 **WAIT 10-20 minutes**
 
+First GET https://sqlapp.azureedge.net/ = 264 ms
+
+Second GET https://sqlapp.azureedge.net/ = 33 ms
+
+Third GET https://sqlapp.azureedge.net/ = 29 ms
+
+=> CDN works.
 
 ## Azure Content Delivery Network Caching [261]
+
+Static and dynamic data
+
+If data not changes frequently
+
+```sql
+SELECT * FROM Products;
+
+UPDATE Products SET Quantity = 120 WHERE ProductID = 1
+```
+
+sqlapp (cdnprofile1000/sqlapp) | Caching rules
+
+Default cache expiration duration - 7 days (by default)
+
+Global caching rules
+
+These rules affect the CDN caching behavior for all requests, and can be overridden using Custom Cache Rules below for certain scenarios. Note that the Query string caching behavior setting does not affect files that are not cached by the CDN.
+
+Custom caching rules
+
+Create caching rules based on specific match conditions. These rules override the default settings above, and are evaluated from top to down. This means that rules lower on the list can override rules above it in the list, as well as the global caching rules and default behavior. Therefore it makes more sense to have more specific rules towards the bottom of the list so they are not overwritten by a general rule under them. For example a rule for path '/folder/images/*' should be below a rule for path '/folder/*'.
+
+Set:
+
+Global caching rules
+
+Caching behavior: Override
+
+Cache expiration duration: 1 min.
+
+Query string caching behavior: Ignore query string
+
+Save
+
+sqlapp (cdnprofile1000/sqlapp)
+
+**Purge**
+
+[x] Purge all
+
+Purge
+
+Once purged - the change in the database is reflected
+
+- reflected immediately - on original site
+- and reflected after 1 min - on CDN endpoint, as it was set
+
 ## What is Azure Front Door [262]
 ## Lab - Azure Front Door - Setup [263]
 ## Lab - Azure Front Door - Implementation [264]
