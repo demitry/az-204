@@ -1212,6 +1212,21 @@ Once purged - the change in the database is reflected
 - and reflected after 1 min - on CDN endpoint, as it was set
 
 ## What is Azure Front Door [262]
+
+Azure Front Door Service
+
+A lot more features comparing content delivery
+
+Web App Firewall - managed service
+
+Route traffic based by certain criteria...
+
+<https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview>
+
+Whether you’re delivering content and files or building global apps and APIs, Azure Front Door can help you deliver higher availability, lower latency, greater scale, and more secure experiences to your users wherever they are.
+
+Azure Front Door is Microsoft’s modern cloud Content Delivery Network (CDN) that provides fast, reliable, and secure access between your users and your applications’ static and dynamic web content across the globe. Azure Front Door delivers your content using Microsoft’s global edge network with hundreds of global and local points of presence (PoPs) distributed around the world close to both your enterprise and consumer end users.
+
 ## Lab - Azure Front Door - Setup [263]
 ## Lab - Azure Front Door - Implementation [264]
 ## Azure Front Door - Other aspects [265]
