@@ -1073,6 +1073,88 @@ East US, User <-> CDN profile (Global level, endpoint) <-> Web app (Central US, 
 Network PoP (Point of presence) - have ability to cache your data, when it comes to Azure CDN, CDN uses these PoP locations to deliver data across the globe.
 
 ## Lab - Azure Content Delivery Network [260]
+
+New resource
+
+**Front Door and CDN profiles**
+
+Azure Front Door and CDN profiles is security led, modern cloud CDN that provides static and dynamic content acceleration, global load balancing and enhanced security for your apps, APIs and websites with intelligent threat protection.
+
+- Built-in security to protect your apps and content
+- Single platform for static and dynamic acceleration
+- Fast, global network with instant failover
+- Seamless integration with Azure services and DevOps
+- Powerful real-time advanced analytics
+- Simplified billing for security and delivery
+
+
+**Azure Front Door**
+
+Azure Front Door is a secure cloud CDN which provides static and dynamic content acceleration, global load balancing and protection of your apps, APIs and websites with intelligent threat protection.
+
+**Explore other offerings**
+
+See offerings for our Azure Front Door (classic) and Azure CDN Standard from Microsoft (classic), along with our partner offerings.
+
+- Azure Front Door (classic) - A global and scalable entry point that uses Microsoft global network to provide dynamic application acceleration, load balancing and security.
+- Azure CDN Standard from Microsoft (classic) - A global content delivery network that uses Microsoft global network for content caching and acceleration.
+- Azure CDN Premium from Verizon - Verizon Media operates a global CDN platform with a focus on media streaming, delivery and security.
+- Azure CDN Standard from Verizon - Verizon Media operates a global CDN platform with a focus on media streaming, delivery and security.
+
+Choose
+
+Azure CDN Standard from Verizon
+
+Region: Global
+
+Name: cdnprofile1000
+
+CDN endpoint name: sqlapp
+
+Origin type: Web App
+
+Origin hostname: webapp10001.azurewebsites.net
+
+Review + Create
+
+In order to create this CDN profile, please ensure that Microsoft.CDN is listed as a registered Resource Provider in your Azure subscription
+
+```powershell
+Connect-AzAccount
+Select-AzSubscription -SubscriptionId 'a77b1bf0-3869-4d3f-9d30-42037952d048'
+
+# PS cmdlet to check if the provider is registered
+Get-AzResourceProvider -ProviderNamespace Microsoft.CDN
+
+# If it is not registered, Run the below command to register the Resource Provider
+Register-AzResourceProvider -ProviderNamespace Microsoft.CDN
+```
+
+OR
+
+How to Add Microsoft.CDN as a Registered Resource Provider Using the Portal
+Option 1
+
+- Logon to your Azure portal https://portal.azure.com/
+- Search for and open the Subscriptions blade
+- Under Settings select Resource Providers
+- Search for CDN or Microsoft.CDN
+- Select Microsoft.CDN and click the register button
+
+**WAIT 5 min** and re-create
+
+sqlapp (cdnprofile1000/sqlapp)
+Endpoint
+
+https://sqlapp.azureedge.net
+
+404 - Not Found
+
+Stream line across the World, 
+
+**WAIT 10-20 minutes**
+
+
 ## Azure Content Delivery Network Caching [261]
 ## What is Azure Front Door [262]
 ## Lab - Azure Front Door - Setup [263]
